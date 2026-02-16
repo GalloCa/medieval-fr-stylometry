@@ -4,61 +4,47 @@ import re
 import os 
 from collections import Counter
 
-import re
-
 def clean_texts(text):
     """
-    Nettoie le texte en profondeur ligne par ligne.
-    Supprime les métadonnées résiduelles, les URLs et les annonces éditoriales.
-    """
-    # 1. Suppression de l'en-tête de citation personnalisé
-    text = re.sub(r'^.*?--------------------------------------------------\n\n', '', text, flags=re.DOTALL)
+    Docstring for clean_texts
     
-    # 2. Isolation du texte après le marqueur 'start'
+    :param text: Description
+    """
+    text = re.sub(r'^.*?--------------------------------------------------\n\n','' ,text, flags=re.DOTALL)
     if 'start' in text:
         text = text.split('start', 1)[1]
-    else:
+    else :
         text = re.sub(r'^.*?<metadata_end_marker>', '', text, flags=re.DOTALL)
-
-    # 3. Filtrage ligne par ligne
     lines = text.split('\n')
     clean_lines = []
-    
-    # Mots-clés qui indiquent une ligne technique ou éditoriale à supprimer
-    # On ajoute 'ici commence', 'prologue' et les éléments d'URL
-    blacklist = [
-        'meta', 'texturi', 'deaf', 'arlima', 'texttitle', 'textdate', 
+    ban_words = ['meta', 'texturi', 'deaf', 'arlima', 'texttitle', 'textdate', 
         'ededitor', 'msbase', 'http', 'www', 'orcid', 'cclicense', 
-        'ici commence', 'prologue', 'or commence', 'author', 'start'
-    ]
+        'ici commence', 'prologue', 'or commence', 'author', 'start', 'folio', 'version']
 
     for line in lines:
         line_content = line.lower().strip()
-        
-        # SI la ligne contient l'un des mots de la blacklist, on l'ignore complètement
-        if any(word in line_content for word in blacklist):
+        if any(word in line_content for word in ban_words):
             continue
 
-        # Suppression des codes hybrides restants (ex: pagev01p169, folio30a)
         line_content = re.sub(r'\b[a-z]*\d+[a-z\d]*\b', '', line_content)
-        
-        # Suppression des chiffres isolés (numéros de vers ou de pages)
         line_content = re.sub(r'\b\d+[a-d]?\b', '', line_content)
-        
-        # Nettoyage de la ponctuation (on garde 7, & et ç pour le vieux français)
         line_content = re.sub(r'[^\w\s7&ç]', '', line_content)
-        
-        # Normalisation des espaces
         line_content = re.sub(r'\s+', ' ', line_content).strip()
         
-        # On n'ajoute la ligne que si elle contient encore du texte utile
+        
         if line_content:
             clean_lines.append(line_content)
 
-    # 4. RECONSTRUCTION : On garde la structure en lignes
     return "\n".join(clean_lines)
 
 def save_text(text, original_filename, output_dir):
+    """
+    Docstring for save_text
+    
+    :param text: Description
+    :param original_filename: Description
+    :param output_dir: Description
+    """
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
     file_name_only = os.path.basename(original_filename)
@@ -69,6 +55,8 @@ def save_text(text, original_filename, output_dir):
         f.write(text)
 
 def n_gramm(text,n=3):
+    """"
+    """
     clean_text = clean_texts(text)
     ngrams = [clean_text[i:i+n] for i in range(len(clean_text)-n+1)]
     return Counter(ngrams)
