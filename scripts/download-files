@@ -13,13 +13,12 @@ def download_github_data(repo_url, local_dir):
 
     if resp.status_code == 403:
         print('Rate limit exceeded (403)')
-        return
+        return False
     elif resp.status_code != 200:
         print(f'Error fetching directory: {resp.status_code}')
-        return
+        return False
     
     items = resp.json()
-
     if isinstance(items, dict):
         items = [items]
 
@@ -27,17 +26,22 @@ def download_github_data(repo_url, local_dir):
         if item['type'] == 'dir':
             new_local_dir = os.path.join(local_dir, item['name'])
             time.sleep(0.1)
-            download_github_data(item['url'], new_local_dir)
+            if not download_github_data(item['url'], new_local_dir):
+                return False
 
         elif item['type'] == 'file' and item['name'].endswith('.txt'):
             raw_text_url = item['download_url']
             file_path = os.path.join(local_dir, item['name'])
 
-            print(f'Downloading raw texts : {item['name']}')
-            file_data = requests.get(raw_text_url).text
-
-            with open(file_path, mode = 'w', encoding ='8tf-8') as f:
-                f.write(file_data.text)
+            print(f"Downloading raw texts : {item['name']}")
+        
+            file_data = requests.get(raw_text_url, headers=headers)
+            if file_data.status_code == 200:
+                with open(file_path, mode = 'w', encoding ='utf-8') as f:
+                    f.write(file_data.text)
+            else:
+                return False
+    return True
 
 repo_api_url = "https://api.github.com/repos/OpenMedFr/texts/contents"
 local_storage = r"/workspaces/medFR-paleao-NLP/data/raw-texts"
