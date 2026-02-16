@@ -3,6 +3,7 @@
 import re
 import os 
 from collections import Counter
+import pandas as pd
 
 # FUNCTIONS 
 
@@ -22,7 +23,6 @@ def load_stpwords(stopwords_filepath):
 
 def clean_texts(text, regex_file):
     """
-
     """
     text = re.sub(r'^.*?--------------------------------------------------\n\n','' ,text, flags=re.DOTALL)
     if 'start' in text:
@@ -92,6 +92,38 @@ def save_freq(frequences, original_filename, output_dir):
             f.write(f"{ngram}\t{frequences[ngram]}\n")
 
 
+def create_comparison_matrix(freq_dir, output_path):
+    all_data = []
+    
+    for filename in os.listdir(freq_dir):
+        if filename.endswith(".tsv"):
+            file_path = os.path.join(freq_dir, filename)
+            
+            # Chargement du fichier
+            df = pd.read_csv(file_path, sep='\t', usecols=['ngramme', 'frequence'])
+            
+            # --- CORRECTION DES DOUBLONS ---
+            # Si 'abc' apparaît 2 fois, on additionne les fréquences et on ne garde qu'une ligne
+            df = df.groupby('ngramme').sum()
+            
+            # Nettoyage du nom pour la colonne
+            column_name = filename.replace('freq-filtered-', '').replace('.tsv', '')
+            df = df.rename(columns={'frequence': column_name})
+            
+            all_data.append(df)
+
+    if not all_data:
+        print("Aucun fichier TSV trouvé.")
+        return
+
+    # La fusion fonctionnera maintenant car chaque index est unique
+    matrix = pd.concat(all_data, axis=1)
+    
+    matrix = matrix.fillna(0).astype(int)
+    matrix.to_csv(output_path, sep='\t')
+    print(f"✅ Matrice comparative créée avec succès : {output_path}")
+    return matrix
+
 # Main 
 raw_dir = r"/workspaces/medFR-paleao-NLP/data/raw-txt/"
 out_dir = r'/workspaces/medFR-paleao-NLP/data/clean-txt'
@@ -115,3 +147,7 @@ if os.path.exists(raw_dir):
 else:
     print(f"Erreur : {raw_dir} n'existe pas")
 
+freq_folder = r"/workspaces/medFR-paleao-NLP/data/frequencies"
+output_matrix = r"/workspaces/medFR-paleao-NLP/data/matrice.tsv"
+
+matrix_df = create_comparison_matrix(freq_folder, output_matrix)
