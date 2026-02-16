@@ -4,6 +4,20 @@ import re
 import os 
 from collections import Counter
 
+
+
+def load_grm(stopwords_filepath):
+    with open(stopwords_filepath) as f:
+        content = f.read()
+    lines = [re.escape(l.strip()) for l in content.split('\n') if l.strip() and not l.startswith('#')]
+    
+    if not lines:
+        return None
+    
+    pattern = r"\b(?:" + "|".join(lines)+ r")\b"
+
+    return re.compile(pattern, flags=re.I)
+
 def clean_texts(text):
     """
     Docstring for clean_texts
@@ -55,14 +69,18 @@ def save_text(text, original_filename, output_dir):
         f.write(text)
 
 def n_gramm(text,n=3):
-    """"
+    """
+    Docstring for n_gramm
+    
+    :param text: Description
+    :param n: Description
     """
     clean_text = clean_texts(text)
     ngrams = [clean_text[i:i+n] for i in range(len(clean_text)-n+1)]
     return Counter(ngrams)
 
-raw_dir = r"/workspaces/medFR-paleao-NLP/data/raw-texts/"
-out_dir = r'/workspaces/medFR-paleao-NLP/data/clean-texts'
+raw_dir = r"/workspaces/medFR-paleao-NLP/data/raw-txt/"
+out_dir = r'/workspaces/medFR-paleao-NLP/data/clean-txt'
 
 if os.path.exists(raw_dir):
     for filename in os.listdir(raw_dir):
