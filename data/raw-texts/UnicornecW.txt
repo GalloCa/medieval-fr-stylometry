@@ -1,3 +1,6 @@
+Citation: "UnicornecW.txt" (2018). Open Medieval French. https://github.com/OpenMedFr/texts
+--------------------------------------------------
+
 #META#  TextURI         :: UnicornecW
 #META#  DEAF            :: http://www.deaf-page.de/fr/bibl/bib99u.php#UnicornecW
 #META#  TL              

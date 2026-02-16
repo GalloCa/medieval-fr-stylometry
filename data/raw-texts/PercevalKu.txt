@@ -1,3 +1,6 @@
+Citation: "PercevalKu.txt" (2018). Open Medieval French. https://github.com/OpenMedFr/texts
+--------------------------------------------------
+
 #META#  TextURI         :: PercevalKu
 #META#  DEAF            :: nodata
 #META#  TL              

@@ -1,3 +1,6 @@
+Citation: "MeraugisF.txt" (2018). Open Medieval French. https://github.com/OpenMedFr/texts
+--------------------------------------------------
+
 #META#  TextURI          :: MeraugisF
 #META#  DEAF             :: http://www.deaf-page.de/bibl/bib99m.php#MeraugisF
 #META#  TL               :: 

@@ -1,3 +1,6 @@
+Citation: "SGeorgVosL.txt" (2018). Open Medieval French. https://github.com/OpenMedFr/texts
+--------------------------------------------------
+
 #META#  TextURI         :: SGeorgVosL
 #META#  DEAF            :: http://www.deaf-page.de/bibl/bib99s.php#SGeorgVosL
 #META#  TL              :: S George

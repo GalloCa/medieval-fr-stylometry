@@ -1,3 +1,6 @@
+Citation: "SGeorgDeG.txt" (2018). Open Medieval French. https://github.com/OpenMedFr/texts
+--------------------------------------------------
+
 ﻿#META#  TextURI         :: SGeorgDeG
 #META#  DEAF            :: http://www.deaf-page.de/bibl/bib99s.php#SGeorgDeG
 #META#  TL              :: S George M

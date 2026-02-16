@@ -1,3 +1,6 @@
+Citation: "ErecF.txt" (2018). Open Medieval French. https://github.com/OpenMedFr/texts
+--------------------------------------------------
+
 #META#  TextURI         :: ErecF
 #META#  DEAF            :: http://www.deaf-page.de/fr/bibl/bib99e.php#ErecF
 #META#  TL              :: Erec

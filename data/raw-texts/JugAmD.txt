@@ -1,3 +1,6 @@
+Citation: "JugAmD.txt" (2018). Open Medieval French. https://github.com/OpenMedFr/texts
+--------------------------------------------------
+
 #META#  TextURI          :: JugAmD
 #META#  DEAF             :: http://www.deaf-page.de/bibl/bib99j.php#JugAmD
 #META#  TL                

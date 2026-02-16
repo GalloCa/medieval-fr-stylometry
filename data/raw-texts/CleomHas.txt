@@ -1,3 +1,6 @@
+Citation: "CleomHas.txt" (2018). Open Medieval French. https://github.com/OpenMedFr/texts
+--------------------------------------------------
+
 #META#  TextURI          :: CleomHas
 #META#  DEAF             :: http://www.deaf-page.de/fr/bibl/bib99c.php#CleomHas
 #META#  TL               :: Cleom.

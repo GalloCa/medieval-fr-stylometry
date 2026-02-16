@@ -1,3 +1,6 @@
+Citation: "BenTroieC_4partial.txt" (2018). Open Medieval French. https://github.com/OpenMedFr/texts
+--------------------------------------------------
+
 #META#  TextURI         :: BenTroieC
 #META#  DEAF            :: http://www.deaf-page.de/bibl/bib99b.php#BenTroieC
 #META#  TL              :: Troie
