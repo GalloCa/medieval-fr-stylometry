@@ -15,27 +15,27 @@ def analyze_similarities(matrix_path, output_dir):
     df = pd.read_csv(matrix_path, sep='\t', index_col='ngramme')
     df.columns = [clean_label(col) for col in df.columns]
 
-    groups = {
-    'DancusM': 'Médical',
+    groups = { 
+    'DancusM': 'Didactique',
     'AlexisOctP': 'Hagiographie', 'AlexisP11': 'Hagiographie', 
     'AlexisP13': 'Hagiographie', 'AlexisPQ': 'Hagiographie', 
     'AlexisPRI': 'Hagiographie', 'SGeorgDeG': 'Hagiographie',
-    'SGeorgVosL': 'Hagiographie',
-    'ThebesC': 'Antique', 'BenTroieC_1partial': 'Antique', 
-    'BenTroieC_4partial': 'Antique',
+    'SGeorgVosL': 'Hagiographie', 'ChaceP' : 'Didactique'
+    'ThebesC': 'Antique', 'BenTroieC_1partial': 'Romance', 
+    'BenTroieC_4partial': 'Romance',
     'Yvain': 'Roman', 'Cliges': 'Roman', 'ErecF': 'Roman', 
     'LancJ': 'Roman', 'PercevalKu': 'Roman', 'MeraugisF': 'Roman', 
     'JugAmD': 'Roman', 'OmbreB2': 'Roman',
-    'UnicornecW': 'Didactique', 'AigarB': 'Epique'
+    'UnicornecW': 'Didactique', 'AigarB': 'Epique', 'CleoHas' : 'Roman'
     }
 
     color_map = {
-    'Médical': '#E74C3C',      
-    'Roman': '#3498DB',        
+    'Didactique': '#E74C3C',      
+    'Romance': '#3498DB',        
     'Antique': '#F1C40F',        
     'Hagiographie': '#2ECC71', 
     'Epique': '#9B59B6',
-    'Didactique': '#9B59B6'         
+             
     }
 
     df_transposed = df.T
