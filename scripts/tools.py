@@ -1,8 +1,129 @@
 # MODULES 
 import math
-import os
+import re
+import os 
+from collections import Counter
+import pandas as pd
+
 
 # FUNCTIONS
+def load_stpwords(stopwords_filepath):
+    """
+    """
+    with open(stopwords_filepath) as f:
+        content = f.read()
+    lines = [re.escape(l.strip()) for l in content.split('\n') if l.strip() and not l.startswith('#')]
+    
+    if not lines:
+        return None
+    
+    pattern = r"\b(?:" + "|".join(lines)+ r")\b"
+
+    return re.compile(pattern, flags=re.I)
+
+def clean_texts(text, regex_file):
+    """
+    """
+    text = re.sub(r'^.*?--------------------------------------------------\n\n','' ,text, flags=re.DOTALL)
+    if 'start' in text:
+        text = text.split('start', 1)[1]
+    else :
+        text = re.sub(r'^.*?<metadata_end_marker>', '', text, flags=re.DOTALL)
+    
+    if regex_file:
+        text = regex_file.sub('', text)
+
+    lines = text.split('\n')
+    clean_lines = []
+    ban_words = ['meta', 'texturi', 'deaf', 'arlima', 'texttitle', 'textdate', 
+        'ededitor', 'msbase', 'http', 'www', 'orcid', 'cclicense', 
+        'ici commence', 'prologue', 'or commence', 'author', 'start', 'folio', 'version']
+
+    for line in lines:
+        line_content = line.lower().strip()
+        
+        if any(word in line_content for word in ban_words):
+            continue
+
+        line_content = re.sub(r'\b[a-z]*\d+[a-z\d]*\b', '', line_content)
+        line_content = re.sub(r'\b\d+[a-d]?\b', '', line_content)
+        
+        line_content = re.sub(r'[^\w\s7&ç]', '', line_content)
+        
+        line_content = re.sub(r'\s+', ' ', line_content).strip()
+        
+    
+        if line_content:
+            clean_lines.append(line_content)
+
+    return "\n".join(clean_lines)
+
+def save_text(text, original_filename, output_dir, prefix):
+    """
+    """
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+    file_name_only = os.path.basename(original_filename)
+    new_filename = f'{prefix}-{file_name_only}'
+    path = os.path.join(output_dir, new_filename)
+
+    with open(path, 'w', encoding="utf-8") as f:
+        f.write(text)
+
+###Revoir 
+def n_gramm(text,n=3):
+    """
+    """
+    stop_re = load_stpwords(r'/workspaces/medFR-paleao-NLP/data/grammar/300stopwordsMF')
+    clean_text = clean_texts(text, regex_file=stop_re)
+    ngrams = [clean_text[i:i+n] for i in range(len(clean_text)-n+1)]
+    return Counter(ngrams)
+
+def save_freq(frequences, original_filename, output_dir):
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+        
+    file_name_only = os.path.basename(original_filename)
+    new_filename = f'freq-{file_name_only.replace(".txt", ".tsv")}'
+    path = os.path.join(output_dir, new_filename)
+    
+    sorted_ngrams = sorted(frequences.keys(), key=lambda v:frequences[v], reverse = True)
+    with open(path, mode='w', encoding="utf-8") as f:
+        f.write("ngramme\tfrequence\n")
+        for ngram in sorted_ngrams:
+            f.write(f"{ngram}\t{frequences[ngram]}\n")
+
+def create_comparison_matrix(freq_dir, output_path):
+    all_data = []
+    
+    for filename in os.listdir(freq_dir):
+        if filename.endswith(".tsv"):
+            file_path = os.path.join(freq_dir, filename)
+            
+            # Chargement du fichier
+            df = pd.read_csv(file_path, sep='\t', usecols=['ngramme', 'frequence'])
+            
+            # --- CORRECTION DES DOUBLONS ---
+            # Si 'abc' apparaît 2 fois, on additionne les fréquences et on ne garde qu'une ligne
+            df = df.groupby('ngramme').sum()
+            
+            # Nettoyage du nom pour la colonne
+            column_name = filename.replace('freq-filtered-', '').replace('.tsv', '')
+            df = df.rename(columns={'frequence': column_name})
+            
+            all_data.append(df)
+
+    if not all_data:
+        print("Aucun fichier TSV trouvé.")
+        return
+
+    # La fusion fonctionnera maintenant car chaque index est unique
+    matrix = pd.concat(all_data, axis=1)
+    
+    matrix = matrix.fillna(0).astype(int)
+    matrix.to_csv(output_path, sep='\t')
+    print(f"Matrice comparative créée avec succès : {output_path}")
+    return matrix
 
 def produit_scalaire(v1, v2):
   produit = 0
@@ -204,7 +325,18 @@ def confusion_matrix(corpus, biblio):
    print(f"\nPrécision globale : {(correct/total)*100:.2f}%")
 
 
+
+
+
+
+
 # MAIN 
+
+
+
+
+
+
 
 path_biblio = "/workspaces/medFR-paleao-NLP/data/metadata/dico_genre.txt"
 genre_biblio = biblio(path_biblio)
