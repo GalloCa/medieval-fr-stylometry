@@ -9,6 +9,13 @@ import pandas as pd
 # FUNCTIONS
 def load_stpwords(stopwords_filepath):
     """
+    Charge une liste de stopwords et les compile en une expression régulières.
+
+    Arguments : 
+        stopwords_filepath (str) : chemin vers le fichier texte contenant les mots à exclure
+    Return :
+        re.pattern : Un objet regex compilé pour identifier les mots bannis, 
+                     ou None si le fichier est vide
     """
     with open(stopwords_filepath) as f:
         content = f.read()
@@ -23,6 +30,15 @@ def load_stpwords(stopwords_filepath):
 
 def clean_texts(text, regex_file):
     """
+    Nettoie le texte en retirant les métadonnées, les caractères spéciaux et 
+    potentiellement les stopwords. 
+
+    Arguments : 
+        text (str) : le texte brut à nettoyer
+        regex_file (re.pattern) : L'expression régulière des stopswords à supprimer.
+
+    Return:
+        str : le texte nettoyé
     """
     text = re.sub(r'^.*?--------------------------------------------------\n\n','' ,text, flags=re.DOTALL)
     if 'start' in text:
@@ -47,12 +63,11 @@ def clean_texts(text, regex_file):
 
         line_content = re.sub(r'\b[a-z]*\d+[a-z\d]*\b', '', line_content)
         line_content = re.sub(r'\b\d+[a-d]?\b', '', line_content)
-        
+
         line_content = re.sub(r'[^\w\s7&ç]', '', line_content)
         
         line_content = re.sub(r'\s+', ' ', line_content).strip()
-        
-    
+
         if line_content:
             clean_lines.append(line_content)
 
@@ -60,6 +75,13 @@ def clean_texts(text, regex_file):
 
 def save_text(text, original_filename, output_dir, prefix):
     """
+    Sauvegarde des textes
+
+    Arguments : 
+        text (str) : Le contenu à sauvgarder
+        original_filename (str) : le nom original du fichier source
+        output_dir (str) : Le dossier de destination
+        prefix (str) : Le préfixe à ajouter poue former le nouveau nom de fichier
     """
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
@@ -73,6 +95,14 @@ def save_text(text, original_filename, output_dir, prefix):
 ###Revoir 
 def n_gramm(text,n=3):
     """
+    Génère un dictionnaire de fréquences de n-grammes de caractères.
+
+    Arguments : 
+        text (str) : les textes à analyser
+        n (int) : taille des n-grammes (par défaut n=3, mais peut être changé)
+
+    Return : 
+        Counter : compteur de fréquences de chaque n-gramme.
     """
     stop_re = load_stpwords(r'/workspaces/medFR-paleao-NLP/data/grammar/300stopwordsMF')
     clean_text = clean_texts(text, regex_file=stop_re)
@@ -80,6 +110,14 @@ def n_gramm(text,n=3):
     return Counter(ngrams)
 
 def save_freq(frequences, original_filename, output_dir):
+    """
+    Enregistre les fréquence des n-grammes dans un fichier TSV trié
+
+    Arguments :
+        frequences (dict) : le dictionnaire de fréquences
+        original_filename (str) : le nom original du fichier
+        output_dir (str) : le dossier de destination
+    """
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
         
@@ -93,9 +131,21 @@ def save_freq(frequences, original_filename, output_dir):
         for ngram in sorted_ngrams:
             f.write(f"{ngram}\t{frequences[ngram]}\n")
 
+# Faire version sans pandas
 def create_comparison_matrix(freq_dir, output_path):
+    """
+    Fusion des fichiers de fréquences en TSV en une matrice globale
+
+    Arguments :
+        freq_dir (str) : le chemin du dossier contenant les fichiers TSV
+        output_path (str) : le chemin de sauvegarde de la matrice
+
+    Return : 
+        pd.DataFrame : la matrice comparative avec n-gramme en ligne et textes en colonnes
+
+    """
     all_data = []
-    
+
     for filename in os.listdir(freq_dir):
         if filename.endswith(".tsv"):
             file_path = os.path.join(freq_dir, filename)
@@ -126,6 +176,15 @@ def create_comparison_matrix(freq_dir, output_path):
     return matrix
 
 def produit_scalaire(v1, v2):
+  """
+  Calcul du produit scalaire entre deux vecteurs (dictionnaires)
+
+  Arguments :
+    v1 (dict) : Premier dictionnaire de fréquence
+    v2 (dict) : deuxième dictionnaire de fréquence
+  Return : 
+    float : résulat du produit scalaire
+  """
   produit = 0
   for voc in v1:
     if voc in v2:
@@ -133,12 +192,31 @@ def produit_scalaire(v1, v2):
   return produit
 
 def norme(h):
+  """
+  Calcule de la norme euclidienne d'un vecteur (dict)
+
+  Arguments : 
+    h (dict) : le dictionnaire de fréquences
+
+  Return : 
+    float : la magnitude du vecteur 
+  """
   somme = 0
   for key in h.keys():
     somme +=  h[key]**2
   return math.sqrt(somme)
 
 def cosinus(v1, v2):
+  """
+  Calcule la similarité cosinus entre deux textes
+
+  Arguments :
+    v1 (dict) : fréquences du premier texte
+    v2 (dict) : fréquences du deuxième texte
+
+  Return : 
+    float :score de similarité compris entre 0 et 1
+  """
   norme1 = norme(v1)
   norme2 = norme(v2)
   if norme1 * norme2 != 0:
@@ -147,6 +225,17 @@ def cosinus(v1, v2):
     return 0
   
 def score_jaccard(v1,v2):
+  """
+  Calcule de l'indice de Jaccard entre deux textes
+
+  Arguments :
+    v1 (dict) : fréquences du premier texte
+    v2 (dict) : fréquences du deuxième texte
+
+  Return : 
+    float :score de similarité de Jaccard
+
+  """
   s1= set(v1.keys())
   s2 = set(v2.keys())
   inter = len(s1 & s2 )
@@ -163,7 +252,7 @@ def clean_label(name):
     de fichiers.
 
     Entrée:
-        name (str) : Le nom original de la colone ou du fichier à nettoyer.
+        name (str) : Le nom original de la colonne ou du fichier à nettoyer.
 
     Sortie :
         str : Le nom du texte nettoyé 
@@ -174,7 +263,13 @@ def clean_label(name):
         name = name.replace(ext, '')
     return name
 
-def compare_files(freq_dir): 
+def compare_files(freq_dir):
+  """
+  Compare tous les fichiers TSV d'un dossier et génère un rapport de similarités
+
+  Arguments :
+    freq_dir (str) : le dossier qui contiennt les fichiers de fréquences TSV
+  """
   corpus = {}
   for filename in os.listdir(freq_dir):
     if filename.endswith(".tsv"):
@@ -201,6 +296,14 @@ def compare_files(freq_dir):
           out.write(f"{t1}\t{t2}\t{sim_cos:.4f}\t{sim_jac:.4f}\n")
 
 def preparer_corpus(freq_dir):
+    """
+    Charge tous les fichiers TSV d'un dossier dans une dictionnaire de dictionnaies
+
+    Arguments :
+        freq_dir (str) : le chemin du dossier contenant les fichiers TSV
+    Returns : 
+        dict : un dictionnaire {nom_texte : {ngramme : fréquence}}
+    """
     corpus = {}
     for filename in os.listdir(freq_dir):
         if filename.endswith(".tsv"):
@@ -220,6 +323,16 @@ def preparer_corpus(freq_dir):
     return corpus
 
 def biblio(path):
+   """
+   Charge un fichier de metadonné et le transforme en dictionnaire
+
+   Arguments : 
+    path (str) : le chemin du fichier de métadonnée
+
+   Return : 
+    dict : une dictionnaire { 'Oeuvre' : 'Genre'}
+
+   """
    biblio = {}
    with open(path, mode='r', encoding='utf-8') as f:
             for ligne in f:
@@ -229,6 +342,12 @@ def biblio(path):
    return biblio
 
 def knn(corpus):
+    """
+    Identifie les paires de textes les plus proches et les plus éloignées
+
+    Arguments :
+        corpus (dict) : Le dictionnaire de dictionnaires de fréquences
+    """
     noms = list(corpus.keys())
     toutes_les_paires = []
     # Calcul de toutes les paires uniques
@@ -248,6 +367,14 @@ def knn(corpus):
         print(f"{s:.4f} : {t1} / {t2}")
 
 def genre_cohesion(corpus, biblio):
+    """
+    Calcule de la similarité moyenne à l'intérieur de chaque genre
+
+    Arguments : 
+        corpus (dict) : Le dictionnaire de dictionnaires de fréquences
+        biblio (dict) : le dictionnaire des genres
+
+    """
     genres = {}
     for texte, genre in biblio.items():
       if texte in corpus:
@@ -264,7 +391,18 @@ def genre_cohesion(corpus, biblio):
         mean = sum(scores) / len(scores)
         print(f'{genre} : {mean}')
 
+# Modifier args genre_cible pour faire en fonction de ce qu'on veut genre / auteur / date ?
 def ngram_signatures(corpus, biblio, genre_cible, top=10):
+    """
+    Identifie les ngrammes caractéristiques d'un genre
+
+    Arguments :
+        corpus (dict) : le dictionnaire de dictionnaires de fréquences
+        biblio (dict) : le dictionnaire
+        genre_cible (str) : choix de l'item à analyser
+        top (int) : nombre à afficher en sortie
+
+    """
    # Calculer les fréquences moyennes pour le genre cible vs le reste
     freq_genre = {}
     freq_reste = {}
@@ -287,7 +425,15 @@ def ngram_signatures(corpus, biblio, genre_cible, top=10):
     for ng, s in ecarts[:top]:
         print(f"  '{ng}' (poids : {s:.2f})")
 
+# Pareil ici
 def confusion_matrix(corpus, biblio):
+   """
+   Génère une matrice de confusion basée sur le plus proche voisin
+
+   Arguments : 
+    corpus (dict) : le dictionnaire de dictionnaires de fréquences
+    biblio (dict) : le dictionnaire
+   """
    classes = sorted(list(set(biblio.values())))
    matrix = {g_reel : {g_pred : 0 for g_pred in classes} for g_reel in classes}
 
@@ -324,20 +470,7 @@ def confusion_matrix(corpus, biblio):
     
    print(f"\nPrécision globale : {(correct/total)*100:.2f}%")
 
-
-
-
-
-
-
-# MAIN 
-
-
-
-
-
-
-
+# MAIN
 path_biblio = "/workspaces/medFR-paleao-NLP/data/metadata/dico_genre.txt"
 genre_biblio = biblio(path_biblio)
 mon_corpus = preparer_corpus("/workspaces/medFR-paleao-NLP/data/frequencies")

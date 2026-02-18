@@ -228,13 +228,12 @@ def similarities_authors(matrix_path, dico_path, output_dir):
 
 
 # MAIN 
+path_matrix = "/workspaces/medFR-paleao-NLP/results/matrix/matrice.tsv"
+path_dic_genre ="/workspaces/medFR-paleao-NLP/data/metadata/dico_genre.txt"
+path_dic_dates = "/workspaces/medFR-paleao-NLP/data/metadata/dico_date.txt"
+path_dic_authors = "/workspaces/medFR-paleao-NLP/data/metadata/dico_auteur.txt"
+path_out_dir = "/workspaces/medFR-paleao-NLP/results/scatter-plots"
 
-similarities_genre("/workspaces/medFR-paleao-NLP/data/matrice.tsv", 
-                     "/workspaces/medFR-paleao-NLP/data/dico_genre.txt",
-                              "/workspaces/medFR-paleao-NLP/data")
-similarities_dates("/workspaces/medFR-paleao-NLP/data/matrice.tsv", 
-                     "/workspaces/medFR-paleao-NLP/data/dico_date.txt",
-                              "/workspaces/medFR-paleao-NLP/data")
-similarities_authors("/workspaces/medFR-paleao-NLP/data/matrice.tsv", 
-                     "/workspaces/medFR-paleao-NLP/data/dico_auteur.txt",
-                              "/workspaces/medFR-paleao-NLP/data")
+similarities_genre(path_matrix, path_dic_genre, path_out_dir)
+similarities_dates(path_matrix,path_dic_dates, path_out_dir)
+similarities_authors(path_matrix, path_dic_authors, path_out_dir)
