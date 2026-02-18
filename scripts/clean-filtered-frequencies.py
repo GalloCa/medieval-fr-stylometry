@@ -121,7 +121,7 @@ def create_comparison_matrix(freq_dir, output_path):
     
     matrix = matrix.fillna(0).astype(int)
     matrix.to_csv(output_path, sep='\t')
-    print(f"✅ Matrice comparative créée avec succès : {output_path}")
+    print(f"Matrice comparative créée avec succès : {output_path}")
     return matrix
 
 # Main 
@@ -137,10 +137,14 @@ if os.path.exists(raw_dir):
             with open(path_src, mode='r', encoding='utf-8') as f:
                 content = f.read()
 
+            clean_txt = clean_texts(content, regex_file=None)
+            save_text(clean_txt, out_dir, prefix="clean")
+            print(f' Fichier nettoyé : {filename}')
+            
+
             filtered_txt = clean_texts(content, regex_file=stop_re)
             save_text(filtered_txt, filename, out_dir_filter, prefix="filtered")
             print(f' Fichier filtré : {filename}')
-
 
             frequences = n_gramm(filtered_txt)
             save_freq(frequences, filename, r"/workspaces/medFR-paleao-NLP/data/frequencies" )
