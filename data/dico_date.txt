@@ -1,0 +1,25 @@
+AigarB : 12e
+AlexisOctP: 13e
+AlexisP11 : 11e
+AlexisP13 : 13e
+AlexisPQ : 14e
+AlexisPRI: 12e
+BenTroieC_1partial: 12e
+BenTroieC_4partial: 12e
+ChaceP : 13e
+CleomHas : 13e
+Cliges : 12e
+DancusM : 13e
+ErecF : 12e
+FillePonth1B1 : 13e
+JAvesnesFilleB : 15e
+JugAmD : 12e
+LancJ : 12e
+MeraugisF  : 13e
+OmbreB2 : 13e
+PercevalKu : 12e
+SGeorgDeG : 14e
+SGeorgVosL : 13e
+ThebesC : 12e
+UnicornecW : 13e
+Yvain : 12e

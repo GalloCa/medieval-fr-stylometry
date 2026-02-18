@@ -1,0 +1,26 @@
+AigarB : Epique
+AlexisOctP: Hagiographie
+AlexisP11 : Hagiographie
+AlexisP13 : Hagiographie
+AlexisPQ : Hagiographie
+AlexisPRI: Hagiographie
+BenTroieC_1partial: Roman courtois
+BenTroieC_4partial: Roman courtois
+ChaceP : Didactique
+CleomHas : Roman courtois
+Cliges : Roman courtois
+DancusM : Didactique
+ErecF : Roman courtois
+FillePonth1B1 : Prose
+JAvesnesFilleB : Prose
+JugAmD : Jugement d'amour
+LancJ : Roman courtois
+MeraugisF  : Roman courtois
+OmbreB2 : Roman courtois
+PercevalKu : Roman courtois
+SGeorgDeG : Hagiographie
+SGeorgVosL : Hagiographie
+ThebesC : Antique
+UnicornecW : Didactique
+Yvain : Roman courtois
+  
