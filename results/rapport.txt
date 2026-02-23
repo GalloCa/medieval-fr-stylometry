@@ -1,0 +1,78 @@
+Rapport global sur les textes médivaux
+Généré le : 2026-02-23 21:49
+
+1. Classification KNN
+Les 5 plus proches sont :
+0.9662 : LancJ / PercevalKu
+0.9593 : LancJ / Cliges
+0.9582 : ThebesC / BenTroieC_1partial
+0.9519 : LancJ / ErecF
+0.9437 : ErecF / Cliges
+
+Les 5 plus éloignés sont :
+0.6150 : DancusM / SGeorgDeG
+0.6174 : AigarB / SGeorgDeG
+0.6184 : AigarB / DancusM
+0.6191 : DancusM / JAvesnesFilleB
+0.6300 : DancusM / SGeorgVosL
+2. Cohésion des genres
+
+Cohésion par genre
+Jugement d'amour : Non calculable car un 1 seul texte dans les données
+Roman courtois  : 0.8591
+Epique          : Non calculable car un 1 seul texte dans les données
+Didactique      : 0.7033
+Hagiographie    : 0.7613
+Prose           : 0.8001
+Antique         : Non calculable car un 1 seul texte dans les données
+3. Ngrammes signatures
+
+ Signature du genre : 'Antique'
+ 'pué (ratio : 75.50)
+ 'èbe (ratio : 54.00)
+ 'hèb (ratio : 54.00)
+ 'thè (ratio : 54.00)
+ 'tyd (ratio : 53.00)
+
+ Signature du genre : 'Didactique'
+ 'vn (ratio : 7.00)
+ 'gat (ratio : 7.00)
+ 'juq (ratio : 6.75)
+ 'nun (ratio : 5.00)
+ 'mum (ratio : 5.00)
+
+ Signature du genre : 'Epique'
+ 'aiq (ratio : 16.00)
+ 'sbe (ratio : 9.00)
+ 'osb (ratio : 8.00)
+ 'tub (ratio : 7.00)
+ 'alj (ratio : 5.00)
+
+ Signature du genre : 'Hagiographie'
+ 'dac (ratio : 32.00)
+ 'lex (ratio : 21.43)
+ 'onk (ratio : 20.00)
+ 'xis (ratio : 19.83)
+ 'exi (ratio : 16.33)
+
+ Signature du genre : 'Jugement d'amour'
+ 'hef (ratio : 1.67)
+ 'peg (ratio : 1.50)
+ 'caa (ratio : 1.00)
+ 'chc (ratio : 1.00)
+ 'hca (ratio : 1.00)
+
+ Signature du genre : 'Prose'
+ 'ld  (ratio : 107.00)
+ 'hib (ratio : 97.00)
+ 'thy (ratio : 37.00)
+ 'hyb (ratio : 37.00)
+ 'yba (ratio : 37.00)
+
+ Signature du genre : 'Roman courtois'
+ 'léo (ratio : 755.00)
+ 'éom (ratio : 755.00)
+ 'alz (ratio : 184.00)
+ 'yva (ratio : 159.00)
+ 'mad (ratio : 156.40)
+Fin
