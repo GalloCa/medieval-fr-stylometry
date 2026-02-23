@@ -1,10 +1,110 @@
-# MODULES 
-import math
 import re
 import os 
 from collections import Counter
-import pandas as pd
-import numbers as np
+import numpy as np
+
+# FUNCTIONS 
+
+def clean_texts(text, regex_file):
+    """
+    """
+    text = re.sub(r'^.*?--------------------------------------------------\n\n','' ,text, flags=re.DOTALL)
+    if 'start' in text:
+        text = text.split('start', 1)[1]
+    else :
+        text = re.sub(r'^.*?<metadata_end_marker>', '', text, flags=re.DOTALL)
+    
+    if regex_file:
+        text = regex_file.sub('', text)
+
+    lines = text.split('\n')
+    clean_lines = []
+    ban_words = ['meta', 'texturi', 'deaf', 'arlima', 'texttitle', 'textdate', 
+        'ededitor', 'msbase', 'http', 'www', 'orcid', 'cclicense', 
+        'ici commence', 'prologue', 'or commence', 'author', 'start', 'folio', 'version']
+
+    for line in lines:
+        line_content = line.lower().strip()
+        
+        if any(word in line_content for word in ban_words):
+            continue
+
+        line_content = re.sub(r'\b[a-z]*\d+[a-z\d]*\b', '', line_content)
+        line_content = re.sub(r'\b\d+[a-d]?\b', '', line_content)
+        
+        line_content = re.sub(r'[^\w\s7&ç]', '', line_content)
+        
+        line_content = re.sub(r'\s+', ' ', line_content).strip()
+        
+    
+        if line_content:
+            clean_lines.append(line_content)
+
+    return "\n".join(clean_lines)
+
+def clean_label(name):
+    """
+    Nettoyage des labels de fichiers pour isoler le nom du texte.
+    Suppression des préfixes techniques liés au filtrage des fréquences et des extensions
+    de fichiers.
+
+    Entrée:
+        name (str) : Le nom original de la colone ou du fichier à nettoyer.
+
+    Sortie :
+        str : Le nom du texte nettoyé 
+    """
+    for prefix in ['freq-filtered-', 'freq-', 'filtered-']:
+        name = name.replace(prefix, '')
+    for ext in ['.tsv', '.txt']:
+        name = name.replace(ext, '')
+    return name
+
+def create_comparison_matrix(freq_dir, output_path):
+    files = [f for f in os.listdir(freq_dir) if f.endswith(".tsv")]
+    if not files:
+        print("Aucun fichiers TSV trouvé")
+        return
+    
+    full_lex = set()
+    txt_data = []
+    txt_name = []
+
+    for filename in files :
+        file_path = os.path.join(freq_dir, filename)
+        clean_name = clean_label(filename)
+        txt_name.append(clean_name)
+
+        local_dic = {}
+        with open(file_path, mode='r', encoding='utf-8') as f:
+            next(f)
+            for line in f:
+                parts = line.strip().split('\t')
+                if len(parts) == 2:
+                    ngram, freq = parts[0], int(parts[1])
+                    local_dic[ngram] = local_dic.get(ngram, 0) + freq
+                    full_lex.add(ngram)
+        txt_data.append(local_dic)
+    
+    ordered_lex = sorted(list(full_lex))
+    ngram_to_index = {ngram : i for i, ngram in enumerate(ordered_lex)}
+
+    nb_ngrams = len(ordered_lex)
+    nb_txt = len(txt_name)
+    np_matrix = np.zeros((nb_ngrams, nb_txt), dtype=int)
+
+    for j, dico in enumerate(txt_data):
+        for ngram, freq in dico.items():
+            i = ngram_to_index[ngram]
+            np_matrix[i, j] = freq
+    
+    with open(output_path, mode='w', encoding='utf-8') as f:
+        f.write("ngramme\t" + "\t".join(txt_name) + "\n")
+        for i, ngram in enumerate(ordered_lex):
+            values = "\t".join(map(str, np_matrix[i, :]))
+            f.write(f"{ngram}\t{values}\n")
+    print(f'Matrice Numpy créee')
+    return np_matrix, ordered_lex, txt_name
 
 
 # FUNCTIONS
@@ -28,6 +128,7 @@ def load_stpwords(stopwords_filepath):
     pattern = r"\b(?:" + "|".join(lines)+ r")\b"
 
     return re.compile(pattern, flags=re.I)
+
 
 def clean_texts(text, regex_file):
     """
@@ -132,49 +233,6 @@ def save_freq(frequences, original_filename, output_dir):
         for ngram in sorted_ngrams:
             f.write(f"{ngram}\t{frequences[ngram]}\n")
 
-# Faire version sans pandas
-def create_comparison_matrix(freq_dir, output_path):
-    """
-    Fusion des fichiers de fréquences en TSV en une matrice globale
-
-    Arguments :
-        freq_dir (str) : le chemin du dossier contenant les fichiers TSV
-        output_path (str) : le chemin de sauvegarde de la matrice
-
-    Return : 
-        pd.DataFrame : la matrice comparative avec n-gramme en ligne et textes en colonnes
-
-    """
-    all_data = []
-
-    for filename in os.listdir(freq_dir):
-        if filename.endswith(".tsv"):
-            file_path = os.path.join(freq_dir, filename)
-            
-            # Chargement du fichier
-            df = pd.read_csv(file_path, sep='\t', usecols=['ngramme', 'frequence'])
-            
-            # --- CORRECTION DES DOUBLONS ---
-            # Si 'abc' apparaît 2 fois, on additionne les fréquences et on ne garde qu'une ligne
-            df = df.groupby('ngramme').sum()
-            
-            # Nettoyage du nom pour la colonne
-            column_name = filename.replace('freq-filtered-', '').replace('.tsv', '')
-            df = df.rename(columns={'frequence': column_name})
-            
-            all_data.append(df)
-
-    if not all_data:
-        print("Aucun fichier TSV trouvé.")
-        return
-
-    # La fusion fonctionnera maintenant car chaque index est unique
-    matrix = pd.concat(all_data, axis=1)
-    
-    matrix = matrix.fillna(0).astype(int)
-    matrix.to_csv(output_path, sep='\t')
-    print(f"Matrice comparative créée avec succès : {output_path}")
-    return matrix
 
 def produit_scalaire(v1, v2):
   """
@@ -397,9 +455,9 @@ def knn_np(matrix, txt_names):
     toutes_les_paires = []
     nb_txt = len(txt_names)
     # Calcul de toutes les paires uniques
-    for i in range(txt_names):
+    for i in range(nb_txt):
         for j in range(i + 1,nb_txt):
-            t1, t2 = txt_names[i], nb_txt[j]
+            t1, t2 = txt_names[i], txt_names[j]
             
             col1 = matrix[:,i]
             col2 = matrix[:, j]
@@ -521,22 +579,14 @@ def confusion_matrix(corpus, biblio):
     
    print(f"\nPrécision globale : {(correct/total)*100:.2f}%")
 
-# MAIN
+
+# MAIN test
+
+freq_folder = r"/workspaces/medFR-paleao-NLP/results/frequencies"
+output_matrix = r"/workspaces/medFR-paleao-NLP/results/np_matrix.tsv"
 path_biblio = "/workspaces/medFR-paleao-NLP/data/metadata/dico_genre.txt"
+
 genre_biblio = biblio(path_biblio)
-mon_corpus = preparer_corpus("/workspaces/medFR-paleao-NLP/results/frequencies")
-# compare_files("/workspaces/medFR-paleao-NLP/data/frequencies")
-knn(mon_corpus)
-genre_cohesion(mon_corpus, genre_biblio)
-ngram_signatures(mon_corpus, genre_biblio, 'Roman courtois', top=10)
-ngram_signatures(mon_corpus, genre_biblio, 'Hagiographie', top=10)
-ngram_signatures(mon_corpus, genre_biblio, 'Didactique', top=10)
-ngram_signatures(mon_corpus, genre_biblio, 'Prose', top=10)
-ngram_signatures(mon_corpus, genre_biblio, 'Epique', top=10)
-ngram_signatures(mon_corpus, genre_biblio, 'Jugement d\'amour', top=10)
-ngram_signatures(mon_corpus, genre_biblio, 'Antique', top=10)
+matrix_np, lexqiue, txt_names = create_comparison_matrix(freq_folder, output_matrix)
 
-confusion_matrix(mon_corpus, genre_biblio)
-
-
-
+knn_np(matrix_np, txt_names)
