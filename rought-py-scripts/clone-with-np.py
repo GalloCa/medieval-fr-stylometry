@@ -2,6 +2,7 @@ import re
 import os 
 import math
 from collections import Counter
+import datetime
 import numpy as np
 
 
@@ -198,39 +199,27 @@ def jaccard_np(v1,v2):
    return 0
 
 
-def compare_files(freq_dir):
-  """
-  Compare tous les fichiers TSV d'un dossier et génère un rapport de similarités
+def compare_files(matrix, txt_names, output_path=None):
+    """
+    """
+    nb_txt = len(txt_names)
 
-  Arguments :
-    freq_dir (str) : le dossier qui contiennt les fichiers de fréquences TSV
-  """
-  corpus = {}
-  for filename in os.listdir(freq_dir):
-    if filename.endswith(".tsv"):
-      nom = clean_label(filename)
-      corpus[nom] = {}
-      with open(os.path.join(freq_dir, filename), mode='r', encoding='utf-8') as f:
-        next(f)
-        for line in f:
-          parts = line.strip().split('\t')
-          if len(parts) == 2:
-            corpus[nom][parts[0]] = int(parts[1])
+    with open(output_path, mode='w', encoding='utf-8') as out:
+        out.write("Texte A\tTexte B\tCosinus\tJaccard\n")
 
-    noms = list(corpus.keys())
+        for i in range(nb_txt):
+            for j in range(i+1, nb_txt):
+                t1, t2 = txt_names[i], txt_names[j]
 
-    with open("compare-matrix-cosinus-jaccard-similarities.tsv", mode='w', encoding='utf-8') as out:
-      out.write("Texte_A\tTexte_B\tCosinus\tJaccard\n")
-      for i in range(len(noms)):
-        for j in range(i + 1, len(noms)):
-          t1, t2 = noms[i], noms[j]
+                v1 = matrix[:, i]
+                v2 = matrix[:, j]
 
-          sim_cos = cosinus(corpus[t1], corpus[t2])
-          sim_jac = score_jaccard(corpus[t1], corpus[t2])
+                sim_cos = cos_np(v1,v2)
+                sim_jac = jaccard_np(v1,v2)
 
-          out.write(f"{t1}\t{t2}\t{sim_cos:.4f}\t{sim_jac:.4f}\n")
-
-
+                out.write(f"{t1}\t{t2}\t{sim_cos : .4f}\t{sim_jac : .4f}\n")
+    print(f"Rapport de similarité généré dans : {output_path}")
+  
 
 def create_comparison_matrix(freq_dir, output_path):
     """
@@ -310,64 +299,68 @@ def knn_np(matrix, txt_names):
         print(f"{s:.4f} : {t1} / {t2}")
 
 
-def genre_cohesion(corpus, biblio):
+def genre_cohesion(matrix, txt_names, biblio):
     """
     Calcule de la similarité moyenne à l'intérieur de chaque genre
 
     Arguments : 
-        corpus (dict) : Le dictionnaire de dictionnaires de fréquences
+        matrix (np.darray) : matrice des fréquences des ngrammes x textes
+        txt_name (list) : les des noms de textes 
         biblio (dict) : le dictionnaire des genres
 
     """
     genres = {}
-    for texte, genre in biblio.items():
-      if texte in corpus:
-         if genre not in genres :
-            genres[genre] = []
-         genres[genre].append(texte)
-    for genre, textes in genres.items():
-        if len(textes) < 2:
-           continue
-        scores = []
-        for i in range(len(textes)):
-           for j in range(i + 1, len(textes)):
-              scores.append(cosinus(corpus[textes[i]], corpus[textes[j]]))
-        mean = sum(scores) / len(scores)
-        print(f'{genre} : {mean}')
+    for idx, text in enumerate(txt_names):
+        genre = biblio.get(text)
+        if genre:
+            if genre not in genres:
+                genres[genre] = []
+            genres[genre].append(idx)
+    print("\n Cohésion par genre")
 
+    for genre, indices in genres.items():
+        if len(indices) < 2:
+            print(f"{genre : <15} : Non calculable car un 1 seul texte dans les données")
+            continue
+        scores = []
+        for i in range(len(indices)):
+            for j in range(i+1, len(indices)):
+                col1 = matrix[:, indices[i]]
+                col2 = matrix[:, indices[j]]
+                scores.append(cos_np(col1, col2))
+        mean = sum(scores) / len(scores)
+        print(f"{genre:<15} : {mean :.04f}")
+      
 # Modifier args genre_cible pour faire en fonction de ce qu'on veut genre / auteur / date ?
-def ngram_signatures(corpus, biblio, genre_cible, top=10):
+def ngram_signatures(matrix, txt_names, biblio, lexique, target_genre, top=10):
     """
     Identifie les ngrammes caractéristiques d'un genre
 
     Arguments :
-        corpus (dict) : le dictionnaire de dictionnaires de fréquences
-        biblio (dict) : le dictionnaire
-        genre_cible (str) : choix de l'item à analyser
-        top (int) : nombre à afficher en sortie
+
 
     """
-   # Calculer les fréquences moyennes pour le genre cible vs le reste
-    freq_genre = {}
-    freq_reste = {}
+    indices_cible = [i for i, t in enumerate(txt_names) if biblio.get(t) == target_genre]
+    rest_indices = [i for i, t in enumerate(txt_names) if biblio.get(t) != target_genre]
+
+    if not indices_cible:
+        return f"\n Signature du genre '{target_genre}' : Aucun textes trouvé."
     
-    for texte, ngrams in corpus.items():
-        cible = biblio.get(texte) == genre_cible
-        dest = freq_genre if cible else freq_reste
-        for ng, f in ngrams.items():
-            dest[ng] = dest.get(ng, 0) + f
+    target_freq = np.sum(matrix[:, indices_cible], axis=1)
+    reste_freq = np.sum(matrix[:, rest_indices], axis=1)
 
-    # Calcul de l'écart (ratio simple ou différence)
-    ecarts = []
-    for ng in freq_genre:
-        # Score = fréquence dans le genre / (fréquence ailleurs + 1 pour éviter div par 0)
-        score = freq_genre[ng] / (freq_reste.get(ng, 0) + 1)
-        ecarts.append((ng, score))
+    scores = target_freq / (reste_freq + 1)
 
-    ecarts.sort(key=lambda x: x[1], reverse=True)
-    print(f"\nSignatures du genre {genre_cible} :")
-    for ng, s in ecarts[:top]:
-        print(f"  '{ng}' (poids : {s:.2f})")
+    indices_tries = np.argsort(scores)[::1]
+
+    report_lignes = [f"\n Signature du genre : '{target_genre}'"]
+    for idx in indices_tries[:top]:
+        ng = lexique[idx]
+        s = scores[idx]
+        if s > 0:
+            report_lignes.append(f" '{ng} (ratio : {s :.2f})")
+    return "\n".join(report_lignes)
+
 
 # Pareil ici
 def confusion_matrix(matrix, txt_names, biblio, output_file=None):
@@ -416,7 +409,6 @@ def confusion_matrix(matrix, txt_names, biblio, output_file=None):
            correct +=1 
        total += 1
 
-
    accuracy = (correct / total) * 100 if total > 0 else 0
 
    report_lignes = []
@@ -447,6 +439,35 @@ def confusion_matrix(matrix, txt_names, biblio, output_file=None):
    return accuracy
 
 
+def generate_report(matrix, txt_names, biblio, lexique, output_path):
+    dd = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+    report = [
+        "Rapport global sur les textes médivaux",
+        f"Généré le : {dd}"
+        "\n"
+    ]
+    report.append("1. Classification KNN")
+    knn_report = knn_np(matrix_np, txt_names)
+    report.append(knn_report)
+    report.append("2. Cohésion des genres")
+    cohesion_genre = genre_cohesion(matrix_np, txt_names, genre_biblio)
+    report.append(cohesion_genre)
+    report.append("3. Ngrammes signatures")
+    unique_genre = sorted(list(set(genre_biblio.values())))
+    for genre in unique_genre: 
+        ngm = ngram_signatures(matrix, txt_names, biblio, lexique, target_genre=genre, top=5)
+        report.append(ngm)
+
+    report.append("Fin")
+
+    folder = os.path.dirname(output_path)
+    if folder and not os.path.exists(folder):
+        os.makedirs(folder)
+    with open(output_path, mode="w", encoding='utf-8') as f:
+        f.write("\n".join(report))
+    
+    print(f"Rapport généré dans : {output_path}")
+
 
 # MAIN test
 
@@ -455,8 +476,12 @@ output_matrix = r"/workspaces/medFR-paleao-NLP/results/np_matrix.tsv"
 path_biblio = r"/workspaces/medFR-paleao-NLP/data/metadata/dico_genre.txt"
 confusion_report = r"/workspaces/medFR-paleao-NLP/results/conf_matrix.txt"
 genre_biblio = biblio(path_biblio)
-matrix_np, lexqiue, txt_names = create_comparison_matrix(freq_folder, output_matrix)
+matrix_np, lexique, txt_names = create_comparison_matrix(freq_folder, output_matrix)
 
-knn_np(matrix_np, txt_names)
+# knn_np(matrix_np, txt_names)
+# confusion_matrix(matrix_np, txt_names, genre_biblio, output_file=confusion_report)
+# genre_cohesion(matrix_np, txt_names, genre_biblio)
 
-confusion_matrix(matrix_np, txt_names, genre_biblio, output_file=confusion_report)
+report_path = r"/workspaces/medFR-paleao-NLP/results/rapport.txt"
+
+generate_report(matrix_np, txt_names, genre_biblio, lexique, report_path)
