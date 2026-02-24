@@ -160,16 +160,18 @@ def n_gramm(text,n=3):
     """
     Génère un dictionnaire de fréquences de n-grammes de caractères.
 
+
     Arguments : 
-        text (str) : les textes à analyser
+        text (str) : le texte source à découpé en ngrammes
         n (int) : taille des n-grammes (par défaut n=3, mais peut être changé)
 
     Return : 
-        Counter : compteur de fréquences de chaque n-gramme.
-    """
-    stop_re = load_stpwords(r'/workspaces/medFR-paleao-NLP/data/grammar/300stopwordsMF')
-    clean_text = clean_texts(text, regex_file=stop_re)
-    ngrams = [clean_text[i:i+n] for i in range(len(clean_text)-n+1)]
+        Counter (dict): compteur associant chaque ngramme (clé)  à sa fréquence absolue (valeur).
+        Retourne un Counter vide si le texte d'entrée est vide.
+        """
+    if not text : 
+        return Counter()
+    ngrams = [text[i:i+n] for i in range(len(text)-n+1)]
     return Counter(ngrams)
 
 
@@ -385,7 +387,7 @@ def ngram_signatures(matrix, txt_names, biblio, lexique, target_genre, top=10):
         ng = lexique[idx]
         s = scores[idx]
         if s > 0:
-            report_lignes.append(f" '{ng} (ratio : {s :.2f})")
+            report_lignes.append(f" -'{ng}' (ratio : {s :.2f})")
     return "\n".join(report_lignes)
 
 
@@ -465,7 +467,7 @@ def confusion_matrix(matrix, txt_names, biblio, output_file=None):
    return accuracy
 
 # Rapport final 
-def generate_report(matrix, txt_names, biblio, lexique, output_path):
+def generate_report(matrix, txt_names, biblio, lexique, output_path, titre=None):
     """
 
     Entrées : 
@@ -480,17 +482,17 @@ def generate_report(matrix, txt_names, biblio, lexique, output_path):
     """
     dd = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
     report = [
-        "Rapport global sur les textes médivaux",
-        f"Généré le : {dd}"
+        f"{titre}",
+        f"Généré le : {dd}",
         "\n"
     ]
     report.append("1. Classification KNN")
     knn_report = knn_np(matrix, txt_names)
     report.append(knn_report)
-    report.append("2. Cohésion des genres")
+    report.append("\n2. Cohésion des genres")
     cohesion_genre = genre_cohesion(matrix, txt_names, biblio)
     report.append(cohesion_genre)
-    report.append("3. Ngrammes signatures")
+    report.append("\n3. Ngrammes signatures")
     unique_genre = sorted(list(set(biblio.values())))
     for genre in unique_genre: 
         ngm = ngram_signatures(matrix, txt_names, biblio, lexique, target_genre=genre, top=5)

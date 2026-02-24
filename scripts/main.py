@@ -19,7 +19,7 @@ if __name__ == "__main__":
     filter_txt_dir = r"/workspaces/medFR-paleao-NLP/data/filtered-txt"
     freq_folder = r"/workspaces/medFR-paleao-NLP/results/frequencies"
     
-    stopwords_dir = r"/workspaces/medFR-paleao-NLP/data/grammar/300stopwordsMF"
+    stopwords_dir = r"/workspaces/medFR-paleao-NLP/data/stopwords/300stopwordsMF"
     biblio_genre__dir = r"/workspaces/medFR-paleao-NLP/data/metadata/dico_genre.txt"
     biblio_author__dir = r"/workspaces/medFR-paleao-NLP/data/metadata/dico_auteur.txt"
     biblio_date__dir = r"/workspaces/medFR-paleao-NLP/data/metadata/dico_date.txt"

@@ -1,8 +1,0 @@
-# Traitement des pages, folio (ex : pagev01p169, folio30a)
-\b[a-z]*\d+[a-z\d]*\b
-# Traitement des chiffres isolés (n° de vers ou pages)
-\b\d+[a-d]?\b
-# Traitement des chiffres romains 
-\b[ivxcl]+[ij]\b
-# Traitement de la ponctuation 
-[^\w\s7&ç]
