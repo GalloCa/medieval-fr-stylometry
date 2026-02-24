@@ -51,9 +51,9 @@ if __name__ == "__main__":
                     contenu_brut = f.read()
             
                 clean_content = clean_texts(contenu_brut, regex_file=None)
-                save_text(clean_content, input_path, clean_txt_dir, prefix="clean-")
+                save_text(clean_content, input_path, clean_txt_dir, prefix="clean")
                 filter_content = clean_texts(contenu_brut, regex_file=stopwords)
-                save_text(filter_content, input_path, filter_txt_dir, prefix="filtered-")
+                save_text(filter_content, input_path, filter_txt_dir, prefix="filtered")
 
                 frequences = n_gramm(filter_content)
                 save_freq(frequences, filename, freq_folder)

@@ -1,0 +1,65 @@
+None
+Généré le : 2026-02-24 21:50
+
+
+1. Classification KNN
+Les 5 plus proches sont :
+0.9662 : LancJ / PercevalKu
+0.9593 : LancJ / Cliges
+0.9582 : ThebesC / BenTroieC_1partial
+0.9519 : LancJ / ErecF
+0.9437 : ErecF / Cliges
+
+Les 5 plus éloignés sont :
+0.6150 : DancusM / SGeorgDeG
+0.6174 : AigarB / SGeorgDeG
+0.6184 : AigarB / DancusM
+0.6191 : DancusM / JAvesnesFilleB
+0.6300 : DancusM / SGeorgVosL
+
+2. Cohésion des genres
+
+Cohésion par genre
+12e             : 0.8189
+13e             : 0.7448
+15e             : Non calculable car un 1 seul texte dans les données
+14e             : 0.7283
+11e             : Non calculable car un 1 seul texte dans les données
+
+3. Ngrammes signatures
+
+ Signature du genre : '11e'
+ -'edr' (ratio : 36.00)
+ -'ped' (ratio : 26.57)
+ -'ed ' (ratio : 14.57)
+ -'at ' (ratio : 11.47)
+ -'ued' (ratio : 10.84)
+
+ Signature du genre : '12e'
+ -'anb' (ratio : 38.31)
+ -'eis' (ratio : 29.11)
+ -'ïne' (ratio : 28.72)
+ -'ax ' (ratio : 25.45)
+ -'eïn' (ratio : 25.22)
+
+ Signature du genre : '13e'
+ -'éom' (ratio : 75.50)
+ -'léo' (ratio : 75.50)
+ -'là' (ratio : 50.60)
+ -'adè' (ratio : 44.84)
+ -'clé' (ratio : 40.77)
+
+ Signature du genre : '14e'
+ -'geo' (ratio : 15.22)
+ -'jh' (ratio : 9.46)
+ -'jhe' (ratio : 9.46)
+ -'xis' (ratio : 7.71)
+ -'eup' (ratio : 6.44)
+
+ Signature du genre : '15e'
+ -'uld' (ratio : 122.57)
+ -'ld ' (ratio : 107.00)
+ -'hib' (ratio : 97.00)
+ -'iba' (ratio : 80.00)
+ -'aul' (ratio : 77.36)
+Fin

@@ -1,0 +1,81 @@
+None
+Généré le : 2026-02-24 21:50
+
+
+1. Classification KNN
+Les 5 plus proches sont :
+0.9662 : LancJ / PercevalKu
+0.9593 : LancJ / Cliges
+0.9582 : ThebesC / BenTroieC_1partial
+0.9519 : LancJ / ErecF
+0.9437 : ErecF / Cliges
+
+Les 5 plus éloignés sont :
+0.6150 : DancusM / SGeorgDeG
+0.6174 : AigarB / SGeorgDeG
+0.6184 : AigarB / DancusM
+0.6191 : DancusM / JAvesnesFilleB
+0.6300 : DancusM / SGeorgVosL
+
+2. Cohésion des genres
+
+Cohésion par genre
+Anonyme         : 0.7256
+Chrétien de Troyes : 0.9139
+Jean Renart     : Non calculable car un 1 seul texte dans les données
+Jacques de Vitry : Non calculable car un 1 seul texte dans les données
+Benoît de Saint-Maure : 0.9432
+Raoul de Houdenc : Non calculable car un 1 seul texte dans les données
+Adenet le Roi   : Non calculable car un 1 seul texte dans les données
+
+3. Ngrammes signatures
+
+ Signature du genre : 'Adenet le Roi'
+ -'éom' (ratio : 755.00)
+ -'léo' (ratio : 755.00)
+ -'clé' (ratio : 467.08)
+ -'adè' (ratio : 463.81)
+ -'là' (ratio : 386.32)
+
+ Signature du genre : 'Anonyme'
+ -'ére' (ratio : 55.66)
+ -'iér' (ratio : 22.00)
+ -'pér' (ratio : 14.08)
+ -'èle' (ratio : 13.88)
+ -'pé' (ratio : 13.75)
+
+ Signature du genre : 'Benoît de Saint-Maure'
+ -'ënt' (ratio : 27.69)
+ -'poë' (ratio : 23.43)
+ -'iën' (ratio : 21.50)
+ -'roï' (ratio : 20.91)
+ -'eiz' (ratio : 18.54)
+
+ Signature du genre : 'Chrétien de Troyes'
+ -'anb' (ratio : 89.04)
+ -'ax ' (ratio : 61.54)
+ -'nbl' (ratio : 52.97)
+ -'iax' (ratio : 39.20)
+ -'qa' (ratio : 37.00)
+
+ Signature du genre : 'Jacques de Vitry'
+ -'iou' (ratio : 8.73)
+ -'vn' (ratio : 7.00)
+ -'eua' (ratio : 5.33)
+ -'vne' (ratio : 4.97)
+ -'ouu' (ratio : 4.80)
+
+ Signature du genre : 'Jean Renart'
+ -'mès' (ratio : 12.40)
+ -'mè' (ratio : 12.40)
+ -'nss' (ratio : 7.26)
+ -'ll' (ratio : 6.86)
+ -'qoi' (ratio : 4.62)
+
+ Signature du genre : 'Raoul de Houdenc'
+ -'aug' (ratio : 40.96)
+ -'ugi' (ratio : 39.47)
+ -'elc' (ratio : 33.23)
+ -'rau' (ratio : 32.00)
+ -'gis' (ratio : 21.63)
+Fin
