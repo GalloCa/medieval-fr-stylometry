@@ -1,5 +1,5 @@
 Rapport global sur les textes médivaux
-Généré le : 2026-02-23 21:49
+Généré le : 2026-02-24 18:20
 
 1. Classification KNN
 Les 5 plus proches sont :
@@ -28,51 +28,51 @@ Antique         : Non calculable car un 1 seul texte dans les données
 3. Ngrammes signatures
 
  Signature du genre : 'Antique'
- 'pué (ratio : 75.50)
- 'èbe (ratio : 54.00)
- 'hèb (ratio : 54.00)
- 'thè (ratio : 54.00)
- 'tyd (ratio : 53.00)
+ 'pué (ratio : 144.96)
+ 'èle (ratio : 134.00)
+ 'tyd (ratio : 101.76)
+ 'ty (ratio : 78.75)
+ 'icè (ratio : 75.84)
 
  Signature du genre : 'Didactique'
- 'vn (ratio : 7.00)
- 'gat (ratio : 7.00)
- 'juq (ratio : 6.75)
- 'nun (ratio : 5.00)
- 'mum (ratio : 5.00)
+ 'uco (ratio : 10.83)
+ 'juq (ratio : 7.92)
+ 'um  (ratio : 4.89)
+ 'aue (ratio : 3.97)
+ 'dic (ratio : 3.85)
 
  Signature du genre : 'Epique'
+ 'ab  (ratio : 18.00)
  'aiq (ratio : 16.00)
+ 'cav (ratio : 9.27)
  'sbe (ratio : 9.00)
- 'osb (ratio : 8.00)
- 'tub (ratio : 7.00)
- 'alj (ratio : 5.00)
+ 'obr (ratio : 8.64)
 
  Signature du genre : 'Hagiographie'
- 'dac (ratio : 32.00)
- 'lex (ratio : 21.43)
- 'onk (ratio : 20.00)
- 'xis (ratio : 19.83)
- 'exi (ratio : 16.33)
+ 'lex (ratio : 16.07)
+ 'exi (ratio : 14.54)
+ 'xis (ratio : 13.30)
+ 'tet (ratio : 9.35)
+ 'diu (ratio : 9.14)
 
  Signature du genre : 'Jugement d'amour'
- 'hef (ratio : 1.67)
- 'peg (ratio : 1.50)
- 'caa (ratio : 1.00)
- 'chc (ratio : 1.00)
- 'hca (ratio : 1.00)
+ 'hef (ratio : 4.62)
+ 'efl (ratio : 3.87)
+ 'peg (ratio : 2.88)
+ 'nol (ratio : 2.58)
+ 'rc  (ratio : 2.40)
 
  Signature du genre : 'Prose'
- 'ld  (ratio : 107.00)
- 'hib (ratio : 97.00)
- 'thy (ratio : 37.00)
- 'hyb (ratio : 37.00)
- 'yba (ratio : 37.00)
+ 'uld (ratio : 60.91)
+ 'ld  (ratio : 53.50)
+ 'hib (ratio : 48.50)
+ 'uda (ratio : 46.70)
+ 'iba (ratio : 41.48)
 
  Signature du genre : 'Roman courtois'
- 'léo (ratio : 755.00)
- 'éom (ratio : 755.00)
- 'alz (ratio : 184.00)
- 'yva (ratio : 159.00)
- 'mad (ratio : 156.40)
+ 'léo (ratio : 75.50)
+ 'éom (ratio : 75.50)
+ 'mad (ratio : 61.74)
+ 'adè (ratio : 50.40)
+ 'anb (ratio : 43.00)
 Fin

@@ -18,7 +18,7 @@ def load_stpwords(stopwords_filepath):
         re.pattern : Un objet regex compilé pour identifier les mots bannis, 
                      ou None si le fichier est vide
     """
-    with open(stopwords_filepath) as f:
+    with open(stopwords_filepath, mode='r', encoding='utf-8') as f:
         content = f.read()
     lines = [re.escape(l.strip()) for l in content.split('\n') if l.strip() and not l.startswith('#')]
     
@@ -121,7 +121,7 @@ def save_text(text, original_filename, output_dir, prefix):
         text (str) : Le contenu à sauvgarder
         original_filename (str) : le nom original du fichier source
         output_dir (str) : Le dossier de destination
-        prefix (str) : Le préfixe à ajouter poue former le nouveau nom de fichier
+        prefix (str) : Le préfixe à ajouter pour former le nouveau nom de fichier
     """
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
@@ -373,8 +373,8 @@ def ngram_signatures(matrix, txt_names, biblio, lexique, target_genre, top=10):
     if not indices_cible:
         return f"\n Signature du genre '{target_genre}' : Aucun textes trouvé."
     
-    target_freq = np.sum(matrix[:, indices_cible], axis=1)
-    reste_freq = np.sum(matrix[:, rest_indices], axis=1)
+    target_freq = np.mean(matrix[:, indices_cible], axis=1)
+    reste_freq = np.mean(matrix[:, rest_indices], axis=1)
 
     scores = target_freq / (reste_freq + 1)
 
@@ -389,7 +389,7 @@ def ngram_signatures(matrix, txt_names, biblio, lexique, target_genre, top=10):
     return "\n".join(report_lignes)
 
 
-# Pareil ici
+# 
 def confusion_matrix(matrix, txt_names, biblio, output_file=None):
    """
    Génère une matrice de confusion basée sur le plus proche voisin, avec Numpy
@@ -464,8 +464,20 @@ def confusion_matrix(matrix, txt_names, biblio, output_file=None):
 
    return accuracy
 
-
+# Rapport final 
 def generate_report(matrix, txt_names, biblio, lexique, output_path):
+    """
+
+    Entrées : 
+        matrix 
+        txt_names : 
+        biblio : 
+        lexique : 
+        output_path : 
+
+    Sorties : 
+        fichier (.txt) : Rapport 
+    """
     dd = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
     report = [
         "Rapport global sur les textes médivaux",
@@ -473,13 +485,13 @@ def generate_report(matrix, txt_names, biblio, lexique, output_path):
         "\n"
     ]
     report.append("1. Classification KNN")
-    knn_report = knn_np(matrix_np, txt_names)
+    knn_report = knn_np(matrix, txt_names)
     report.append(knn_report)
     report.append("2. Cohésion des genres")
-    cohesion_genre = genre_cohesion(matrix_np, txt_names, genre_biblio)
+    cohesion_genre = genre_cohesion(matrix, txt_names, biblio)
     report.append(cohesion_genre)
     report.append("3. Ngrammes signatures")
-    unique_genre = sorted(list(set(genre_biblio.values())))
+    unique_genre = sorted(list(set(biblio.values())))
     for genre in unique_genre: 
         ngm = ngram_signatures(matrix, txt_names, biblio, lexique, target_genre=genre, top=5)
         report.append(ngm)
@@ -493,21 +505,3 @@ def generate_report(matrix, txt_names, biblio, lexique, output_path):
         f.write("\n".join(report))
     
     print(f"Rapport généré dans : {output_path}")
-
-
-# MAIN test
-
-freq_folder = r"/workspaces/medFR-paleao-NLP/results/frequencies"
-output_matrix = r"/workspaces/medFR-paleao-NLP/results/np_matrix.tsv"
-path_biblio = r"/workspaces/medFR-paleao-NLP/data/metadata/dico_genre.txt"
-confusion_report = r"/workspaces/medFR-paleao-NLP/results/conf_matrix.txt"
-genre_biblio = biblio(path_biblio)
-matrix_np, lexique, txt_names = create_comparison_matrix(freq_folder, output_matrix)
-
-# knn_np(matrix_np, txt_names)
-# confusion_matrix(matrix_np, txt_names, genre_biblio, output_file=confusion_report)
-# genre_cohesion(matrix_np, txt_names, genre_biblio)
-
-report_path = r"/workspaces/medFR-paleao-NLP/results/rapport.txt"
-
-generate_report(matrix_np, txt_names, genre_biblio, lexique, report_path)
