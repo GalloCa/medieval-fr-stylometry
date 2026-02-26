@@ -228,7 +228,7 @@ def similarities_authors(matrix_path, dico_path, output_dir):
 
 
 # MAIN 
-path_matrix = "/workspaces/medFR-paleao-NLP/results/np_matrix.tsv"
+path_matrix = "/workspaces/medFR-paleao-NLP/results/matrix/matrix.tsv"
 path_dic_genre ="/workspaces/medFR-paleao-NLP/data/metadata/dico_genre.txt"
 path_dic_dates = "/workspaces/medFR-paleao-NLP/data/metadata/dico_date.txt"
 path_dic_authors = "/workspaces/medFR-paleao-NLP/data/metadata/dico_auteur.txt"

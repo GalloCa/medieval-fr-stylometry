@@ -160,7 +160,6 @@ def n_gramm(text,n=3):
     """
     Génère un dictionnaire de fréquences de n-grammes de caractères.
 
-
     Arguments : 
         text (str) : le texte source à découpé en ngrammes
         n (int) : taille des n-grammes (par défaut n=3, mais peut être changé)
