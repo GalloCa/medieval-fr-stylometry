@@ -29,7 +29,7 @@ def load_stpwords(stopwords_filepath):
 
     return re.compile(pattern, flags=re.I)
 
-def biblio(path):
+def load_biblio(path):
    """
    Charge un fichier de metadonné et le transforme en dictionnaire
 

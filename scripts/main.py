@@ -5,8 +5,7 @@ import time
 import numpy as np
 from collections import Counter
 from tools import (load_stpwords, clean_texts, save_text, n_gramm, save_freq,
-                   create_comparison_matrix,
-                   clean_label, compare_files, 
+                   create_comparison_matrix, compare_files, 
                    biblio, generate_report)
 
 # from scatter_plot import (similarities_genre, similarities_authors, similarities_dates)
@@ -53,20 +52,20 @@ if __name__ == "__main__":
                 clean_content = clean_texts(contenu_brut, regex_file=None)
                 save_text(clean_content, input_path, clean_txt_dir, prefix="clean")
                 
-                filter_content = clean_texts(contenu_brut, regex_file=stopwords)
-                save_text(filter_content, input_path, filter_txt_dir, prefix="filtered")
-
-                frequences = n_gramm(filter_content)
+                frequences = n_gramm(clean_content)
                 save_freq(frequences, filename, freq_folder)
 
     print("Etape 1 : Nettoyage des textes et extraction de fréquences terminés.")
 
+    # E2 : Création de la matrice et comparaison des fichiers
     print("\n Début E2 : Matrice et analyse.")
-    
     matrix, lexique, txt_names = create_comparison_matrix(freq_folder, output_matrix)
     
     compare_files(matrix, txt_names, compare_out_dir)
 
+    # E3 : LCS
+
+    # E4 : Génération d'un rapport
     generate_report(matrix, txt_names, dico_genre, lexique, genre_report_dir)
     generate_report(matrix, txt_names, dico_author, lexique, auteurs_report_dir)
     generate_report(matrix, txt_names, dico_date, lexique, dates_report_dir)
