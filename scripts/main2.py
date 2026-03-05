@@ -1,9 +1,9 @@
 import os 
 import time
 
-from utils import load_biblio, clean_label
+from utils import load_biblio, clean_label, save_matrix_tsv
 from test import Test
-from analyse import create_comparison_matrix, generate_report
+from analyse import create_comparison_matrix, generate_report, compare_files
 # scatterplot 
 # lcs
 
@@ -47,7 +47,7 @@ if __name__ == "__main__":
             doc.clean_txt()
             doc.n_gramm(n=3)
 
-            doc.save_clean_text(clean_txt_dir)
+            doc.save_clean_txt(clean_txt_dir, prefix = "clean")
             doc.save_freq(freq_folder)
 
             my_corpus.append(doc)
@@ -55,8 +55,8 @@ if __name__ == "__main__":
 
     print("\n Début E2 : Matrice et analyse.")
     matrix, lexique, txt_names = create_comparison_matrix(my_corpus)
-    
-    # compare_files(matrix, txt_names, compare_out_dir)
+    save_matrix_tsv(matrix, lexique, txt_names, output_matrix)
+    compare_files(matrix, txt_names, compare_out_dir)
 
     # E3 : LCS
 

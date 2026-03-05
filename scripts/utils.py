@@ -38,3 +38,26 @@ def clean_label(name):
     for ext in ['.tsv', '.txt']:
         name = name.replace(ext, '')
     return name
+
+def save_matrix_tsv(matrix, lexique, txt_names, output_path):
+    """
+    Sauvegarde la matrice Numpy en mémoire vers un fichier TSV 
+
+    Arguments :
+
+    Returns : 
+    """
+    folder = os.path.dirname(output_path)
+    if folder and not os.path.exists(folder):
+        os.makedirs(folder)
+
+    with open(output_path, mode='w', encoding='utf-8') as f:
+        # 1. L'en-tête (Les noms des textes en colonnes)
+        f.write("ngramme\t" + "\t".join(txt_names) + "\n")
+        
+        # 2. Les lignes (Le n-gramme + ses fréquences pour chaque texte)
+        for i, ngram in enumerate(lexique):
+            values = "\t".join(map(str, matrix[i, :]))
+            f.write(f"{ngram}\t{values}\n")
+            
+    print(f"💾 Matrice globale sauvegardée avec succès dans : {output_path}")

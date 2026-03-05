@@ -16,7 +16,7 @@ class Test:
         Nettoie le texte en retirant les métadonnées, la ponctuation et les chiffres.
         """
         with open(self.filepath, mode = 'r', encoding='utf-8') as f:
-            raw_txt = f.read()
+            text = f.read()
 
         text = re.sub(r'^.*?--------------------------------------------------\n\n','' ,text, flags=re.DOTALL)
         if 'start' in text:

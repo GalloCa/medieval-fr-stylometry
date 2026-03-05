@@ -1,843 +1,1000 @@
-ngramme	frequence
-ent	101
-nt 	68
-ier	40
+Ngramme	Frequence
+nt 	170
+ent	120
+ de	101
+es 	90
+et 	89
+de 	82
+ne 	76
+us 	71
+ont	70
+
+qu	68
+ier	63
+ co	62
+ so	61
+ le	61
+en 	60
+que	59
+rs 	59
+le 	58
+ant	58
+ qu	54
+ ne	52
+li 	52
+t l	52
+son	51
+ pa	50
+che	50
+ors	48
+or 	48
+e s	48
+s d	47
+lor	47
+ vo	46
+ se	46
+ a 	46
+ue 	45
+t d	44
+il 	43
+st 	43
+re 	43
+ois	42
+ui 	42
+ous	42
+e l	42
+ et	41
+est	41
+ li	41
+it 	40
 nt
-	39
-men	36
-es 	36
-es
-	35
-amo	34
-rs 	34
-ois	33
+	40
+e c	39
+qui	39
+les	39
+t a	39
+men	38
 er
-	33
- am	32
-ors	32
+	38
+la 	38
 ie
-	32
-ain	31
+	38
+ ch	37
+ien	36
+ di	36
+ain	36
+ren	36
+ en	35
+ers	35
+ la	35
+
+et	35
+e p	35
+amo	34
+e d	34
+mor	33
+par	33
+lie	33
+es
+	33
+ez 	32
+ mo	32
+t e	32
 ler	31
-nte	29
- co	28
-mor	28
+ele	31
+ort	30
+nte	30
+ bi	30
+eva	30
+tre	30
+ sa	30
+cor	29
+ pr	29
+ lo	29
+ to	29
+t p	28
+ns 	28
+ cl	28
 cle	28
-us 	28
-ren	27
-che	27
-ort	26
-cor	25
-ont	25
-ers	25
-res	24
-e
-c	23
-ele	23
-eme	21
+qua	28
+ es	28
+mie	28
+roi	27
+e f	27
+ me	27
+ da	26
+s s	26
+er 	26
+hev	26
+ar 	26
+is 	26
+aut	26
+t c	25
+e v	25
+res	25
+se 	25
+val	25
+ali	25
+ fu	25
+s l	25
+vou	24
+s c	24
+ ro	24
+
+de	23
+t m	23
+bie	23
+oit	23
+s p	23
+t s	23
 rs
-	21
+	22
+e
+q	22
+ ce	22
+cel	22
+ill	22
+ re	22
+eme	21
+dam	21
+e e	21
+s a	21
+ am	21
+ il	21
+toi	20
+on 	20
+t i	20
+ver	20
+t b	20
+e a	20
+el 	20
+ ma	20
+e
+l	20
 
-co	21
-
-cl	21
-lor	21
-mie	21
+li	20
 rai	20
+tes	20
 eve	20
- pr	19
+ven	20
+ mi	20
+ av	20
+is
+	20
+ass	19
+ut 	19
+s m	19
 ore	19
-ant	19
- de	19
-ven	19
-ez 	18
-oie	18
-re 	18
+a c	19
+ au	19
+e m	19
+s e	19
+oie	19
+ist	19
+si 	19
+os 	19
+ un	19
+ do	18
+ fe	18
+un 	18
+ire	18
 ise	18
+gen	18
+ pl	18
+voi	18
+je 	18
 erc	18
 ez
 	18
+n c	17
+out	17
+s n	17
+
+ne	17
 s
-c	17
-ns 	17
-le 	17
+q	17
+t v	17
 aus	17
-ill	17
 flo	17
-
-de	17
-s p	17
+i r	17
+com	17
+tou	17
+ ge	17
+rc 	17
 ing	17
+sse	16
+i c	16
+con	16
 pre	16
- pa	16
-ver	16
+ ve	16
+e g	16
+ vi	16
+s f	16
+e r	16
+i d	16
+rt 	16
+vos	16
+ail	16
 rto	15
-toi	15
-con	15
+i a	15
 ten	15
-
-di	15
-s a	15
+lt 	15
+mes	15
+ pu	15
+ai 	15
+ po	15
 ees	15
-e
-a	15
+ses	15
+r l	15
+
+la	15
+eus	15
+oir	15
 esp	15
 tor	15
-
-ch	15
-rc 	15
-par	14
+t t	15
+sen	14
+i e	14
 end	14
-roi	14
-chi	14
-eus	14
-
-am	14
-or 	14
-is
-	14
-t a	13
-sie	13
-
-pa	13
+mol	14
+olt	14
 re
-	13
-s m	13
- es	13
-ien	13
-aut	13
-ne
-	13
-s c	13
+	14
+e
+e	14
+ure	14
+chi	14
+
+se	14
+ no	14
+e n	14
+uan	14
+mon	14
+s
+d	13
+sie	13
+e b	13
+ i 	13
+s v	13
+pas	13
+ ou	13
+ou 	13
+vre	13
+me 	13
+ ta	13
 lan	13
-it 	13
-ous	13
-t p	12
+utr	13
+ons	13
+tan	13
+ fo	13
+des	13
+t n	13
 lai	12
+ va	12
+s o	12
 one	12
-les	12
-tre	12
+dui	12
+ du	12
 iau	12
-ire	12
-vre	12
-ass	12
+ne
+	12
+ fl	12
+s
+e	12
 el
 	12
-rt 	12
-t c	12
+a d	12
 ami	12
-ons	12
+
+si	12
+ te	12
+t q	12
 ee
 	12
- re	12
-le
-	12
+pri	12
+r a	12
+don	12
+
+je	12
 rie	12
+plu	12
+lus	12
 ngn	12
- en	11
-er 	11
-cel	11
-is 	11
- ma	11
-dui	11
-tez	11
-e
-p	11
-des	11
-don	11
- se	11
-gno	11
- cl	11
-ail	11
+e j	11
+ ga	11
+doi	11
+r d	11
+nde	11
+n a	11
+ues	11
+une	11
+ste	11
 s
-d	11
+l	11
+sel	11
+str	11
+tez	11
+om 	11
+ or	11
+nz 	11
+int	11
+ris	11
+s t	11
+gno	11
+it
+	11
 uit	11
+ls 	11
 isi	10
-
-se	10
-e c	10
-uar	10
-ere	10
-
-qu	10
-qua	10
-s f	10
-ai 	10
+ ba	10
+te 	10
 r
-a	10
-est	10
-ist	10
-ach	10
-sel	10
- sa	10
-ndr	10
+q	10
+t
+q	10
+die	10
+uar	10
 
-re	10
- to	10
+a 	10
+ere	10
+mai	10
+i m	10
+por	10
+i o	10
+ach	10
+t
+s	10
+i s	10
+e
+p	10
+ndr	10
+ute	10
+ost	10
+s g	10
+r s	10
 hie	10
+lle	10
 usi	10
 ert	10
+ si	10
 orn	10
-us
+avo	10
+dev	10
+au 	10
+le
 	10
-
-sa	10
-lie	10
+vez	10
+ond	10
+e
+s	10
+sor	10
+a s	10
 se
 	10
-it
-	10
-ls 	10
+dis	10
+
+so	10
+di 	10
+ ju	9
 jug	9
+ie 	9
 age	9
-t
-d	9
- va	9
-
-en	9
-s
-p	9
-uce	9
-noi	9
-ine	9
- fl	9
-tes	9
-s
-a	9
-sse	9
-
-ve	9
-t
-a	9
-cha	9
- so	9
+ot 	9
+ins	9
 t o	9
- or	9
+as 	9
+a p	9
+uce	9
+
+il	9
+noi	9
+for	9
+t f	9
+fur	9
+ine	9
+tai	9
+ata	9
+cha	9
+ gr	9
+ nu	9
 spo	9
 pon	9
- me	9
+r p	9
+a b	9
+ ha	9
+ran	9
 rne	9
-or
+ir 	9
+ust	9
+us
 	9
-int	9
+ave	9
+l c	9
+fet	9
+bat	9
+n d	9
 ron	9
-di 	9
+ans	9
 ge
 	8
-ut 	8
-sen	8
-t e	8
-die	8
-nde	8
+sez	8
+n s	8
+i p	8
+rt
+	8
+l n	8
+van	8
+n p	8
 ole	8
-
-pu	8
 puc	8
-ar 	8
-que	8
-ues	8
- fe	8
-and	8
- ro	8
-s o	8
+bon	8
+r e	8
+a f	8
 
-so	8
-gen	8
-t d	8
- di	8
- mi	8
+en	8
+and	8
+i f	8
+ fi	8
+e
+d	8
+ be	8
+t r	8
+i t	8
+i v	8
+ tr	8
+vie	8
+gra	8
+dit	8
+e
+c	8
+ bo	8
+i q	8
+uer	8
+a n	8
+ir
+	8
+ieu	8
+fus	8
+ame	8
+or
+	8
+r
+e	8
+ cu	8
 ex 	8
-nz 	8
-e s	8
 sev	8
+on
+	8
 bla	8
 anc	8
 nch	8
-e
-d	8
+ait	8
+ce 	8
+dir	8
 sei	8
-
-to	8
-s e	8
+du 	8
+t
+d	8
+t
+l	8
+ens	8
+sto	8
 ded	8
 edu	8
 rou	8
 sin	8
 ols	8
-e
-v	7
- ga	7
-rt
-	7
+ as	7
+a v	7
 vil	7
-s v	7
 tie	7
-e d	7
+ el	7
+moi	7
 ntr	7
-i f	7
 té 	7
-e f	7
 ouv	7
- vi	7
-s g	7
-ai
-	7
-e r	7
+fu 	7
+nes	7
 ree	7
-s
-r	7
+ ri	7
+he 	7
+
+pa	7
+ pe	7
 dan	7
 loi	7
-t r	7
-s
-s	7
-str	7
-s s	7
-
-pr	7
-e
-s	7
-t
-c	7
+uis	7
+z l	7
+s q	7
 pai	7
 ign	7
 nie	7
- po	7
-oir	7
-ir
-	7
-st 	7
-ns
-	7
+err	7
+ja 	7
+lau	7
+u l	7
+lon	7
 eil	7
+sa 	7
 esc	7
 nee	7
+e t	7
+tro	7
+ jo	7
+r
+s	7
+a l	7
 iex	7
 sau	7
+u m	7
+ale	7
+i l	7
 
 ai	7
-pri	7
-son	7
-ale	7
-
-me	7
-ond	7
-dir	7
-r
-c	7
-ne 	7
 vai	7
+
+ch	7
+ ap	7
 ape	7
 iez	7
- ju	7
 lev	7
-ens	7
-
-ro	7
+s
+s	7
+s b	7
+ je	7
+c n	7
 nol	7
 uge	6
-ie 	6
-z a	6
-r a	6
- vo	6
+ ci	6
+l a	6
+ces	6
+art	6
+t
+a	6
+ on	6
 nti	6
-bon	6
 fer	6
-e
-m	6
-moi	6
-mai	6
+ ja	6
 rme	6
 eso	6
+soi	6
 r c	6
 bia	6
+e i	6
 uvr	6
+ni 	6
+ ot	6
 evr	6
-e v	6
 lla	6
-e
-e	6
-ses	6
-he 	6
- oi	6
+ose	6
+
+le	6
+ at	6
+s
+a	6
+i b	6
 gie	6
- pe	6
+t
+e	6
 ef 	6
+pui	6
 ssi	6
 oz 	6
-vie	6
 reu	6
-com	6
-err	6
- nu	6
-voi	6
- fo	6
-ame	6
+
+to	6
+
+sa	6
+eu 	6
+oi
+	6
+nou	6
+e
+n	6
+n g	6
 enu	6
+n e	6
 per	6
-mes	6
+e
+a	6
+a m	6
+
+ja	6
 hau	6
-r
-d	6
-dev	6
+r q	6
 evi	6
 vis	6
-t
-s	6
 inz	6
-on
-	6
-t t	6
+sir	6
+ bl	6
 enc	6
- le	6
-t
-p	6
-te 	6
+a t	6
+ fa	6
+
+ce	6
+tel	6
 
 da	6
- ap	6
+z d	6
 env	6
 dra	6
-s r	6
-s l	6
-ieu	6
-t
-r	6
-ris	6
-ans	6
+ra 	6
+
+lo	6
+ pi	6
+ns
+	6
+en
+	6
 gem	5
-e b	5
 ora	5
 rag	5
+ter	5
+s
+n	5
+len	5
 
-vo	5
-
-or	5
-r
-p	5
-t g	5
-art	5
-t v	5
-s j	5
+ou	5
+ner	5
+l m	5
+l p	5
 ard	5
-t f	5
 ndu	5
-ui 	5
- fi	5
+dun	5
+
+du	5
 man	5
 lee	5
-
-es	5
+ ni	5
+ oe	5
+ai
+	5
 tra	5
 ros	5
-ose	5
-ste	5
 ric	5
 ich	5
-e t	5
-
-va	5
 pra	5
-
-mi	5
 ove	5
- ch	5
-t s	5
+u p	5
 arl	5
 rla	5
 rem	5
-
-av	5
-oit	5
- bo	5
-s t	5
- ce	5
-uer	5
-e p	5
-e
-f	5
-
-ge	5
-lon	5
+mis	5
+san	5
+nul	5
+r n	5
+ais	5
 sou	5
- te	5
-lle	5
- ha	5
-e
-r	5
+r t	5
+l d	5
 nor	5
+op 	5
 jor	5
 fol	5
-
-bl	5
+e q	5
+u c	5
+cue	5
 hef	5
 efl	5
 nce	5
-
-do	5
-vez	5
+r m	5
+in 	5
 mer	5
 pal	5
 ira	5
-t m	5
-ait	5
+l v	5
+t u	5
+l o	5
 eig	5
- qu	5
 enz	5
-mon	5
-r s	5
 ief	5
+oin	5
 iro	5
-s
-v	5
+rre	5
 sai	5
- os	5
+s r	5
 nus	5
-e a	5
+deu	5
 toz	5
 clo	5
-e
-h	5
+nen	5
+ oi	5
+st
+	5
 sac	5
 rte	5
+n v	5
+
+vo	5
+s
+j	5
 gne	5
- ba	4
+our	4
 bar	4
 arn	4
-ter	4
+cil	4
+ci 	4
+r
+c	4
 gar	4
-
-vi	4
+uil	4
 ila	4
-ins	4
-ner	4
-e
-q	4
+
+me	4
+u a	4
+a a	4
 in
 	4
-r
-f	4
-
-fo	4
-for	4
-soi	4
+i j	4
 pro	4
-e
-b	4
-
-bi	4
-
-ma	4
+r
+a	4
+n f	4
 ble	4
- la	4
-tai	4
+ is	4
 ime	4
-me 	4
-s
-l	4
-
-li	4
-
-at	4
-ata	4
 tac	4
 hes	4
- ou	4
-s
-b	4
-
-be	4
 bes	4
-
-ri	4
-i o	4
+ cr	4
 alo	4
 oia	4
+l t	4
 iss	4
+a o	4
 col	4
 olo	4
-
-as	4
 sis	4
-z o	4
-
-pl	4
-la 	4
-a p	4
-mis	4
+sam	4
 ule	4
 mpa	4
-nul	4
-por	4
-dit	4
+lui	4
+r v	4
 r
-q	4
- ve	4
-eu 	4
+n	4
 oni	4
-
-ga	4
 ber	4
-z
-f	4
+r
+t	4
+
+ta	4
+
+mo	4
 sch	4
-é d	4
- jo	4
+z a	4
+ ai	4
+z q	4
+
+po	4
 z p	4
-
-fl	4
- be	4
+eti	4
+non	4
+z n	4
+eni	4
+ce
+	4
 bel	4
+l e	4
+fai	4
 dre	4
- bi	4
+s j	4
+z
+s	4
 nse	4
-c a	4
- mo	4
-bat	4
-
-ha	4
+t g	4
 ori	4
 elo	4
-in 	4
-i a	4
-nz
-	4
+t
+j	4
 nve	4
- cu	4
-oin	4
-rre	4
+poi	4
 nue	4
-ost	4
-r e	4
+ os	4
 iev	4
 nel	4
-t
-m	4
-t l	4
- ri	4
-ure	4
+ ho	4
 sol	4
 ola	4
 lli	4
- li	4
 har	4
- oe	4
+z m	4
+
+cl	4
+s i	4
 tem	4
-z d	4
-pas	4
 pie	4
 ies	4
-el 	4
+ur 	4
+ na	4
 sal	4
-ave	4
+n u	4
 ssa	4
-s d	4
-e e	4
-out	3
+a q	4
+t
+v	4
+uet	4
+de
+	4
+mou	3
+e
+o	3
+z e	3
 ese	3
+z c	3
 aco	3
 ndi	3
-et 	3
 cou	3
-t
-v	3
+s
+m	3
 den	3
 vol	3
-len	3
- au	3
-i m	3
+
+el	3
+r i	3
+n
+i	3
+n i	3
 rer	3
+
+fo	3
 fie	3
 uté	3
-é p	3
 ara	3
-s
-i	3
-
-is	3
+ ii	3
+ii 	3
+uen	3
+nqu	3
 oev	3
+u d	3
 aim	3
+n o	3
 esi	3
 erm	3
- ta	3
-l
-a	3
- cr	3
 cri	3
 erg	3
 rgi	3
-r p	3
+lez	3
 pen	3
-
-al	3
 ian	3
- tr	3
-uis	3
+al 	3
+s
+p	3
+
+pu	3
 oli	3
+liv	3
 pla	3
- gr	3
+r
+l	3
+lun	3
 emi	3
+
+co	3
+omm	3
+mme	3
 avr	3
+ ti	3
+e
+t	3
 aig	3
 gni	3
+l s	3
  an	3
-
-fe	3
 ite	3
- pl	3
+leü	3
 eüs	3
 üst	3
 
-fu	3
-oi
-	3
-
-po	3
-
-ar	3
-z
-a	3
+ma	3
+ ar	3
+foi	3
 mez	3
+e
+m	3
 due	3
 ue
 	3
-
-au	3
-si 	3
 has	3
+e
+j	3
 emp	3
 tee	3
 hen	3
+rop	3
+p a	3
+
+as	3
+z o	3
 plo	3
+ lu	3
 iso	3
-eni	3
-ce
-	3
+n
+l	3
+nir	3
 dem	3
 ema	3
- bl	3
- pu	3
-al
-	3
 n
-d	3
+c	3
 vei	3
 era	3
-i d	3
- da	3
 cui	3
- do	3
 ee 	3
-s b	3
 vau	3
-ute	3
-l
-p	3
 sti	3
 ret	3
 eto	3
-i b	3
+u t	3
 rno	3
-ut
-	3
-t
-t	3
-te
-	3
-os 	3
+t h	3
+s
+i	3
+los	3
 het	3
+r g	3
 fel	3
 las	3
 asc	3
-scu	3
 t
-g	3
-z m	3
+i	3
+scu	3
+cun	3
+uns	3
 z
 d	3
-ce 	3
-poi	3
-ra
-	3
-z
-s	3
-tro	3
 nem	3
 aro	3
- is	3
-t j	3
- at	3
-
-nu	3
+uel	3
+lem	3
+hom	3
 ete	3
+tur	3
+ux 	3
 fle	3
 eri	3
- no	3
- lo	3
+r h	3
+iz 	3
+z s	3
 arg	3
 rge	3
-s n	3
+s u	3
 ala	3
-hev	3
-eva	3
+tos	3
 auc	3
-ais	3
-
-pi	3
- fa	3
-s
-t	3
  gi	3
-z e	3
-ra 	3
-os
-	3
+oi 	3
+z t	3
 ouz	3
 uz 	3
- pi	3
 ene	3
-x a	3
-deu	3
 apr	3
 spr	3
+ava	3
+n j	3
+n t	3
 eno	3
 amb	3
 mbl	3
-z b	3
 els	3
-c p	3
-sto	3
+pue	3
+e h	3
+ero	3
+n r	3
+u e	3
 tui	3
-en
-	3
-ran	3
+nav	3
 ugi	3
-t
-e	3
-st
-	3
 pap	3
 peg	3
 ega	3
 gau	3
+ivr	3
 spe	3
 pee	3
-mou	2
-vou	2
- ac	2
-di
-	2
+l q	2
 i
-s	2
+q	2
 set	2
-s
-e	2
-
-mo	2
 tin	2
-n
-p	2
- ja	2
 n
 e	2
 esb	2
@@ -848,319 +1005,350 @@ orm	2
 
 an	2
 tia	2
+ af	2
 sle	2
 fir	2
-s
-o	2
-e
-o	2
+é d	2
+onq	2
 ane	2
-nes	2
 lis	2
+a i	2
 mee	2
+l
+a	2
 hié	2
 ié 	2
-é c	2
+é s	2
 ri 	2
 l
-v	2
-val	2
-al 	2
-l t	2
+p	2
+ al	2
 rue	2
 uev	2
+l
+q	2
 soe	2
 oef	2
 f c	2
 iel	2
 l
-m	2
+l	2
 han	2
 ang	2
-liv	2
-gra	2
+sas	2
 avi	2
+
+lu	2
+m p	2
 sag	2
+
+pr	2
 vro	2
- ti	2
+dro	2
 seu	2
 eul	2
+anz	2
 omp	2
+sil	2
 ui
 	2
 rro	2
+t j	2
 llu	2
+
+fe	2
 orr	2
-r
-r	2
 ple	2
-fus	2
 uss	2
+i n	2
+nos	2
 ndo	2
-doi	2
+lac	2
 rrï	2
 rïo	2
 ïon	2
 vee	2
 r
-g	2
+m	2
 ilo	2
 nvi	2
 rde	2
-foi	2
+quo	2
+n n	2
+m l	2
 uz
 	2
-z c	2
+z
+e	2
 fue	2
 erd	2
 rdu	2
+
+au	2
 ast	2
  em	2
- ai	2
 nno	2
-nqu	2
+é l	2
+sav	2
+lot	2
 sue	2
- el	2
+x p	2
 rau	2
 aux	2
 nsa	2
 rim	2
+e
+f	2
 mal	2
-n
-b	2
-ot 	2
-nir	2
+ess	2
+cho	2
 
-jo	2
+is	2
+r r	2
+n b	2
+uai	2
 ça 	2
 ouc	2
 cem	2
 dé 	2
-r d	2
- ge	2
-il 	2
+til	2
 esa	2
-t b	2
-l
-d	2
+fin	2
+n
+q	2
+z v	2
+vin	2
 erv	2
 rve	2
 bou	2
 uch	2
-dam	2
-c c	2
-z
-v	2
+ser	2
+ma 	2
+jai	2
+mam	2
+if 	2
+
+va	2
+x a	2
  ra	2
 il
 	2
-l
-c	2
+u v	2
 ng 	2
-ust	2
-r
-t	2
+c e	2
 uti	2
 emb	2
 mi 	2
 iem	2
-
-ab	2
+ ab	2
 aba	2
-at
-	2
+at 	2
 tri	2
 tot	2
 ote	2
-e
-l	2
-los	2
-eti	2
 ive	2
 ve 	2
-c e	2
+ tu	2
 bis	2
 ton	2
 du
 	2
+
+bl	2
+a r	2
 asm	2
 sme	2
-i r	2
-on 	2
-
-la	2
-cun	2
+z
+m	2
 r
-e	2
+o	2
+u s	2
 cu 	2
 aub	2
 ube	2
 rov	2
+
+do	2
 oiv	2
-ali	2
+c a	2
+c q	2
+z
+j	2
 sem	2
-s q	2
-e j	2
+ ir	2
+t
+c	2
 otr	2
-une	2
-tel	2
+t
+n	2
+ssu	2
 red	2
 edi	2
 isn	2
 sne	2
-lem	2
+s
+r	2
 ato	2
+s h	2
+vit	2
 s
-g	2
-s
-n	2
-hom	2
-om 	2
+c	2
 ntu	2
-tur	2
 laz	2
 az 	2
-z f	2
-cue	2
+eux	2
 rec	2
-z
-o	2
+f f	2
+ mu	2
+nsi	2
 lef	2
 efr	2
 fro	2
 nc 	2
+ fr	2
 fra	2
-z
-t	2
-
-te	2
-n
-c	2
+dor	2
 loc	2
 och	2
-
-ad	2
+dar	2
+ ad	2
 ade	2
-nen	2
 nov	2
 vel	2
 eis	2
-sor	2
+ eu	2
+a e	2
 uie	2
-dis	2
 vir	2
-fai	2
+l f	2
 uve	2
 ate	2
 lou	2
 gir	2
 rof	2
 ofl	2
-t
-i	2
 pos	2
 tiz	2
-iz 	2
- av	2
 vra	2
-a c	2
+os
+	2
+te
+	2
 see	2
-z s	2
 sce	2
 cen	2
 pin	2
-u l	2
+l
+d	2
+
+am	2
+x d	2
 lit	2
- as	2
 ng
 	2
+lam	2
+r u	2
 nta	2
-c s	2
-sam	2
+s
+t	2
+m i	2
+r f	2
+e
+v	2
+
+ve	2
+ul 	2
+as
+	2
 rit	2
 ité	2
 rel	2
-uel	2
 rev	2
-i c	2
-rc
-	2
+r b	2
+n l	2
+i
+j	2
+ome	2
 fau	2
 uco	2
+r
+d	2
 
-ap	2
-c
-m	2
+di	2
 loe	2
 oe 	2
 c m	2
-
-du	2
 gay	2
 ays	2
 ys 	2
-u v	2
 rdo	2
 rse	2
 nez	2
-tou	2
-s
-m	2
-pui	2
+z
+f	2
+n
+n	2
+u i	2
+pou	2
 mau	2
 auv	2
 uvi	2
-a
-s	2
+c s	2
 ié
 	2
 ge 	2
 gan	2
 stu	2
-
-le	2
-de
-	2
 tir	2
-e
-t	2
-ero	2
 omb	2
 mba	2
 atr	2
 oez	2
 arm	2
-e n	2
-se 	2
-
-hi	2
+ hi	2
 hia	2
 aum	2
 ume	2
-ivr	2
+nz
+	2
+z
+q	2
 vas	2
+é f	2
 eli	2
+al
+	2
 cop	2
-op 	2
- eü	2
+orc	2
+rce	2
 ve
 	2
+n q	2
+et
+	2
 enf	2
+sus	2
 ici	2
-our	1
 urs	1
 rna	1
 nag	1
-r
-o	1
+
+ot	1
 rez	1
+ ac	1
+
+ci	1
 arf	1
 rfo	1
 fon	1
+di
+	1
 oua	1
-van	1
 teo	1
 eor	1
+l i	1
+s
+o	1
 deb	1
 ebo	1
 auq	1
@@ -1170,21 +1358,21 @@ ati	1
 jar	1
 rdi	1
 din	1
+r
+f	1
 fes	1
- af	1
+é e	1
 aff	1
 ffu	1
 fub	1
 ubl	1
+i i	1
 isl	1
 fee	1
-
-ou	1
 vré	1
 ré 	1
-é l	1
 
-oe	1
+on	1
 sta	1
  gl	1
 gla	1
@@ -1193,47 +1381,43 @@ t	1
 
 tr	1
 i
-p	1
+e	1
 pan	1
 tas	1
+
+at	1
+z i	1
 nda	1
 tru	1
  ru	1
 rui	1
-l
-s	1
 aie	1
 mir	1
 sov	1
 nge	1
 soz	1
- ol	1
+lol	1
 ivi	1
-z g	1
 rav	1
-dro	1
 eem	1
+dau	1
 ram	1
 i
-q	1
-t n	1
+i	1
 ull	1
-lui	1
 i
 f	1
-leü	1
 i
-b	1
+n	1
 eer	1
 geu	1
-u t	1
+u q	1
 ouf	1
 uff	1
 ffe	1
-s
-q	1
 onv	1
 der	1
+uon	1
 gab	1
 abe	1
 arb	1
@@ -1241,13 +1425,15 @@ rbr	1
 bre	1
 oil	1
 luz	1
-r t	1
+
+es	1
 nuz	1
 uei	1
 heü	1
 eüe	1
 üe
 	1
+é p	1
 hin	1
 teé	1
 eé 	1
@@ -1255,15 +1441,13 @@ dec	1
 ecl	1
 cli	1
 lin	1
-
-er	1
-t h	1
+i h	1
 are	1
 viu	1
 iut	1
 é t	1
-r
-m	1
+
+mi	1
 elz	1
 lz 	1
 im 	1
@@ -1272,152 +1456,129 @@ m h	1
 enn	1
 isé	1
 sé 	1
-é j	1
-uan	1
 anq	1
-lot	1
-ot
-	1
-
-su	1
-x p	1
+ su	1
 ux
 	1
 x
-c	1
-ess	1
+d	1
 
-ac	1
-cho	1
+fu	1
+pet	1
+tit	1
+dac	1
 hoi	1
-n
-i	1
-sir	1
 pot	1
-ir 	1
-e
-j	1
-omm	1
-mme	1
 enç	1
 nça	1
-a t	1
 dou	1
 ndé	1
-é b	1
-til	1
-l p	1
-san	1
+é a	1
 vo 	1
-o l	1
+o f	1
 lea	1
 eal	1
-vin	1
+elu	1
 mei	1
-a b	1
-ser	1
+m b	1
+r
+u	1
 
-cu	1
+un	1
+c c	1
 jol	1
 lif	1
-if
-	1
-f
+f e	1
+n
 a	1
 oné	1
 né 	1
-x b	1
 z
-b	1
-
-bo	1
+v	1
 nté	1
+é n	1
 aur	1
 uro	1
 rac	1
-g c	1
+l
+o	1
+l
+j	1
+g m	1
+a u	1
 pel	1
-
-ce	1
 mbe	1
+l
+m	1
 r
-h	1
-
-lo	1
+i	1
 tiv	1
-e q	1
-r l	1
+ta 	1
+tu 	1
+c d	1
 sco	1
 tif	1
-if 	1
-f b	1
 isc	1
+l b	1
 rta	1
 tau	1
 aud	1
 udé	1
-é h	1
+é c	1
+l h	1
 u
 b	1
-r r	1
 u
 a	1
-en 	1
-n a	1
-n q	1
+z
+a	1
+i
+s	1
  qo	1
 qoi	1
 i
-l	1
-he
-	1
+c	1
 von	1
-n m	1
 ngi	1
-uns	1
 met	1
-u h	1
+u o	1
+n h	1
 nvo	1
+
+fl	1
 ral	1
 ind	1
-a
-c	1
+f s	1
+m v	1
 uid	1
 idi	1
 emo	1
-g s	1
-z
-u	1
-
-ui	1
-i j	1
-r x	1
+g q	1
+n x	1
  xv	1
 xv 	1
 v j	1
 
-ir	1
-t
-o	1
+dr	1
 
-ot	1
+ni	1
 rol	1
-r i	1
-ssu	1
+s
+f	1
 deï	1
 eïs	1
 ïss	1
 l
-j	1
+c	1
+u j	1
 t
-l	1
-t i	1
+t	1
 ena	1
 nan	1
+
+ri	1
 hem	1
-s h	1
- ho	1
-m p	1
+m n	1
 cot	1
 pur	1
 vio	1
@@ -1425,55 +1586,42 @@ iol	1
 let	1
 cei	1
 ein	1
+z f	1
 jau	1
 aun	1
+x b	1
 ueu	1
 euv	1
 ech	1
-f f	1
 hap	1
 api	1
 pia	1
- mu	1
 mug	1
 ugu	1
 gue	1
-ue 	1
+dai	1
 igl	1
 gle	1
-c n	1
-e h	1
-s
-f	1
-
-fr	1
-n t	1
 mas	1
 oiz	1
-iz
-	1
 e o	1
-e l	1
 itr	1
-l v	1
- ar	1
-x c	1
-lau	1
+x n	1
+fis	1
+l
+e	1
 fei	1
-
-ho	1
-m m	1
+m t	1
 lad	1
 adi	1
-
-oi	1
 mel	1
 lod	1
 odi	1
+nto	1
 hai	1
 iti	1
-z y	1
- yv	1
+ dy	1
+dyv	1
 yvu	1
 vui	1
 uir	1
@@ -1481,127 +1629,88 @@ oro	1
 ror	1
 heq	1
 equ	1
-qui	1
 é o	1
+z
+t	1
 ied	1
-sez	1
-r v	1
+z
+l	1
+fut	1
 
-ti	1
+ro	1
 esl	1
 lat	1
-
-ca	1
+ ca	1
 can	1
-
-si	1
 sic	1
 ica	1
 cam	1
-n
-m	1
-
-mu	1
 mur	1
-ur 	1
-dar	1
-t q	1
-quo	1
+n
+s	1
 uoi	1
-oi 	1
-
-ia	1
+ ia	1
 ia 	1
  er	1
 eel	1
-l a	1
+nap	1
 apo	1
-n p	1
+z u	1
 rae	1
 ael	1
-n d	1
- du	1
- ad	1
-au 	1
 gis	1
-t
-f	1
 fez	1
-e i	1
 reç	1
 eçu	1
 çut	1
 dej	1
 ejo	1
 jos	1
-de 	1
 g
-v	1
+q	1
 g
 b	1
 i
-i	1
+a	1
 
-ie	1
-r m	1
+av	1
+ ie	1
+jou	1
 may	1
 ay
 	1
 y
-v	1
+e	1
 tam	1
-lam	1
- ot	1
 z r	1
-ul
-	1
-as
-	1
-non	1
  br	1
 bri	1
 efm	1
 fme	1
-i t	1
-e
-n	1
-
-ne	1
-l c	1
-lez	1
-z
-l	1
+jas	1
+é v	1
 liq	1
 iqu	1
-a e	1
+l j	1
 i
-v	1
+l	1
 é q	1
-c
-r	1
-sav	1
-a
-d	1
-
-fa	1
-z l	1
-z
-c	1
-f m	1
-ls
-	1
-ger	1
-s
-h	1
-mpl	1
-duc	1
-uc
-	1
-i
-a	1
-e g	1
+uas	1
 z
 p	1
+m c	1
+ger	1
+lal	1
+
+cu	1
+mpl	1
+duc	1
+uc 	1
+i
+v	1
+i
+d	1
+i g	1
 cru	1
 
 tu	1
@@ -1609,41 +1718,41 @@ chc	1
 hca	1
 caa	1
 aal	1
- fr	1
 his	1
-f o	1
-ome	1
+f d	1
+s
+v	1
 lir	1
 poo	1
 ooi	1
-x m	1
+x f	1
 deh	1
 ehe	1
 hez	1
-z v	1
+a j	1
+r
+j	1
+n
+d	1
 lar	1
-i
-n	1
- eu	1
+e u	1
+
+nu	1
 rni	1
 nia	1
-z
-m	1
-t
-j	1
-
-ju	1
+z j	1
 gié	1
 é
-e	1
+c	1
 nié	1
 é
 s	1
 va 	1
-a r	1
 neu	1
 va
 	1
+a
+s	1
 dez	1
 z ç	1
  ça	1
@@ -1652,49 +1761,43 @@ z ç	1
 a
 a	1
 ial	1
-l o	1
-r
-s	1
 onc	1
-i p	1
-i n	1
+jen	1
 dur	1
 reo	1
 eon	1
-a n	1
+c p	1
+
+na	1
+nat	1
+atu	1
+uam	1
 ieç	1
 eça	1
 esd	1
 sdi	1
-r o	1
-i
-g	1
 gag	1
-t
-b	1
-
-ba	1
+u r	1
 bai	1
 llé	1
 lé 	1
-é g	1
+t
+p	1
 onf	1
 nfe	1
+hos	1
 mev	1
 evo	1
-e
-g	1
 gam	1
 mbi	1
-n v	1
-lac	1
 aci	1
 cie	1
+hor	1
+oul	1
+ult	1
 aru	1
 rut	1
-ux 	1
-x g	1
-anz	1
+x o	1
 z h	1
 rmé	1
 mé 	1
@@ -1702,37 +1805,31 @@ del	1
 ham	1
 amp	1
 mp 	1
-p v	1
-l
-f	1
-
-fi	1
+p f	1
 rté	1
 ari	1
 rin	1
 nga	1
 gal	1
 l
-o	1
+i	1
 ges	1
 def	1
 eff	1
 ff
 	1
 f
-d	1
+e	1
 fi
 	1
-i
-d	1
 onr	1
 nra	1
-p p	1
+i u	1
+p d	1
 oud	1
 udr	1
-i
-e	1
-p r	1
+l u	1
+p l	1
 edo	1
 f a	1
 esr	1
@@ -1741,62 +1838,44 @@ cer	1
 rcl	1
 dep	1
 epa	1
-i e	1
 nu 	1
-u e	1
-s i	1
- ir	1
-
-em	1
+u n	1
+t
+m	1
+ua 	1
+lab	1
 esf	1
 sfo	1
-orc	1
-rce	1
 gri	1
 tue	1
-uet	1
-et
-	1
-
-af	1
 afi	1
-fin	1
-
-cr	1
 cre	1
 rea	1
 ean	1
 eco	1
 onn	1
-c v	1
-bie	1
- ab	1
+z b	1
 abo	1
-r
-v	1
+
+pl	1
 vex	1
 x r	1
 det	1
+
+ad	1
 ado	1
-onq	1
 iee	1
- tu	1
 nfu	1
 uee	1
 een	1
+a g	1
 sar	1
 arc	1
 rcu	1
-u m	1
-r b	1
-l d	1
-e m	1
 esu	1
-sus	1
 scr	1
 
 ic	1
-ci 	1
 nfo	1
 fou	1
 oui	1

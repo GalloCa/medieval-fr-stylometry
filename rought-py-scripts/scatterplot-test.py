@@ -27,6 +27,8 @@ def generate_similarity_plot(matrix_path, dico_path, output_dir, mode='genre'):
 
     # 2. Traitement des données
     df = pd.read_csv(matrix_path, sep='\t', index_col='ngramme')
+    df = df.dropna(axis=1, how="all")
+    df = df.fillna(0)
     df.columns = [clean_label(col) for col in df.columns]
     
     # Calcul MDS

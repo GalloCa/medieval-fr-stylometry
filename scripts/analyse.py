@@ -4,6 +4,27 @@ import numpy as np
 import datetime 
 from metrics import cos_np, jaccard_np
 
+def compare_files(matrix, txt_names, output_path=None):
+    """
+    """
+    nb_txt = len(txt_names)
+
+    with open(output_path, mode='w', encoding='utf-8') as out:
+        out.write("Texte A\tTexte B\tCosinus\tJaccard\n")
+
+        for i in range(nb_txt):
+            for j in range(i+1, nb_txt):
+                t1, t2 = txt_names[i], txt_names[j]
+
+                v1 = matrix[:, i]
+                v2 = matrix[:, j]
+
+                sim_cos = cos_np(v1,v2)
+                sim_jac = jaccard_np(v1,v2)
+
+                out.write(f"{t1}\t{t2}\t{sim_cos : .4f}\t{sim_jac : .4f}\n")
+    print(f"Rapport de similarité généré dans : {output_path}")
+
 def create_comparison_matrix(liste_man):
     """
     Construit la matrice Termes-Documents globale à partir d'une liste d'objets 
@@ -34,9 +55,17 @@ def create_comparison_matrix(liste_man):
         for ngram, freq in text.frequences.items():
             i = ngram_to_index[ngram]
             np_matrix[i, j] = freq
+            
+    with open(output_path, mode='w', encoding='utf-8') as f:
+        f.write("ngramme\t" + "\t".join(txt_name) + "\n")
+        for i, ngram in enumerate(ordered_lex):
+            values = "\t".join(map(str, np_matrix[i, :]))
+            f.write(f"{ngram}\t{values}\n")
+    print(f'Matrice Numpy créee')
 
     return np_matrix, ordered_lex, txt_name
 
+# Rajouter argument de biblio pour les étiquettes finales 
 def knn_np(matrix, txt_names):
     """
     Identifie les 5 paires de textes les plus proches et les 5 plus éloignées
@@ -76,8 +105,6 @@ def knn_np(matrix, txt_names):
     
     return "\n".join(report_ligne)
 
-   
-
 
 def genre_cohesion(matrix, txt_names, biblio):
     """
@@ -93,7 +120,10 @@ def genre_cohesion(matrix, txt_names, biblio):
     for idx, text in enumerate(txt_names):
         genre = biblio.get(text)
         if genre:
-            genres.setdefault(genre, [].append(idx))
+            if genre not in genres:
+                genres[genre] = []
+            genres[genre].append(idx)
+            
 
     # Trace de test
     print("\n Cohésion par genre")
@@ -272,7 +302,8 @@ def generate_report(matrix, txt_names, biblio, lexique, output_path, titre=None)
     
     report.append("\n" + "="*50 + "\n")
     report.append("\n2. Cohésion des genres")
-    report.append(matrix, txt_names, biblio)
+    cohesion = genre_cohesion(matrix, txt_names, biblio)
+    report.append(cohesion)
 
     report.append("\n" + "="*50 + "\n")
     report.append("\n3. Ngrammes signatures par genre")
