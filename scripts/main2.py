@@ -4,7 +4,7 @@ import time
 from utils import load_biblio, clean_label, save_matrix_tsv
 from text_processor import TextProcessor
 from analyse import create_comparison_matrix, generate_report, compare_files
-# scatterplot 
+from plots_generator import generate_similarity_plot 
 # lcs
 
 if __name__ == "__main__":
@@ -59,7 +59,7 @@ if __name__ == "__main__":
     compare_files(matrix, txt_names, compare_out_dir)
 
     # E3 : LCS
-    
+
     # E4 : Scatter plot
 
     # E5 : Génération d'un rapport

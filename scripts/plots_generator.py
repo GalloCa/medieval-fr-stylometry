@@ -6,6 +6,8 @@ from sklearn.manifold import MDS
 from adjustText import adjust_text
 import numpy as np
 from metrics import cos_np
+from scipy.cluster.hierarchy import dendrogram, linkage
+from scipy.spatial.distance import squareform
 
 def clean_label(name):
     for prefix in ['freq-filtered-', 'freq-', 'filtered-']:
@@ -98,25 +100,34 @@ def generate_similarity_plot(matrix_path, dico_path, output_dir, mode='genre'):
         texts.append(ax.text(pos[i, 0], pos[i, 1], txt, fontsize=9, fontweight='medium'))
 
     # 5. Ajustement des labels
-    adjust_text(texts, arrowprops=dict(arrowstyle='->', color='black', lw=0.5))
+    adjust_text(texts, 
+                x = pos[:,0],
+                y = pos[:,1],
+                force_text=(1.5, 2.0),
+                force_points=(2.0, 2.5),
+                expand_points = (1.8, 1.8))
     
-    # Légende positionnée de manière absolue par rapport à l'axe
-    ax.legend(handles_labels.values(), handles_labels.keys(),
+    # Paramètre légende
+    ordered_labels = [cat for cat in current_map.keys() if cat in handles_labels]
+    ordered_labels += [cat for cat in handles_labels.keys() if cat not in current_map]
+    ordered_handels = [handles_labels[cat] for cat in ordered_labels] 
+
+    ax.legend(ordered_handels, ordered_labels,
               title=conf['legend'], 
               title_fontsize='12',
               fontsize='10',
               loc='center left', 
-              bbox_to_anchor=(1.05, 0.5), # Coordonnées fixes
+              bbox_to_anchor=(1.05, 0.5),
               frameon=False,
               labelspacing=1.5)
 
-    # Titre via l'objet AX (plus précis pour l'alignement)
+    # Titre 
     ax.set_title(f"Proximité des textes {conf['title']} - Similarité Cosinus", 
                  loc='left', fontsize=16, pad=25, color='#333333', fontweight='bold')
     
     ax.grid(True, linestyle='--', alpha=0.2)
 
-    # 6. Sauvegarde stricte
+    # 6. Sauvegarde
     if not os.path.exists(output_dir): 
         os.makedirs(output_dir)
         
@@ -125,7 +136,72 @@ def generate_similarity_plot(matrix_path, dico_path, output_dir, mode='genre'):
     # On NE met PAS bbox_inches='tight' pour garder nos marges de subplots_adjust
     fig.savefig(output_path, dpi=300)
     plt.close(fig) 
-    print(f"Graphique généré avec succès : {output_path}")
+    print(f"Scatter Plot généré avec succès : {output_path}")
+
+
+def generate_dendogramme(matrix_path,dico_path, output_dir):
+    """
+    """
+    biblio = {}
+    try:
+        with open(dico_path, mode='r', encoding='utf-8') as f:
+            for ligne in f:
+                if ":" in ligne:
+                    cle, valeur = ligne.split(":", 1)
+                    biblio[cle.strip()] = valeur.strip()
+    except Exception as e:
+        print(f"Erreur lecture dico: {e}")
+        return
+    
+    df = pd.read_csv(matrix_path, sep='\t', index_col='ngramme')
+    df = df.dropna(axis=1, how="all")
+    df = df.fillna(0)
+    df.columns = [clean_label(col) for col in df.columns]
+
+    anonym = [col for col in df.columns if biblio.get(col) == 'Anonyme']
+    if len(anonym) <2:
+        print("Pas assez de textes d'auteus anonyms pour faire un arbre")
+        return
+    
+    df_anonym = df[anonym]
+    nb_txt = len(df_anonym.columns)
+    dissimilarity = np.zeros((nb_txt, nb_txt))
+
+    for i in range(nb_txt):
+        for j in range(nb_txt):
+            if i!=j:
+                v1 = df.iloc[:,i].values
+                v2 = df.iloc[:,j].values
+                
+                dist = max(0.0, 1.0 - cos_np(v1,v2))
+                dissimilarity[i,j] = dist
+                dissimilarity[j,i] = dist
+    condensed_dist = squareform(dissimilarity)
+    z = linkage(condensed_dist, method='average')
+
+    fig, ax = plt.subplots(figsize=(12, 7), dpi=100)
+
+    dendro = dendrogram(z,
+                        labels = df_anonym.columns,
+                        orientation = 'top',
+                        leaf_rotation=90,
+                        leaf_font_size=11,
+                        color_threshold=0.15,
+                        ax=ax)
+    
+    ax.spines[['top', 'right', 'bottom']].set_visible(False)
+    ax.set_title(f"Dendogramme des textes d'auteurs anonymes", loc='left', fontsize=16, pad=20, color='#333333', fontweight='bold')
+
+    if not os.path.exists(output_dir): 
+        os.makedirs(output_dir)
+        
+    output_path = os.path.join(output_dir, f"dendogramme_anonymes.png")
+    fig.subplots_adjust(left=0.08, right=0.95, top=0.85, bottom=0.25)
+    fig.savefig(output_path, dpi=300)
+    plt.close(fig) 
+    print(f"Dendogramme généré avec succès : {output_path}")
+
+
 
 # Exemple d'appel pour tes 3 fonctions d'origine :
 path_matrix = "/workspaces/medFR-paleao-NLP/results/matrix/matrix.tsv"
@@ -135,6 +211,7 @@ path_dic_authors = "/workspaces/medFR-paleao-NLP/data/metadata/dico_auteur.txt"
 path_out_dir = "/workspaces/medFR-paleao-NLP/results/scatter-plots"
 
 
-generate_similarity_plot(path_matrix, path_dic_genre, path_out_dir, mode='genre')
+"""generate_similarity_plot(path_matrix, path_dic_genre, path_out_dir, mode='genre')
 generate_similarity_plot(path_matrix, path_dic_dates, path_out_dir, mode='dates')
-generate_similarity_plot(path_matrix, path_dic_authors, path_out_dir, mode='auteurs')
+generate_similarity_plot(path_matrix, path_dic_authors, path_out_dir, mode='auteurs')"""
+generate_dendogramme(path_matrix, path_dic_authors, path_out_dir)
