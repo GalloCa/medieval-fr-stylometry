@@ -21,7 +21,7 @@ if __name__ == "__main__":
 
     scatter_plot_genre = "../scatter-plots/nuage_points_genre.png"
     scatter_plot_author = "../scatter-plots/nuage_points_auteurs.png"
-    scatter_plot_date = "../scatter-plots/nuage_points_date.png"
+    scatter_plot_date = "../scatter-plots/nuage_points_dates.png"
 
     output_matrix = r"/workspaces/medFR-paleao-NLP/results/matrix/matrix.tsv"
     genre_report_dir = r"/workspaces/medFR-paleao-NLP/results/rapports/rapport-genre.txt"

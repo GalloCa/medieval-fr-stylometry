@@ -60,4 +60,4 @@ def save_matrix_tsv(matrix, lexique, txt_names, output_path):
             values = "\t".join(map(str, matrix[i, :]))
             f.write(f"{ngram}\t{values}\n")
             
-    print(f"💾 Matrice globale sauvegardée avec succès dans : {output_path}")
+    print(f"Matrice globale sauvegardée avec succès dans : {output_path}")

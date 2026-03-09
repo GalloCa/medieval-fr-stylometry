@@ -23,7 +23,6 @@ def compare_files(matrix, txt_names, output_path=None):
                 sim_jac = jaccard_np(v1,v2)
 
                 out.write(f"{t1}\t{t2}\t{sim_cos : .4f}\t{sim_jac : .4f}\n")
-    print(f"Rapport de similarité généré dans : {output_path}")
 
 def create_comparison_matrix(liste_man):
     """
@@ -58,7 +57,7 @@ def create_comparison_matrix(liste_man):
 
     return np_matrix, ordered_lex, txt_name
 
-# Rajouter argument de biblio pour les étiquettes finales ²
+# Rajouter argument de biblio pour les étiquettes finales 
 def knn(matrix, txt_names, biblio):
     """
     Identifie les 5 paires de textes les plus proches et les 5 plus éloignées
@@ -106,21 +105,21 @@ def knn(matrix, txt_names, biblio):
         evaluated_txt +=1
     accuracy = (good_pred / evaluated_txt) * 100 if evaluated_txt > 0 else 0
 
-    # A enregistrer en sortie dans fichiers txt ?
+    # A enregistrer en sortie dans fichiers md ? 
     report_ligne= []
-    report_ligne.append(f"\n Précision de l'algorithme KNN : {accuracy :.1f}% \n")
+    report_ligne.append(f"**Précision de l'algorithme KNN : {accuracy :.1f}%**\n")
     
-    report_ligne.append(f"Les 5 paires les plus proches : \n")
+    report_ligne.append(f"#### Les 5 paires les plus proches : ")
     for t1, t2, score in top_5 : 
         c1 = biblio.get(t1, 'Inconnu')
         c2 = biblio.get(t2, 'Inconnu')
-        report_ligne.append(f"{score:.4f} : {t1} ({c1}) / {t2} ({c2})")
+        report_ligne.append(f"- **{score:.4f}** : {t1} ({c1}) / {t2} ({c2})")
     
-    report_ligne.append(f"\nLes 5 paires les plus éloignées : \n")
+    report_ligne.append(f"\n### Les 5 paires les plus éloignées :")
     for t1, t2, score in reversed(bot_5) : 
         c1 = biblio.get(t1, 'Inconnu')
         c2 = biblio.get(t2, 'Inconnu')
-        report_ligne.append(f"{score:.4f} : {t1} ({c1}) / {t2} ({c2})")
+        report_ligne.append(f"- **{score:.4f}** : {t1} ({c1}) / {t2} ({c2})")
     
     return "\n".join(report_ligne)
 
@@ -145,7 +144,6 @@ def genre_cohesion(matrix, txt_names, biblio):
             
     for genre, indices in genres.items():
         if len(indices) < 2:
-            print(f"{genre : <15} : Non calculable car un 1 seul texte dans les données")
             continue
         scores = []
         for i in range(len(indices)):
@@ -154,12 +152,12 @@ def genre_cohesion(matrix, txt_names, biblio):
                 col2 = matrix[:, indices[j]]
                 scores.append(cos_np(col1, col2))
         mean = sum(scores) / len(scores)
-        print(f"{genre:<15} : {mean :.04f}")
+        
 
     report_lignes= []
     for genre, indices in genres.items():
         if len(indices) < 2:
-            report_lignes.append(f"{genre : <15} : Non calculable car un 1 seul texte dans les données")
+            report_lignes.append(f"- **{genre}** : *Non calculable (1 seul texte)*")
             continue
 
         scores = [cos_np(matrix[:, indices[i]], matrix[:, indices[j]])
@@ -167,7 +165,7 @@ def genre_cohesion(matrix, txt_names, biblio):
                     for j in range(i+1, len(indices))]
 
         mean = sum(scores) / len(scores)
-        report_lignes.append(f"{genre:<15} : {mean :.04f}")
+        report_lignes.append(f"- **{genre}** : {mean :.04f}")
     return "\n".join(report_lignes)
 
 
@@ -200,12 +198,12 @@ def ngram_signatures(matrix, txt_names, biblio, lexique, target_genre, top=10):
 
     indices_tries = np.argsort(scores)[::-1]
 
-    report_lignes = [f"\n Signature du genre : '{target_genre}' \n"]
+    report_lignes = [f"\n#### Signature : '{target_genre}' \n"]
     for idx in indices_tries[:top]:
         ng = lexique[idx]
         s = scores[idx]
         if s > 0:
-            report_lignes.append(f" -'{ng}' (ratio : {s :.2f})")
+            report_lignes.append(f"- '{ng}' (ratio : {s :.2f})")
     return "\n".join(report_lignes)
 
 
@@ -228,20 +226,20 @@ def generate_report(matrix, txt_names, biblio, lexique, output_path, img_path, t
     """
     dd = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
     report = [
-        f"{titre}",
-        f"Généré le : {dd}",
+        f"## {titre}",
+        f"- *Généré le : {dd}*",
         "\n"
     ]
-    report.append("1. Classification KNN \n")
+    report.append("### 1. Classification KNN \n")
     report.append(knn(matrix, txt_names, biblio))
 
     report.append("\n" + "="*50 + "\n")
-    report.append("\n2. Cohésion interne\n")
+    report.append("\n### 2. Cohésion interne\n")
     cohesion = genre_cohesion(matrix, txt_names, biblio)
     report.append(cohesion)
 
     report.append("\n" + "="*50 + "\n")
-    report.append("\n3. Ngrammes signatures\n")
+    report.append("\n### 3. Ngrammes signatures\n")
     unique_genre = sorted(list(set(biblio.values())))
     for genre in unique_genre: 
         report.append(ngram_signatures(matrix, txt_names, biblio, lexique, target_genre=genre, top=5))
@@ -249,7 +247,7 @@ def generate_report(matrix, txt_names, biblio, lexique, output_path, img_path, t
     report.append("\n" + "="*50 +"\n")
 
     if img_path:
-        report.append("\n4. Visualisation\n")
+        report.append("\n### 4. Visualisation\n")
         report.append(f"![Nuages de points des {titre}]({img_path})\n")
         
        
