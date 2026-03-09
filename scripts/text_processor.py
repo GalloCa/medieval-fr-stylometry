@@ -2,7 +2,7 @@ import re
 import os
 from collections import Counter
 
-class Test: 
+class TextProcessor: 
 
     def __init__(self, filepath, clean_name, genre="Inconnu"):
         self.filepath = filepath

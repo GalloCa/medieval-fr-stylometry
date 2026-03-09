@@ -2,7 +2,7 @@ import os
 import time
 
 from utils import load_biblio, clean_label, save_matrix_tsv
-from test import Test
+from text_processor import TextProcessor
 from analyse import create_comparison_matrix, generate_report, compare_files
 # scatterplot 
 # lcs
@@ -42,7 +42,7 @@ if __name__ == "__main__":
             input_path = os.path.join(raw_txt_dir, filename)
             file_name_clean = clean_label(filename)
 
-            doc = Test(filepath = input_path, clean_name = file_name_clean)
+            doc = TextProcessor(filepath = input_path, clean_name = file_name_clean)
 
             doc.clean_txt()
             doc.n_gramm(n=3)
@@ -59,8 +59,10 @@ if __name__ == "__main__":
     compare_files(matrix, txt_names, compare_out_dir)
 
     # E3 : LCS
+    
+    # E4 : Scatter plot
 
-    # E4 : Génération d'un rapport
+    # E5 : Génération d'un rapport
     generate_report(matrix, txt_names, dico_genre, lexique, genre_report_dir, titre="Analyse par Genres Littéraires")
     generate_report(matrix, txt_names, dico_author, lexique, auteurs_report_dir, titre="Analyse par Auteurs")
     generate_report(matrix, txt_names, dico_date, lexique, dates_report_dir, titre="Analyse par Epoques")

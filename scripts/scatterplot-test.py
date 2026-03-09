@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.manifold import MDS
 from adjustText import adjust_text
+import numpy as np
+from metrics import cos_np
 
 def clean_label(name):
     for prefix in ['freq-filtered-', 'freq-', 'filtered-']:
@@ -32,11 +34,28 @@ def generate_similarity_plot(matrix_path, dico_path, output_dir, mode='genre'):
     df.columns = [clean_label(col) for col in df.columns]
     
     # Calcul MDS
+    nb_txt = len(df.columns)
+    dissimilarity = np.zeros((nb_txt, nb_txt))
+
+    for i in range(nb_txt):
+        for j in range(nb_txt):
+            if i!=j:
+                v1 = df.iloc[:,i].values
+                v2 = df.iloc[:,j].values
+                
+                dist = max(0.0, 1.0 - cos_np(v1,v2))
+                dissimilarity[i,j] = dist
+                dissimilarity[j,i] = dist
+    
+    mds = MDS(n_components=2, metric=True, n_init=4, random_state=42, dissimilarity='precomputed' )
+    pos = mds.fit_transform(dissimilarity)
+    """
     df_transposed = df.T
     sim_matrix = cosine_similarity(df_transposed)
     dissimilarity = 1 - sim_matrix
     mds = MDS(n_components=2, metric=True, n_init=4, init='random', random_state=42)
     pos = mds.fit_transform(dissimilarity)
+    """
 
     # 3. Configuration esthétique
     configs = {

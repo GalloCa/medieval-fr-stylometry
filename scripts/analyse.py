@@ -65,7 +65,7 @@ def create_comparison_matrix(liste_man):
 
     return np_matrix, ordered_lex, txt_name
 
-# Rajouter argument de biblio pour les étiquettes finales 
+# Rajouter argument de biblio pour les étiquettes finales ²
 def knn_np(matrix, txt_names):
     """
     Identifie les 5 paires de textes les plus proches et les 5 plus éloignées
