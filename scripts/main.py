@@ -4,8 +4,8 @@ import time
 from utils import load_biblio, clean_label, save_matrix_tsv
 from text_processor import TextProcessor
 from analyse import create_comparison_matrix, generate_report, compare_files
-from plots_generator import generate_similarity_plot 
-# lcs
+from plots_generator import generate_similarity_plot, generate_dendogramme
+from lcs_analyse import analyse_auteur
 
 if __name__ == "__main__":
 
@@ -24,9 +24,10 @@ if __name__ == "__main__":
     scatter_plot_date = "../scatter-plots/nuage_points_dates.png"
 
     output_matrix = r"/workspaces/medFR-paleao-NLP/results/matrix/matrix.tsv"
-    genre_report_dir = r"/workspaces/medFR-paleao-NLP/results/rapports/rapport-genre.txt"
-    auteurs_report_dir = r"/workspaces/medFR-paleao-NLP/results/rapports/rapport-auteurs.txt"
-    dates_report_dir = r"/workspaces/medFR-paleao-NLP/results/rapports/rapport-date.txt"
+    plot_output_dir = r"/workspaces/medFR-paleao-NLP/results/scatter-plots"
+    genre_report_dir = r"/workspaces/medFR-paleao-NLP/results/rapports/rapport-genre.md"
+    auteurs_report_dir = r"/workspaces/medFR-paleao-NLP/results/rapports/rapport-auteurs.md"
+    dates_report_dir = r"/workspaces/medFR-paleao-NLP/results/rapports/rapport-epoques.md"
     compare_out_dir =r"/workspaces/medFR-paleao-NLP/results/matrix/compare-files.tsv"
 
     dico_genre = load_biblio(biblio_genre__dir)
@@ -61,9 +62,11 @@ if __name__ == "__main__":
     save_matrix_tsv(matrix, lexique, txt_names, output_matrix)
     compare_files(matrix, txt_names, compare_out_dir)
 
-    # E3 : LCS
-
     # E4 : Scatter plot
+    generate_similarity_plot(matrix, txt_names, dico_genre, plot_output_dir, mode='genre')
+    generate_similarity_plot(matrix, txt_names, dico_date, plot_output_dir, mode='dates')
+    generate_similarity_plot(matrix, txt_names, dico_author, plot_output_dir, mode='auteurs')
+    generate_dendogramme(matrix, txt_names, dico_author, plot_output_dir)
 
     # E5 : Génération d'un rapport
     generate_report(matrix, txt_names, 
@@ -77,3 +80,11 @@ if __name__ == "__main__":
     generate_report(matrix, txt_names, 
                     dico_date, lexique, dates_report_dir, 
                     scatter_plot_date, titre="Analyse par Epoques")
+    
+    # E5 : LCS
+    add_lcs_report_author = analyse_auteur('Chrétien de Troyes', clean_txt_dir, dico_author)
+
+    with open(auteurs_report_dir, mode='a', encoding='utf-8') as f:
+        f.write("\n" + "="*50 + "\n")
+        f.write(add_lcs_report_author)
+    print("Analyse LCS ajoutée au rapport global des auteurs")

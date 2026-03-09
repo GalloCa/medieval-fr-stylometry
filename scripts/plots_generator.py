@@ -1,5 +1,4 @@
 import os
-import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.manifold import MDS
@@ -16,10 +15,10 @@ def clean_label(name):
         name = name.replace(ext, '')
     return name
 
-def generate_similarity_plot(matrix_path, dico_path, output_dir, mode='genre'):
+def generate_similarity_plot(matrix, txt_names, biblio, output_dir, mode='genre'):
     """
     """
-    # 1. Chargement des métadonnées
+    """# 1. Chargement des métadonnées
     biblio = {}
     try:
         with open(dico_path, mode='r', encoding='utf-8') as f:
@@ -36,16 +35,15 @@ def generate_similarity_plot(matrix_path, dico_path, output_dir, mode='genre'):
     df = df.dropna(axis=1, how="all")
     df = df.fillna(0)
     df.columns = [clean_label(col) for col in df.columns]
-    
+    """
     # Calcul MDS
-    nb_txt = len(df.columns)
+    nb_txt = len(txt_names)
     dissimilarity = np.zeros((nb_txt, nb_txt))
 
     for i in range(nb_txt):
         for j in range(nb_txt):
-            if i!=j:
-                v1 = df.iloc[:,i].values
-                v2 = df.iloc[:,j].values
+                v1 = matrix[:,i]
+                v2 = matrix[:,j]
                 
                 dist = max(0.0, 1.0 - cos_np(v1,v2))
                 dissimilarity[i,j] = dist
@@ -89,7 +87,7 @@ def generate_similarity_plot(matrix_path, dico_path, output_dir, mode='genre'):
     texts = []
     handles_labels = {} 
 
-    for i, txt in enumerate(df.columns):
+    for i, txt in enumerate(txt_names):
         cat = biblio.get(txt, 'Inconnu')
         couleur = current_map.get(cat, '#BDC3C7')
 
@@ -141,50 +139,36 @@ def generate_similarity_plot(matrix_path, dico_path, output_dir, mode='genre'):
     print(f"Scatter Plot généré avec succès : {output_path}")
 
 
-def generate_dendogramme(matrix_path,dico_path, output_dir):
+def generate_dendogramme(matrix, txt_names, biblio, output_dir):
     """
     """
-    biblio = {}
-    try:
-        with open(dico_path, mode='r', encoding='utf-8') as f:
-            for ligne in f:
-                if ":" in ligne:
-                    cle, valeur = ligne.split(":", 1)
-                    biblio[cle.strip()] = valeur.strip()
-    except Exception as e:
-        print(f"Erreur lecture dico: {e}")
-        return
     
-    df = pd.read_csv(matrix_path, sep='\t', index_col='ngramme')
-    df = df.dropna(axis=1, how="all")
-    df = df.fillna(0)
-    df.columns = [clean_label(col) for col in df.columns]
+    anonym = [i for i, name in enumerate(txt_names) if biblio.get(name) == 'Anonyme']
+    anonym_names = [txt_names[i] for i in anonym]
 
-    anonym = [col for col in df.columns if biblio.get(col) == 'Anonyme']
     if len(anonym) <2:
         print("Pas assez de textes d'auteus anonyms pour faire un arbre")
         return
     
-    df_anonym = df[anonym]
-    nb_txt = len(df_anonym.columns)
+    nb_txt = len(anonym)
     dissimilarity = np.zeros((nb_txt, nb_txt))
 
     for i in range(nb_txt):
         for j in range(nb_txt):
             if i!=j:
-                v1 = df.iloc[:,i].values
-                v2 = df.iloc[:,j].values
-                
+                v1 = matrix[:,anonym[i]]
+                v2 = matrix[:,anonym[j]]
                 dist = max(0.0, 1.0 - cos_np(v1,v2))
                 dissimilarity[i,j] = dist
                 dissimilarity[j,i] = dist
+
     condensed_dist = squareform(dissimilarity)
     z = linkage(condensed_dist, method='average')
 
     fig, ax = plt.subplots(figsize=(12, 7), dpi=100)
 
     dendro = dendrogram(z,
-                        labels = df_anonym.columns,
+                        labels = anonym_names,
                         orientation = 'top',
                         leaf_rotation=90,
                         leaf_font_size=11,
@@ -205,15 +189,9 @@ def generate_dendogramme(matrix_path,dico_path, output_dir):
 
 
 
-# Exemple d'appel pour tes 3 fonctions d'origine :
-path_matrix = "/workspaces/medFR-paleao-NLP/results/matrix/matrix.tsv"
-path_dic_genre ="/workspaces/medFR-paleao-NLP/data/metadata/dico_genre.txt"
-path_dic_dates = "/workspaces/medFR-paleao-NLP/data/metadata/dico_date.txt"
-path_dic_authors = "/workspaces/medFR-paleao-NLP/data/metadata/dico_auteur.txt"
-path_out_dir = "/workspaces/medFR-paleao-NLP/results/scatter-plots"
-
-
-"""generate_similarity_plot(path_matrix, path_dic_genre, path_out_dir, mode='genre')
+"""
+generate_similarity_plot(path_matrix, path_dic_genre, path_out_dir, mode='genre')
 generate_similarity_plot(path_matrix, path_dic_dates, path_out_dir, mode='dates')
-generate_similarity_plot(path_matrix, path_dic_authors, path_out_dir, mode='auteurs')"""
-generate_dendogramme(path_matrix, path_dic_authors, path_out_dir)
+generate_similarity_plot(path_matrix, path_dic_authors, path_out_dir, mode='auteurs')
+"""
+# generate_dendogramme(path_matrix, path_dic_authors, path_out_dir)

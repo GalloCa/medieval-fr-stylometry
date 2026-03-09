@@ -1,5 +1,5 @@
 ## Analyse par Auteurs
-- *Généré le : 2026-03-09 12:13*
+- *Généré le : 2026-03-09 13:18*
 
 
 ### 1. Classification KNN 
@@ -104,3 +104,38 @@ mè' (ratio : 9.91)
 ### 4. Visualisation
 
 ![Nuages de points des Analyse par Auteurs](../scatter-plots/nuage_points_auteurs.png)
+
+==================================================
+## 5. LCS - Séquences récurrentes de Chrétien de Troyes 
+
+Séquences de mots exactes partagées entre ses oeuvres : 
+
+- **Yvain** et **LancJ** (32 caractères) :
+ > «  *il a onques voir tant ne savilla* »
+
+- **Yvain** et **Cliges** (19 caractères) :
+ > «  *au plus tost que il* »
+
+- **Yvain** et **PercevalKu** (46 caractères) :
+ > «  *armer son cors et son cheval li ont trait fors* »
+
+- **Yvain** et **ErecF** (23 caractères) :
+ > «  *au plus tost que il pot* »
+
+- **LancJ** et **Cliges** (33 caractères) :
+ > «  *toche et a ses ialz et a sa boche* »
+
+- **LancJ** et **PercevalKu** (39 caractères) :
+ > «  *le roi artu foi que doi deu et sa vertu* »
+
+- **LancJ** et **ErecF** (47 caractères) :
+ > «  *que laube crieve isnelemant et tost se lieve et* »
+
+- **Cliges** et **PercevalKu** (26 caractères) :
+ > «  *la ou il ert an son esgart* »
+
+- **Cliges** et **ErecF** (37 caractères) :
+ > «  *ne li escuz ne li haubers ne li valut* »
+
+- **PercevalKu** et **ErecF** (45 caractères) :
+ > «  *et bele et sage et si est mout de haut parage* »
