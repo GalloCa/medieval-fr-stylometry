@@ -17,6 +17,8 @@ def clean_label(name):
     return name
 
 def generate_similarity_plot(matrix_path, dico_path, output_dir, mode='genre'):
+    """
+    """
     # 1. Chargement des métadonnées
     biblio = {}
     try:

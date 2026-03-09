@@ -55,18 +55,11 @@ def create_comparison_matrix(liste_man):
         for ngram, freq in text.frequences.items():
             i = ngram_to_index[ngram]
             np_matrix[i, j] = freq
-            
-    with open(output_path, mode='w', encoding='utf-8') as f:
-        f.write("ngramme\t" + "\t".join(txt_name) + "\n")
-        for i, ngram in enumerate(ordered_lex):
-            values = "\t".join(map(str, np_matrix[i, :]))
-            f.write(f"{ngram}\t{values}\n")
-    print(f'Matrice Numpy créee')
 
     return np_matrix, ordered_lex, txt_name
 
 # Rajouter argument de biblio pour les étiquettes finales ²
-def knn_np(matrix, txt_names):
+def knn(matrix, txt_names, biblio):
     """
     Identifie les 5 paires de textes les plus proches et les 5 plus éloignées
 
@@ -86,22 +79,48 @@ def knn_np(matrix, txt_names):
             all_pairs.append((txt_names[i], txt_names[j], score))
     # Tri par score décroissant
     all_pairs.sort(key=lambda x: x[2], reverse=True)
-    # A enregistrer en sortie dans fichiers txt ?
-    #  Traces pour test
-    print("Les 5 plus proches sont :")
-    for t1, t2, s in all_pairs[:5]:
-        print(f"{s:.4f} : {t1} / {t2}")
-    print("\nLes 5 plus éloignés sont :")
-    for t1, t2, s in all_pairs[-5:][::-1]:
-        print(f"{s:.4f} : {t1} / {t2}")
-   
-    report_ligne= ["Les 5 plus proches sont : "]
-    for t1, t2, s in all_pairs[:5]:
-        report_ligne.append(f"{s:.4f} : {t1} / {t2}")
+    top_5 = all_pairs[:5]
+    bot_5 = all_pairs[-5:]
     
-    report_ligne.append("\nLes 5 plus éloignés sont :")
-    for t1, t2, s in all_pairs[-5:][::-1]:
-        report_ligne.append(f"{s:.4f} : {t1} / {t2}")
+    good_pred = 0
+    evaluated_txt = 0
+    for i in range(nb_txt):
+        t1 = txt_names[i]
+        cat1 = biblio.get(t1)
+        if not cat1:
+            continue
+
+        max_score = -1
+        best_knn = None
+        for j in range(nb_txt):
+            if i ==j :
+                continue
+            score = cos_np(matrix[:,i], matrix[:, j])
+            if score > max_score:
+                max_score = score
+                best_knn = txt_names[j]
+        cat2 = biblio.get(best_knn)
+
+        if cat1 == cat2:
+            good_pred +=1
+        evaluated_txt +=1
+    accuracy = (good_pred / evaluated_txt) * 100 if evaluated_txt > 0 else 0
+
+    # A enregistrer en sortie dans fichiers txt ?
+    report_ligne= []
+    report_ligne.append(f"\n Précision de l'algorithme KNN : {accuracy :.1f}% \n")
+    
+    report_ligne.append(f"Les 5 paires les plus proches : \n")
+    for t1, t2, score in top_5 : 
+        c1 = biblio.get(t1, 'Inconnu')
+        c2 = biblio.get(t2, 'Inconnu')
+        report_ligne.append(f"{score:.4f} : {t1} ({c1}) / {t2} ({c2})")
+    
+    report_ligne.append(f"\nLes 5 paires les plus éloignées : \n")
+    for t1, t2, score in reversed(bot_5) : 
+        c1 = biblio.get(t1, 'Inconnu')
+        c2 = biblio.get(t2, 'Inconnu')
+        report_ligne.append(f"{score:.4f} : {t1} ({c1}) / {t2} ({c2})")
     
     return "\n".join(report_ligne)
 
@@ -124,9 +143,6 @@ def genre_cohesion(matrix, txt_names, biblio):
                 genres[genre] = []
             genres[genre].append(idx)
             
-
-    # Trace de test
-    print("\n Cohésion par genre")
     for genre, indices in genres.items():
         if len(indices) < 2:
             print(f"{genre : <15} : Non calculable car un 1 seul texte dans les données")
@@ -140,7 +156,7 @@ def genre_cohesion(matrix, txt_names, biblio):
         mean = sum(scores) / len(scores)
         print(f"{genre:<15} : {mean :.04f}")
 
-    report_lignes= ["\nCohésion par genre"]
+    report_lignes= []
     for genre, indices in genres.items():
         if len(indices) < 2:
             report_lignes.append(f"{genre : <15} : Non calculable car un 1 seul texte dans les données")
@@ -184,7 +200,7 @@ def ngram_signatures(matrix, txt_names, biblio, lexique, target_genre, top=10):
 
     indices_tries = np.argsort(scores)[::-1]
 
-    report_lignes = [f"\n Signature du genre : '{target_genre}'"]
+    report_lignes = [f"\n Signature du genre : '{target_genre}' \n"]
     for idx in indices_tries[:top]:
         ng = lexique[idx]
         s = scores[idx]
@@ -193,89 +209,8 @@ def ngram_signatures(matrix, txt_names, biblio, lexique, target_genre, top=10):
     return "\n".join(report_lignes)
 
 
-# 
-def confusion_matrix(matrix, txt_names, biblio, output_file=None):
-   """
-   Génère et affiche une matrice de confusion basée sur le plus proche voisin, avec Numpy
-
-    Arguments:
-        matrix (np.ndarray): La matrice des fréquences.
-        txt_names (list): La liste des noms des textes.
-        biblio (dict): Le dictionnaire de vérité terrain (vrai genre de chaque texte).
-        output_file (str, optional): Chemin vers le fichier texte de sauvegarde.
-
-    Returns:
-        float: Le score de précision globale de l'algorithme (Accuracy) en pourcentage
-    
-   """
-   classes = sorted(list(set(biblio.values())))
-   nb_classes = len(classes)
-   genre_to_idx = {g : i for i, g in enumerate(classes)}
-
-   conf_matrix = np.zeros((nb_classes, nb_classes), dtype=int)
-
-   correct = 0
-   total = 0
-   nb_txt = len(txt_names)
-
-   for i in range(nb_txt):
-       t1 = txt_names[i]
-       real_genre = biblio.get(t1)
-       if not real_genre : continue
-
-       best_score = -1
-       nghr_idx = -1 
-
-       for j in range(nb_txt):
-           if i == j : continue
-
-           score = cos_np(matrix[:,i], matrix[:,j])
-           if score > best_score:
-               best_score = score 
-               nghr_idx = j
-
-       nghr_t = txt_names[nghr_idx]
-       predict_genre = biblio.get(nghr_t)
-
-       real_idx = genre_to_idx[real_genre]
-       idx_predict = genre_to_idx[predict_genre]
-       conf_matrix[real_idx, idx_predict] +=1
-
-       if real_genre == predict_genre:
-           correct +=1 
-       total += 1
-
-   accuracy = (correct / total) * 100 if total > 0 else 0
-
-   report_lignes = []
-   report_lignes.append("Matrice de confusion")
-   header = " " * 15 + "".join([f"{g[:6]:>8}" for g in classes])
-   report_lignes.append(header)
-   
-   for i, g_real in enumerate(classes):
-       ligne = f"{g_real[:12]:<15}"
-       for j in range(nb_classes):
-           ligne += f"{conf_matrix[i,j]:>8}"
-       report_lignes.append(ligne)
-       
-   report_lignes.append(f"\nPrécision global : {accuracy:.02f}%")
-   
-   final = "\n".join(report_lignes)
-   print("\n" + final)
-
-   if output_file:
-       folder = os.path.dirname(output_file)
-       if folder and not os.path.exists(folder):
-           os.makedirs(folder)
-        
-       with open(output_file, mode='w', encoding='utf-8') as f:
-           f.write(final + "\n")
-           print(f"Matrice de confusion sauvegarder dans : {output_file}")
-
-   return accuracy
-
 # Rapport final 
-def generate_report(matrix, txt_names, biblio, lexique, output_path, titre=None):
+def generate_report(matrix, txt_names, biblio, lexique, output_path, img_path, titre=None ):
     """
     Réalise l'ensembles des analyses définies précédemment et génère un rapport global 
     sous forme de fichier texte.
@@ -297,26 +232,34 @@ def generate_report(matrix, txt_names, biblio, lexique, output_path, titre=None)
         f"Généré le : {dd}",
         "\n"
     ]
-    report.append("1. Classification KNN")
-    report.append(knn_np(matrix, txt_names))
-    
+    report.append("1. Classification KNN \n")
+    report.append(knn(matrix, txt_names, biblio))
+
     report.append("\n" + "="*50 + "\n")
-    report.append("\n2. Cohésion des genres")
+    report.append("\n2. Cohésion interne\n")
     cohesion = genre_cohesion(matrix, txt_names, biblio)
     report.append(cohesion)
 
     report.append("\n" + "="*50 + "\n")
-    report.append("\n3. Ngrammes signatures par genre")
+    report.append("\n3. Ngrammes signatures\n")
     unique_genre = sorted(list(set(biblio.values())))
     for genre in unique_genre: 
         report.append(ngram_signatures(matrix, txt_names, biblio, lexique, target_genre=genre, top=5))
         
-    report.append("\n" + "="*50 +"\nFin")
+    report.append("\n" + "="*50 +"\n")
 
+    if img_path:
+        report.append("\n4. Visualisation\n")
+        report.append(f"![Nuages de points des {titre}]({img_path})\n")
+        
+       
     folder = os.path.dirname(output_path)
     if folder and not os.path.exists(folder):
         os.makedirs(folder)
+    
+    if not output_path.endswith('.md'):
+        output_path = output_path.replace('.txt', '.md')    
     with open(output_path, mode="w", encoding='utf-8') as f:
         f.write("\n".join(report))
-    
+
     print(f"Rapport généré dans : {output_path}")

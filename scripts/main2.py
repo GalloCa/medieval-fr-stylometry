@@ -15,10 +15,13 @@ if __name__ == "__main__":
     filter_txt_dir = r"/workspaces/medFR-paleao-NLP/data/filtered-txt"
     freq_folder = r"/workspaces/medFR-paleao-NLP/results/frequencies"
     
-    stopwords_dir = r"/workspaces/medFR-paleao-NLP/data/stopwords/300stopwordsMF"
     biblio_genre__dir = r"/workspaces/medFR-paleao-NLP/data/metadata/dico_genre.txt"
     biblio_author__dir = r"/workspaces/medFR-paleao-NLP/data/metadata/dico_auteur.txt"
     biblio_date__dir = r"/workspaces/medFR-paleao-NLP/data/metadata/dico_date.txt"
+
+    scatter_plot_genre = "../scatter-plots/nuage_points_genre.png"
+    scatter_plot_author = "../scatter-plots/nuage_points_auteurs.png"
+    scatter_plot_date = "../scatter-plots/nuage_points_date.png"
 
     output_matrix = r"/workspaces/medFR-paleao-NLP/results/matrix/matrix.tsv"
     genre_report_dir = r"/workspaces/medFR-paleao-NLP/results/rapports/rapport-genre.txt"
@@ -63,6 +66,14 @@ if __name__ == "__main__":
     # E4 : Scatter plot
 
     # E5 : Génération d'un rapport
-    generate_report(matrix, txt_names, dico_genre, lexique, genre_report_dir, titre="Analyse par Genres Littéraires")
-    generate_report(matrix, txt_names, dico_author, lexique, auteurs_report_dir, titre="Analyse par Auteurs")
-    generate_report(matrix, txt_names, dico_date, lexique, dates_report_dir, titre="Analyse par Epoques")
+    generate_report(matrix, txt_names, 
+                    dico_genre, lexique, genre_report_dir, 
+                    scatter_plot_genre, titre="Analyse par Genres Littéraires")
+    
+    generate_report(matrix, txt_names, 
+                    dico_author, lexique, auteurs_report_dir, 
+                    scatter_plot_author, titre="Analyse par Auteurs")
+    
+    generate_report(matrix, txt_names, 
+                    dico_date, lexique, dates_report_dir, 
+                    scatter_plot_date, titre="Analyse par Epoques")
