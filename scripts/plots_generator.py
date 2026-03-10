@@ -1,40 +1,15 @@
 import os
 import matplotlib.pyplot as plt
-from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.manifold import MDS
 from adjustText import adjust_text
 import numpy as np
-from metrics import cos_np
 from scipy.cluster.hierarchy import dendrogram, linkage
 from scipy.spatial.distance import squareform
-
-def clean_label(name):
-    for prefix in ['freq-filtered-', 'freq-', 'filtered-']:
-        name = name.replace(prefix, '')
-    for ext in ['.tsv', '.txt']:
-        name = name.replace(ext, '')
-    return name
+from metrics import cos_np
 
 def generate_similarity_plot(matrix, txt_names, biblio, output_dir, mode='genre'):
     """
-    """
-    """# 1. Chargement des métadonnées
-    biblio = {}
-    try:
-        with open(dico_path, mode='r', encoding='utf-8') as f:
-            for ligne in f:
-                if ":" in ligne:
-                    cle, valeur = ligne.split(":", 1)
-                    biblio[cle.strip()] = valeur.strip()
-    except Exception as e:
-        print(f"Erreur lecture dico: {e}")
-        return
 
-    # 2. Traitement des données
-    df = pd.read_csv(matrix_path, sep='\t', index_col='ngramme')
-    df = df.dropna(axis=1, how="all")
-    df = df.fillna(0)
-    df.columns = [clean_label(col) for col in df.columns]
     """
     # Calcul MDS
     nb_txt = len(txt_names)
@@ -51,14 +26,7 @@ def generate_similarity_plot(matrix, txt_names, biblio, output_dir, mode='genre'
     
     mds = MDS(n_components=2, metric=True, n_init=4, random_state=42, dissimilarity='precomputed' )
     pos = mds.fit_transform(dissimilarity)
-    """
-    df_transposed = df.T
-    sim_matrix = cosine_similarity(df_transposed)
-    dissimilarity = 1 - sim_matrix
-    mds = MDS(n_components=2, metric=True, n_init=4, init='random', random_state=42)
-    pos = mds.fit_transform(dissimilarity)
-    """
-
+  
     # 3. Configuration esthétique
     configs = {
         'genre':  {'title': 'par genres', 'file': 'genre.png', 'legend': 'Genres'},
@@ -76,10 +44,8 @@ def generate_similarity_plot(matrix, txt_names, biblio, output_dir, mode='genre'
     }
     current_map = color_maps.get(mode, {})
 
-    # 4. Création du graphique avec marges forcées
+    # marges forcées
     fig, ax = plt.subplots(figsize=(14, 9), dpi=100)
-    
-    # On bloque les marges : right=0.75 laisse 25% de l'image à la légende
     fig.subplots_adjust(right=0.75, left=0.1, top=0.88, bottom=0.1)
     
     ax.spines[['top', 'right']].set_visible(False)
@@ -99,7 +65,7 @@ def generate_similarity_plot(matrix, txt_names, biblio, output_dir, mode='genre'
 
         texts.append(ax.text(pos[i, 0], pos[i, 1], txt, fontsize=9, fontweight='medium'))
 
-    # 5. Ajustement des labels
+    # Ajustement des labels
     adjust_text(texts, 
                 x = pos[:,0],
                 y = pos[:,1],
@@ -127,13 +93,12 @@ def generate_similarity_plot(matrix, txt_names, biblio, output_dir, mode='genre'
     
     ax.grid(True, linestyle='--', alpha=0.2)
 
-    # 6. Sauvegarde
+    # Sauvegarde
     if not os.path.exists(output_dir): 
         os.makedirs(output_dir)
         
     output_path = os.path.join(output_dir, f"nuage_points_{conf['file']}")
     
-    # On NE met PAS bbox_inches='tight' pour garder nos marges de subplots_adjust
     fig.savefig(output_path, dpi=300)
     plt.close(fig) 
     print(f"Scatter Plot généré avec succès : {output_path}")
@@ -186,12 +151,3 @@ def generate_dendogramme(matrix, txt_names, biblio, output_dir):
     fig.savefig(output_path, dpi=300)
     plt.close(fig) 
     print(f"Dendogramme généré avec succès : {output_path}")
-
-
-
-"""
-generate_similarity_plot(path_matrix, path_dic_genre, path_out_dir, mode='genre')
-generate_similarity_plot(path_matrix, path_dic_dates, path_out_dir, mode='dates')
-generate_similarity_plot(path_matrix, path_dic_authors, path_out_dir, mode='auteurs')
-"""
-# generate_dendogramme(path_matrix, path_dic_authors, path_out_dir)
