@@ -28,7 +28,7 @@ class TextProcessor:
         clean_lines = []
         ban_words = ['meta', 'texturi', 'deaf', 'arlima', 'texttitle', 'textdate', 
             'ededitor', 'msbase', 'http', 'www', 'orcid', 'cclicense', 
-            'ici commence', 'prologue', 'or commence', 'author', 'start', 'folio', 'version']
+            'ici commence', 'prologue', 'or commence', 'author', 'start', 'folio', 'version', 'end']
 
         for line in lines:
             line_content = line.lower().strip()
