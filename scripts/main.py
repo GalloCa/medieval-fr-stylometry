@@ -1,6 +1,15 @@
 """
+Pipeline globale d'analyse d'un corpus en Ancien Français
 
+Il effectue l'ensemble des opérations suivantes :
+    1. Téléchargement des données brutes depuis GitHub
+    2. Nettoyage et calcul des fréquences de n-grammes
+    3. Construction de la matrice
+    4. Génération de visualisations
+    5. Création des rapports d'analyse
+    6. Analyse des séquences communes (LCS) pour Chrétien de Troyes
 """
+
 # MODULES
 import os 
 import time
@@ -121,4 +130,4 @@ if __name__ == "__main__":
         f.write("\n" + "="*50 + "\n")
         f.write(add_lcs_report_author)
     print("Analyse LCS ajoutée au rapport global des auteurs")
-    
+
