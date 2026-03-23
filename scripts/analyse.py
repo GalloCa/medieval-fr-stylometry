@@ -69,7 +69,7 @@ def create_comparison_matrix(liste_txt):
 
     Sorties :
         tuple : 
-            - np_matrix (numpy.ndarray) : matrice de fréquence
+            - np_matrix (numpy.ndarray) : matrice de fréquence (n-grammes x textes)
             - ordered_lex (list) : lexique complet et ordonné
             - txt_name (list) : liste des noms de fichiers correspondant aux colonnes
     """
@@ -106,10 +106,9 @@ def knn(matrix, txt_names, biblio):
 
     
     Entrées :
-        matrix (np.ndarray) : la matrice des fréquences
+        matrix (np.ndarray) : la matrice des fréquences (n-grammes x textes)
         txt_names (list) : liste des noms de textes 
-        biblio (dict) : dictionnaire de correspondance {nom : auteur | date | genre}
-
+        biblio (dict) : dictionnaire de métadonnées {nom : auteur | date | genre}
     Sorties :
         str : un rapport au format Markdown contenant les resultats
      """
@@ -180,9 +179,9 @@ def genre_cohesion(matrix, txt_names, biblio):
     Calcule de la similarité moyenne à l'intérieur de chaque genre, date ou auteur.
 
     Entrées :
-        matrix (np.ndarray) : la matrice des fréquences
+        matrix (np.ndarray) : la matrice des fréquences (n-grammes x textes)
         txt_names (list) : liste des noms de textes 
-        biblio (dict) : dictionnaire de correspondance {nom : auteur | date | genre}
+        biblio (dict) : dictionnaire de métadonnées {nom : auteur | date | genre}
 
     Sorties :
         str : un rapport au format Markdown contenant les resultats
@@ -228,9 +227,9 @@ def ngram_signatures(matrix, txt_names, biblio, lexique, target_genre, top=10):
     Identifie les ngrammes caractéristiques d'un genre, auteur ou époque.
 
     Entrées :
-        matrix (np.ndarray): la matrice des fréquences (n_grammes, n_textes).
-        txt_names (list): la liste des noms des textes.
-        biblio (dict): le dictionnaire associant les textes à leur genre.
+        matrix (np.ndarray) : la matrice des fréquences (n-grammes x textes)
+        txt_names (list) : liste des noms de textes 
+        biblio (dict) : dictionnaire de métadonnées {nom : auteur | date | genre}
         lexique (list): la liste ordonnée de tous les n-grammes du corpus.
         target_genre (str): le genre littéraire à analyser (ex: "Roman courtois").
         top (int, optional): le nombre de n-grammes à afficher, par défaut 10.
@@ -268,9 +267,9 @@ def generate_report(matrix, txt_names, biblio, lexique, output_path, img_path, t
     Elle récupère aussi les graphes de visualisation réalisés dans le script plot_generator.py
 
     Entrées:
-        matrix (np.ndarray):  matrice des fréquences.
-        txt_names (list): liste des noms des textes
-        biblio (dict): dictionnaire des métadonnées (genres/auteurs/époque)
+        matrix (np.ndarray) : la matrice des fréquences (n-grammes x textes)
+        txt_names (list) : liste des noms de textes 
+        biblio (dict) : dictionnaire de métadonnées {nom : auteur | date | genre}
         lexique (list): liste ordonnée des n-grammes
         output_path (str): chemin absolu ou relatif de sauvegarde du rapport
         img_path (str) : chemin vers l'image de visualisation

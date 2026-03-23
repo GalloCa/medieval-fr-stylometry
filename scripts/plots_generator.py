@@ -1,3 +1,23 @@
+"""
+Génération de graphique et visualisation du corpus 
+
+Ce script prend en charge la représentation visuelle des résultats de l'analyse.
+Il transforme les matrices de distances mathématiques en graphiques.
+
+Il génère :
+    1. des nuages de points via MDS, afin d'observer la proximité des textes selon le 
+        genres, époque ou auteurs.
+    2. Des dendogrammespour analyser les regroupements spécifiques en fonction des auteurs anomynes.
+
+Dépendances :
+    - matplotlib.pyplot : création, mise en forme et sauvegarde des graphes.
+    - sklearn.manifold (MDS) : réduction de dimension (passage de N-dimensions à 2D)
+    - scipy.cluster  / scipy.spatial : outils pour le clustering hiérarchique
+    - adjustText : optimisation de l'affichage des étiquettes (anti-chevauchement)
+    - metrics : script contenant la fonctions personnalisée de calcul de 
+                similarité (cos_np)
+"""
+# MODULES
 import os
 import matplotlib.pyplot as plt
 from sklearn.manifold import MDS
@@ -7,18 +27,23 @@ from scipy.cluster.hierarchy import dendrogram, linkage
 from scipy.spatial.distance import squareform
 from metrics import cos_np
 
+
+# FONCTIONS
 def generate_similarity_plot(matrix, txt_names, biblio, output_dir, mode='genre'):
     """
+    Génère un nuage de points en deux dimensions illustrant la proximité
+    stylistique entre deux textes du corpus.
 
     Entrées : 
-        matrix(np.ndarray) : 
-        txt_names (list) : 
-        biblio (dict) :
-        output_dir (str) ;
-        mode (str) :
-
+        matrix(np.ndarray) : matrice des fréquences (n-grammes x textes)
+        txt_names (list) : liste des noms de textes
+        biblio (dict) : dictionnaire de métadonnés {nom : auteur | date | genre}
+        output_dir (str) : le chemin du dossier où sauvegarder l'image générée
+        mode (str, optionnel) : mode de colotration des points. 
+                                Accepte 'genre', 'dates' ou 'auteurs'.
+                                Par défaut 'genre'.
     Sortie : 
-        image (.png) : nuage de point
+        image (.png) : nuage de point dans le répertoire cible
     """
     # Calcul MDS
     nb_txt = len(txt_names)
@@ -36,7 +61,7 @@ def generate_similarity_plot(matrix, txt_names, biblio, output_dir, mode='genre'
     mds = MDS(n_components=2, metric=True, n_init=4, random_state=42, dissimilarity='precomputed' )
     pos = mds.fit_transform(dissimilarity)
   
-    # 3. Configuration esthétique
+    # Configuration esthétique
     configs = {
         'genre':  {'title': 'par genres', 'file': 'genre.png', 'legend': 'Genres'},
         'dates':  {'title': 'par dates', 'file': 'dates.png', 'legend': 'Dates'},
@@ -53,7 +78,7 @@ def generate_similarity_plot(matrix, txt_names, biblio, output_dir, mode='genre'
     }
     current_map = color_maps.get(mode, {})
 
-    # marges forcées
+    # Marges forcées
     fig, ax = plt.subplots(figsize=(14, 9), dpi=100)
     fig.subplots_adjust(right=0.75, left=0.1, top=0.88, bottom=0.1)
     
@@ -113,8 +138,22 @@ def generate_similarity_plot(matrix, txt_names, biblio, output_dir, mode='genre'
     print(f"Scatter Plot généré avec succès : {output_path}")
 
 
-def generate_dendogramme(matrix, txt_names, biblio, output_dir):
+def generate_dendogramme(matrix, txt_names, biblio, output_dir):    
     """
+    Génère un dendogramme illustrant les regroupements stylistiques 
+    au sein du sous-corpus des textes d'auteurs 'Anonyme'
+
+    Calcule leur matrice de dissimilarité, puis applique un algorithme de clustering 
+    ascendant.
+
+    Entrées : 
+        matrix(np.ndarray) : matrice des fréquences (n-grammes x textes)
+        txt_names (list) : liste des noms de textes
+        biblio (dict) : dictionnaire de métadonnés {nom : auteur | date | genre}
+        output_dir (str) : le chemin du dossier où sauvegarder l'image générée
+    Sortie : 
+        image (.png) : le dendogramme dans le répertoire cible
+
     """
     
     anonym = [i for i, name in enumerate(txt_names) if biblio.get(name) == 'Anonyme']
