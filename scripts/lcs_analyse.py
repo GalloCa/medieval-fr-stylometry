@@ -1,9 +1,13 @@
+
+"""
+
+"""
+
+# MODULES
 from utils import load_biblio
 import os 
 from difflib import SequenceMatcher
 
-biblio_author_dir = r"/workspaces/medFR-paleao-NLP/data/metadata/dico_auteur.txt"
-txt_dir = r"/workspaces/medFR-paleao-NLP/data/clean-txt"
 
 def lcs(t1, t2):
     """

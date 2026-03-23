@@ -37,9 +37,9 @@ def generate_similarity_plot(matrix, txt_names, biblio, output_dir, mode='genre'
     Entrées : 
         matrix(np.ndarray) : matrice des fréquences (n-grammes x textes)
         txt_names (list) : liste des noms de textes
-        biblio (dict) : dictionnaire de métadonnés {nom : auteur | date | genre}
+        biblio (dict) : dictionnaire de métadonnées {nom : auteur | date | genre}
         output_dir (str) : le chemin du dossier où sauvegarder l'image générée
-        mode (str, optionnel) : mode de colotration des points. 
+        mode (str, optionnel) : mode de coloration des points. 
                                 Accepte 'genre', 'dates' ou 'auteurs'.
                                 Par défaut 'genre'.
     Sortie : 
@@ -149,7 +149,7 @@ def generate_dendogramme(matrix, txt_names, biblio, output_dir):
     Entrées : 
         matrix(np.ndarray) : matrice des fréquences (n-grammes x textes)
         txt_names (list) : liste des noms de textes
-        biblio (dict) : dictionnaire de métadonnés {nom : auteur | date | genre}
+        biblio (dict) : dictionnaire de métadonnées {nom : auteur | date | genre}
         output_dir (str) : le chemin du dossier où sauvegarder l'image générée
     Sortie : 
         image (.png) : le dendogramme dans le répertoire cible

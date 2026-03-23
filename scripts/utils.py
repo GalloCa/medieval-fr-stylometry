@@ -1,16 +1,26 @@
+"""
+Module utilitaire pour le traitement des métadonnées et la gestion des fichiers
+
+Ce script contient des fonctions auxiliaires utilisées à travers l'ensemble de la pipeline
+pour charger les dictionnaires, nettoyer les étiquettes ou exporter des matrices au format .tsv.
+"""
+
+
+# MODULEs
 import os
 import re
 
-
+# FONCTIONS
 def load_biblio(path):
    """
-   Charge un fichier de metadonné et le transforme en dictionnaire
+   Charge un fichier de metadonnées et le transforme en dictionnaire.
+   Le fichier est formaté comme ceci : NomDuTexte : Catégorie
 
-   Arguments : 
-    path (str) : le chemin du fichier de métadonnée
+   Entrée : 
+        path (str) : le chemin absolu ou relatif du fichier de métadonnées
 
-   Return : 
-    dict : une dictionnaire { 'Oeuvre' : 'Genre'}
+   Sortie : 
+        dict : une dictionnaire  associant le nom de l'oeuvre à sa métadonnées{ 'Oeuvre' : 'Genre'}
 
    """
    biblio = {}
@@ -23,15 +33,15 @@ def load_biblio(path):
 
 def clean_label(name):
     """
-    Nettoyage des labels de fichiers pour isoler le nom du texte.
+    Nettoyage des étiquettes de fichiers pour isoler le nom du texte.
     Suppression des préfixes techniques liés au filtrage des fréquences et des extensions
     de fichiers.
 
-    Entrée:
+    Entrée :
         name (str) : Le nom original de la colonne ou du fichier à nettoyer.
 
     Sortie :
-        str : Le nom du texte nettoyé (ex : )
+        str : Le nom du texte nettoyé (ex : 'clean-Yvain.txt' devient 'Yvain')
     """
     for prefix in ['freq-', 'clean-']:
         name = name.replace(prefix, '')
@@ -41,21 +51,25 @@ def clean_label(name):
 
 def save_matrix_tsv(matrix, lexique, txt_names, output_path):
     """
-    Sauvegarde la matrice Numpy en mémoire vers un fichier TSV 
+    Sauvegarde la matrice Numpy en mémoire vers un fichier TSV. Structuré sous la forme
+    noms de textes pour les colonnes et n-grammes sur les lignes.
 
-    Arguments :
-
-    Returns : 
+    Entrées :
+        matrix (np.ndarray) : la matrice des fréquences (n-grammes x textes)
+        lexique (list): la liste ordonnée de tous les n-grammes du corpus
+        txt_names (list) : liste des noms de textes 
+        output_path (str) : le chemin de sauvegarde du fichier .tsv
+         
+    Sortie : 
+        Génération et sauvegarde du fichier .tsv
     """
     folder = os.path.dirname(output_path)
     if folder and not os.path.exists(folder):
         os.makedirs(folder)
 
     with open(output_path, mode='w', encoding='utf-8') as f:
-        # 1. L'en-tête (Les noms des textes en colonnes)
         f.write("ngramme\t" + "\t".join(txt_names) + "\n")
         
-        # 2. Les lignes (Le n-gramme + ses fréquences pour chaque texte)
         for i, ngram in enumerate(lexique):
             values = "\t".join(map(str, matrix[i, :]))
             f.write(f"{ngram}\t{values}\n")

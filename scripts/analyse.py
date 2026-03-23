@@ -176,7 +176,7 @@ def knn(matrix, txt_names, biblio):
 
 def genre_cohesion(matrix, txt_names, biblio):
     """
-    Calcule de la similarité moyenne à l'intérieur de chaque genre, date ou auteur.
+    Calcule de la similarité moyenne à l'intérieur de chaque genre, date ou auteur
 
     Entrées :
         matrix (np.ndarray) : la matrice des fréquences (n-grammes x textes)
@@ -224,15 +224,15 @@ def genre_cohesion(matrix, txt_names, biblio):
 
 def ngram_signatures(matrix, txt_names, biblio, lexique, target_genre, top=10):
     """
-    Identifie les ngrammes caractéristiques d'un genre, auteur ou époque.
+    Identifie les ngrammes caractéristiques d'un genre, auteur ou époque
 
     Entrées :
         matrix (np.ndarray) : la matrice des fréquences (n-grammes x textes)
         txt_names (list) : liste des noms de textes 
         biblio (dict) : dictionnaire de métadonnées {nom : auteur | date | genre}
-        lexique (list): la liste ordonnée de tous les n-grammes du corpus.
-        target_genre (str): le genre littéraire à analyser (ex: "Roman courtois").
-        top (int, optional): le nombre de n-grammes à afficher, par défaut 10.
+        lexique (list): la liste ordonnée de tous les n-grammes du corpus
+        target_genre (str): le genre littéraire à analyser (ex: "Roman courtois")
+        top (int, optional): le nombre de n-grammes à afficher, par défaut 10
     
     Sortie :
         str : un rapport au format Markdown contenant les resultats
