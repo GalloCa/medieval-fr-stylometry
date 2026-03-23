@@ -1,13 +1,30 @@
+"""
+Module d'acquisition de données (scraping / API)
+
+Ce script se charge de télécharger automatiquement le corpus de textes bruts depuis
+un dépôt GitHub (Open Medieval French). Il utilise l'API GitHUB pour naviguer 
+et extraire les fichier '.txt'.
+Il ajoute un en-tête de citation standardisé à chaque fichier téléchargé
+
+Dépendances :
+    - requests : pour effectuer les appel HTTP vers l'API de GitHub
+    - os : pour la création des répertoires locaux et gestion des chemins
+    - time : pour temporiser les requêtes afin d'éviter le blocage (rate limiting)
+"""
+
 # MODULES
 import os 
 import requests 
 import time
 
 # FUNCTIONS 
-
 def download_github_data(repo_url, local_dir):
     """
-    Use recursivity in order to downlaod .txt files from a GitHub repository via API.
+    Parcours un répertoire GitHub via son API pour télécharger tous 
+    les fihciers .txt qu'il contient.
+
+    Un token GitHub est utilisé pour augmenter la limite de requête de l'API
+    publique. Chaque fichier téléchargé est enregitré localement.
 
     Entrée : 
         repo_url (str) : URL de l'API du répertoire GitHub
@@ -18,7 +35,8 @@ def download_github_data(repo_url, local_dir):
         Enregistrement des textes bruts.
 
     """
-    GITHUB_TOKEN ='xxxxxxxxxxxxxxxxxxxxxxxxxx' # Besoin d'un token GitHub afin d'augmenter le nombre de requêtes possibles.
+    GITHUB_TOKEN ='xxxxxxxxxxxxxxxxxxxxxxxxxx' 
+    # passer plutôt par os.getenv('GITHUB_TOKEN') pour éviter d'écrire le token et l'exposer
     headers = {'User-Agent': 'Mozilla/5.0', 'Authorization' : f'token {GITHUB_TOKEN}'}
 
     # Vérifie l'existence du dossier local et création s'il n'existe pas 
@@ -36,12 +54,10 @@ def download_github_data(repo_url, local_dir):
         print(f'Error fetching directory: {resp.status_code}')
         return False
     
-    # 
     items = resp.json()
     if isinstance(items, dict):
         items = [items]
 
-    
     for item in items:
         # Boucle d'appel récursif : si l'élément est un répertoire alors explore le sous-dossier
         if item['type'] == 'dir':
@@ -50,13 +66,12 @@ def download_github_data(repo_url, local_dir):
             if not download_github_data(item['url'], new_local_dir):
                 return False
             
-        # Boucle : si élément est un fichier .txt alors téléchargement du contenu 
+        # Si élément est un fichier .txt alors téléchargement du contenu 
         elif item['type'] == 'file' and item['name'].endswith('.txt'):
             raw_text_url = item['download_url']
             file_path = os.path.join(local_dir, item['name'])
 
             print(f"Downloading raw texts : {item['name']}")
-
 
             file_data = requests.get(raw_text_url, headers=headers)
             if file_data.status_code == 200:

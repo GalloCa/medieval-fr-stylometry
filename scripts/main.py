@@ -1,3 +1,7 @@
+"""
+
+"""
+# MODULES
 import os 
 import time
 
@@ -7,6 +11,8 @@ from analyse import create_comparison_matrix, generate_report, compare_files
 from plots_generator import generate_similarity_plot, generate_dendogramme
 from lcs_analyse import analyse_auteur
 
+
+# MAIN
 if __name__ == "__main__":
 
     # PATHS
@@ -34,7 +40,7 @@ if __name__ == "__main__":
     dico_author = load_biblio(biblio_author__dir)
     dico_date = load_biblio(biblio_date__dir)
 
-    print("\n E1...")
+    print("\n Début de l'étape 1 : ...")
     my_corpus = []
 
     if not os.path.exists(raw_txt_dir):
@@ -57,7 +63,7 @@ if __name__ == "__main__":
             my_corpus.append(doc)
     print(f"{len(my_corpus)} textes traités")
 
-    print("\n Début E2 : Matrice et analyse.")
+    print("\n Début l'étape 2 : Matrice et analyse.")
     matrix, lexique, txt_names = create_comparison_matrix(my_corpus)
     save_matrix_tsv(matrix, lexique, txt_names, output_matrix)
     compare_files(matrix, txt_names, compare_out_dir)

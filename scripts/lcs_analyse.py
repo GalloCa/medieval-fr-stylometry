@@ -1,18 +1,28 @@
 
 """
+Module d'analyse des séquences communes (LCS)
 
+Ce script permet d'identifier les formules récurrentes exactes
+partagées entre plusieurs oeuvres d'un même auteur.
 """
 
 # MODULES
-from utils import load_biblio
 import os 
 from difflib import SequenceMatcher
 
-
+# FONCTIONS
 def lcs(t1, t2):
     """
-    Algorithme LCS ultra-optimisé en RAM et en temps de calcul, 
-    sans aucune librairie externe. Compare des mots entiers.
+    Algorithme LCS optimisé sans aucune librairie externe. 
+    Compare des mots entiers.
+
+    Entrées : 
+        t1 (str) : le premier texte
+        t2 (str) : le deuxième texte
+
+    Sortie :
+        str : la plus longue séquence de mots exactes partagées entre les deux textes.
+              retourne chaine vide si aucune correspondance n'est trouvée.
     """
     mots1 = t1.split()
     mots2 = t2.split()
@@ -50,6 +60,22 @@ def lcs(t1, t2):
 
 
 def analyse_auteur(auteur, texte_dir, dico_author):
+    """
+    Analyse le corpus pour extraire les fomrules récurrentes d'un auteur ciblé.
+    La fonction identifie tous les fichiers associés à l'auteur, les charge en mémoire,
+    puis utilise la fonction LCS pour faire une comparaison croisée, 2 à 2.
+    Les résultats sont ensuite formatés pour s'intégrer directement dans le rapport Markdown spécifique 
+    des auteurs.
+
+    Entrées : 
+        auteur (str) : le nom de l'auteur à analyser
+        texte_dir (str) : le chemin vers le répertoir contenant les fichiers textes nettoyés
+        dico_author (dict) : le dictionnaire de métadonnées liant les textes aux auteurs
+
+    Sortie :
+        str : bloc de texte au format Markdown contenant les citations récurrentes entre les textes.
+              Retourne un avertissement s'il n'y a pas assez de textes à comparer
+    """
     fichiers_auteur = []
 
     for filename in os.listdir(texte_dir):
@@ -60,7 +86,7 @@ def analyse_auteur(auteur, texte_dir, dico_author):
                 fichiers_auteur.append(filename)
 
     if len(fichiers_auteur) < 2:
-        return f"Il faut au moins 2 textes pour faire une comparaison !"
+        return f"Il faut au moins 2 textes pour faire une comparaison."
     
     # Chargement des fichiers    
     textes = {}
