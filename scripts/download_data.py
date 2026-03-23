@@ -85,11 +85,3 @@ def download_github_data(repo_url, local_dir):
                 return False
     return True
 
-# MAIN 
-repo_api_url = "https://api.github.com/repos/OpenMedFr/texts/contents"
-local_storage = r"/workspaces/medFR-paleao-NLP/data/raw-texts"
-
-if download_github_data(repo_api_url, local_storage):
-    print("\nDownload complete. Files are in :", os.path.abspath(local_storage))
-else:
-    print('\nDownload failed due to API limits.')

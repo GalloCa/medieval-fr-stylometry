@@ -1,98 +1,98 @@
 Ngramme	Frequence
-et 	492
- et	410
-es 	244
+et 	483
+ et	402
+es 	243
 nt 	223
-le 	206
+le 	202
  la	188
-t l	185
- le	184
-il 	183
- de	180
-ne 	171
-e e	168
- il	165
- qu	162
-re 	149
-de 	148
-que	144
+t l	183
+ le	183
+il 	182
+ de	176
+ne 	169
+ il	164
+e e	162
+ qu	161
+re 	145
+de 	145
+que	143
 ue 	143
- li	141
+ li	139
 ant	138
-la 	134
-li 	125
+la 	133
+li 	124
 e l	123
 en 	119
- en	106
- se	106
-t e	104
- ma	104
-s e	98
+ se	104
+ ma	103
+ en	101
+t e	100
+s e	97
 ier	95
 e i	95
-st 	95
- fa	94
+st 	94
  do	94
- me	92
-est	90
+ fa	93
 e p	90
-se 	87
- es	86
+ me	90
+est	88
 ran	86
-e d	85
-ent	84
+se 	86
+e d	84
+ es	84
 les	84
+ent	83
 con	83
-t i	83
+t i	81
 ois	80
-e c	80
  tu	79
  so	76
+e c	76
 er 	74
 tu 	74
-it 	73
  pr	72
 uan	72
  sa	71
- ch	71
 qua	71
 auc	70
-t t	69
-us 	67
+ ch	70
+it 	69
+t t	68
 or 	67
 t s	67
 fau	67
 e t	67
 
 qu	67
-one	67
+us 	66
+one	66
 ns 	65
 
 et	65
  pa	65
 pra	65
 is 	64
-ele	64
 uco	64
 tre	64
-ui 	63
+ele	63
  oi	63
-qui	62
-t d	62
  co	62
 ain	62
-cha	62
+t d	61
+cha	61
 on 	60
-e m	60
 ont	60
+ui 	59
+e m	59
+qui	58
 ais	58
- po	58
-ez 	58
-e s	58
 don	58
  ne	58
 t a	57
+ po	57
+ez 	57
 te 	57
+e s	57
 ar 	55
 rs 	53
 iau	52
@@ -100,68 +100,67 @@ el 	52
 an 	52
 ien	51
 man	51
-ce 	51
-s l	51
-t p	50
 s p	50
  au	50
- ce	50
+ce 	50
+s l	50
+t p	49
 mai	49
 ist	49
-e a	49
- te	48
+e a	48
 in 	48
  si	47
+ te	47
 s q	46
 s s	46
-fai	46
 si 	46
-voi	46
-l s	46
-met	46
-r e	45
+ ce	46
 ons	45
+fai	45
  vi	45
- vo	45
-ine	45
+voi	45
+l s	45
+met	45
+r e	44
 s d	44
-t c	44
-aut	44
 n l	44
+ vo	44
 out	44
-i e	43
-t m	43
- à 	43
+ine	44
+t c	43
+aut	43
 et
 	43
-a m	43
 i d	42
 jor	42
+t m	42
 ins	42
 ou 	42
 iz 	42
-ser	42
+ à 	42
+a m	42
 sse	41
 a c	41
 és 	41
 as 	41
-era	41
-oit	40
+ser	41
+i e	40
 son	40
 iss	40
  gr	40
 aus	40
 apr	40
-ra 	40
+era	40
  to	39
+ra 	39
  a 	39
-tel	39
 res	38
 men	38
  mo	38
  cu	38
 pré	38
 rés	38
+tel	38
 s f	37
  ap	37
  jo	37
@@ -169,98 +168,93 @@ nt
 	37
 ute	37
 l a	37
+oit	36
 har	36
 r d	36
 dou	36
 une	36
 ne
 	36
-e q	35
 tou	35
 utr	35
 ors	35
  av	35
 ill	35
 aig	35
- lo	34
+e q	34
 ns
 	34
 ire	34
 z e	34
 es
 	34
-i l	34
  di	34
 s m	34
 n e	34
+ lo	33
+i l	33
 l e	33
 ave	33
 ec 	33
 sel	33
- ju	33
 e g	32
 gra	32
 str	32
 ise	32
 l m	32
 nes	32
-a g	32
 gie	32
+ ju	32
 t q	31
-cin	31
+a g	31
 che	31
 par	31
 anc	30
-des	30
 lor	30
  pe	30
-ard	30
- bo	30
 e
 e	30
 lan	30
 rai	30
  pi	30
+cin	30
 nie	30
+des	29
+ard	29
+ bo	29
 re
 	29
-i p	29
 por	29
- pu	29
-roi	28
-ir 	28
 s c	28
+i p	28
 e v	28
-e j	28
 cui	28
-ici	27
-oir	27
+ pu	28
+ir 	27
 oul	27
-e f	27
 t b	27
 vec	27
+e j	27
 ngi	27
  un	27
-juq	27
-uqu	27
 oie	26
 com	26
 tie	26
-iez	26
- ga	26
-uil	26
+ici	26
+e f	26
 u v	26
 oiz	26
-gar	26
+juq	26
+uqu	26
  ro	25
+roi	25
+iez	25
 ues	25
-il
-	25
- ve	25
-tes	25
+oir	25
 nne	25
 r l	25
 s a	25
+uil	25
 ign	25
  ti	25
 le
@@ -268,9 +262,14 @@ le
 s
 e	24
 s o	24
+il
+	24
+ ga	24
+ ve	24
+tes	24
 a s	24
 ang	24
-uis	24
+gar	24
  pl	23
 ait	23
 omm	23
@@ -279,85 +278,82 @@ chi	23
 la
 	23
  ta	23
-mes	23
-de
-	23
 n t	23
 ere	23
  mu	23
+uis	23
 eni	22
 sai	22
 isi	22
-t v	22
 ult	22
 pre	22
 lle	22
+mes	22
 pie	22
 san	22
-rre	22
-ue
+de
 	22
-med	22
 s n	22
 aue	22
 iii	22
 l n	22
 
 de	21
+t v	21
 e à	21
-oin	21
 
 le	21
-rde	21
 e n	21
+rre	21
+ue
+	21
 ach	21
-edi	21
-dic	21
+med	21
 u l	21
  da	20
-toi	20
 lai	20
-me 	20
 t o	20
-bon	20
 mou	20
 soi	20
-ai 	20
+rde	20
 rt 	20
 lau	20
-
-la	20
 gne	20
 orr	20
  go	20
  na	20
 ie 	20
 z q	20
+edi	20
+dic	20
 u p	20
 mie	20
+toi	19
 sia	19
+me 	19
+bon	19
 i r	19
+oin	19
 sis	19
+ai 	19
 r a	19
  as	19
+
+la	19
  tr	19
 ost	19
-ut 	19
 n i	19
 t n	19
 um 	19
 n a	19
 ron	19
 vre	18
- i 	18
 u e	18
 ers	18
 
 fa	18
 vin	18
 ces	18
-s
-q	18
 i a	18
  ci	18
  fi	18
@@ -366,21 +362,18 @@ car	18
  el	18
  ca	18
 ler	18
-
-me	18
 os 	18
 pas	18
+ut 	18
 r i	18
 hie	18
 au 	18
-t g	18
-sto	17
+ i 	17
 n s	17
 poi	17
 anr	17
 mme	17
 i f	17
-ens	17
 avo	17
 
 ma	17
@@ -390,18 +383,24 @@ ure	17
 sor	17
 ein	17
 a l	17
-ing	17
+
+me	17
 eli	17
 lin	17
 sac	17
  ba	17
 ren	17
 ii 	17
+s
+q	17
  no	17
 tra	17
+t g	17
+sto	16
 pen	16
 pue	16
 ste	16
+ens	16
 nde	16
 eme	16
 art	16
@@ -410,12 +409,8 @@ ras	16
 mor	16
 nc 	16
  an	16
-mal	16
 e
 q	16
-hau	16
-e
-l	16
 e
 p	16
 am 	16
@@ -427,16 +422,12 @@ noi	15
 l l	15
 air	15
 i c	15
-ice	15
-cel	15
 dit	15
-loi	15
 lt 	15
 ile	15
 ond	15
 e b	15
-is
-	15
+ing	15
  vu	15
 vue	15
 err	15
@@ -447,8 +438,10 @@ d	15
 gou	15
 
 do	15
+mal	15
 a p	15
 n m	15
+hau	15
 
 pr	15
  fu	14
@@ -456,10 +449,8 @@ ez
 	14
 s i	14
  lu	14
-lui	14
 esc	14
 pla	14
-nte	14
  ou	14
 esp	14
 pan	14
@@ -467,10 +458,15 @@ pan	14
 ose	14
 s g	14
  on	14
+loi	14
 plu	14
+ice	14
+cel	14
 dem	14
 t
 l	14
+is
+	14
 i o	14
 r t	14
 
@@ -484,15 +480,18 @@ ef 	14
 ite	14
 rce	14
 lon	14
-sle	14
 gel	14
 gui	14
 u f	14
  fe	14
+e
+l	14
 m e	14
  ii	14
 gre	14
 ala	13
+lui	13
+nte	13
 nre	13
 nz 	13
 té 	13
@@ -503,7 +502,6 @@ li	13
 nsi	13
 ans	13
 i s	13
-ng 	13
 bie	13
 onc	13
  ra	13
@@ -511,7 +509,7 @@ a e	13
 n q	13
  ar	13
 atu	13
-esl	13
+sle	13
  ge	13
 eu 	13
 nez	13
@@ -553,7 +551,7 @@ en
 i m	12
 via	12
 vai	12
-iqu	12
+esl	12
 ort	12
 he 	12
 cun	12
@@ -570,13 +568,8 @@ int	11
 gru	11
 cho	11
 hos	11
-i v	11
-dre	11
 rge	11
 à l	11
-t
-m	11
-amb	11
 se
 	11
 it
@@ -586,13 +579,12 @@ ert	11
 tur	11
  gi	11
  re	11
+ng 	11
 
 en	11
 e
 s	11
-oe 	11
 n f	11
-z d	11
 te
 	11
 tin	11
@@ -601,7 +593,6 @@ hes	11
 at 	11
 
 il	11
-pui	11
 ve 	11
 n o	11
 é d	11
@@ -611,29 +602,31 @@ sen	10
 spr	10
 rdi	10
 aci	10
-ndr	10
+t
+m	10
 vol	10
+amb	10
 e
 i	10
 cor	10
-ari	10
+i v	10
 u s	10
 cur	10
 moi	10
+oe 	10
 ong	10
 ter	10
 va 	10
+z d	10
 emi	10
 uer	10
 ief	10
-alo	10
 eti	10
 org	10
 t
 a	10
 anf	10
 ouc	10
-i b	10
 n u	10
 s b	10
 ani	10
@@ -642,6 +635,7 @@ nce	10
 a f	10
  ia	10
 ero	10
+pui	10
 a v	10
 ros	10
 ta 	10
@@ -650,10 +644,7 @@ t r	10
 llo	10
 ncu	9
 cus	9
-ten	9
  ha	9
-rs
-	9
 r p	9
 
 po	9
@@ -669,26 +660,24 @@ a
 q	9
 ouz	9
 uz 	9
-lie	9
 dun	9
+ari	9
 s à	9
 je 	9
 vos	9
-ome	9
 n v	9
 
 ap	9
 lar	9
+alo	9
+iqu	9
 nat	9
 e
 m	9
-al 	9
-sam	9
-ble	9
+i b	9
 feu	9
 doi	9
 ete	9
- iq	9
 bla	9
 ume	9
 tri	9
@@ -701,9 +690,12 @@ squ	9
 pur	9
 rte	9
 per	9
+ten	8
 r f	8
 z o	8
 our	8
+rs
+	8
 pri	8
 rue	8
 and	8
@@ -715,6 +707,7 @@ uel	8
 es	8
 u c	8
 fon	8
+lie	8
 di 	8
 st
 	8
@@ -725,12 +718,16 @@ an
 	8
 n
 l	8
+ome	8
 a t	8
 e r	8
 e
 t	8
 mon	8
 lum	8
+al 	8
+sam	8
+ble	8
 uch	8
 bat	8
 gen	8
@@ -745,8 +742,6 @@ t u	8
  nu	8
 pié	8
  ei	8
-
-oi	8
 rro	8
 rou	8
 jus	8
@@ -757,22 +752,16 @@ pet	8
 ton	8
 tui	8
 où 	8
-z
-q	8
+dre	8
 us
 	7
 uns	7
 fu 	7
-
-da	7
 mma	7
-
-lo	7
 iti	7
 ui
 	7
 lac	7
-end	7
 sa 	7
 un 	7
 é e	7
@@ -801,11 +790,8 @@ t
 d	7
 ot 	7
 ex 	7
-nsa	7
-mbl	7
 or
 	7
-loe	7
  ag	7
  is	7
 ive	7
@@ -821,6 +807,8 @@ n j	7
 jo	7
 orc	7
 z f	7
+
+oi	7
 oig	7
 c e	7
 lav	7
@@ -839,12 +827,18 @@ m c	7
 ule	7
 tos	7
 çon	7
+z
+q	7
 ane	7
 s r	6
+
+da	6
 i
 d	6
 cip	6
 nir	6
+
+lo	6
 diz	6
 oes	6
 s h	6
@@ -853,6 +847,8 @@ pu	6
 cie	6
 sav	6
 mbr	6
+z
+e	6
 erv	6
 
 à 	6
@@ -871,7 +867,6 @@ s
 s	6
 el
 	6
- al	6
 a a	6
 ore	6
 del	6
@@ -888,13 +883,15 @@ g	6
 evr	6
 l d	6
 iex	6
+nsa	6
+mbl	6
+loe	6
 bou	6
 um
 	6
 agu	6
 i
 l	6
-urr	6
 ene	6
 sou	6
 
@@ -904,12 +901,12 @@ umi	6
 l t	6
 s
 l	6
+ iq	6
  ad	6
 nch	6
 f e	6
 mei	6
 i i	6
-à i	6
 ntr	6
 ig 	6
 som	6
@@ -932,7 +929,6 @@ gue	6
 z p	6
 ucu	6
 mau	6
-riz	6
 
 ne	6
 t
@@ -945,20 +941,15 @@ ipl	5
 ple	5
 nço	5
 t h	5
-s
-o	5
 t
 f	5
  oe	5
 gal	5
-irs	5
 cit	5
 fis	5
 bre	5
 use	5
 ono	5
-z
-e	5
 cov	5
 pai	5
 
@@ -973,11 +964,14 @@ a	5
 quo	5
 tu
 	5
+ al	5
 r à	5
 emo	5
 fil	5
 t j	5
 nra	5
+t
+q	5
 rov	5
 
 di	5
@@ -986,7 +980,6 @@ urt	5
 to	5
  su	5
 sur	5
-o d	5
 gor	5
  cr	5
 ram	5
@@ -997,7 +990,7 @@ dar	5
 auf	5
 ufe	5
 nar	5
-bur	5
+urr	5
 t
 g	5
 iam	5
@@ -1029,10 +1022,10 @@ gle	5
 cir	5
 bec	5
  fr	5
+à i	5
  ix	5
 n b	5
 ous	5
-cen	5
 g l	5
 eri	5
  in	5
@@ -1082,7 +1075,7 @@ m p	5
 arf	5
 cis	5
 rop	5
-sus	5
+riz	5
 l g	5
 u j	4
  ja	4
@@ -1091,11 +1084,12 @@ pel	4
 pal	4
 ir
 	4
+s
+o	4
 riv	4
 ivi	4
 u b	4
 vit	4
-elu	4
 ité	4
 rin	4
 her	4
@@ -1113,6 +1107,7 @@ anç	4
 à d	4
 spo	4
 sag	4
+irs	4
 u i	4
 
 ar	4
@@ -1121,14 +1116,13 @@ uei	4
 pl	4
 u a	4
  am	4
-t
-q	4
 lt
 	4
  at	4
 nan	4
 rci	4
 gro	4
+o d	4
 lo 	4
 arc	4
 nai	4
@@ -1148,6 +1142,7 @@ ve
 	4
 u d	4
  bu	4
+bur	4
 tar	4
 nue	4
 enr	4
@@ -1207,8 +1202,6 @@ p	4
 ssa	4
 e
 b	4
-l
-n	4
 hen	4
 dra	4
 nem	4
@@ -1217,6 +1210,7 @@ nju	4
 a
 c	4
 ind	4
+ndr	4
 dia	4
 a r	4
 oud	4
@@ -1228,14 +1222,13 @@ as
 uie	4
 cot	4
 oto	4
-po 	4
 gni	4
 rfa	4
 nus	4
 op 	4
 
 gr	4
-esu	4
+sus	4
  gu	4
 tez	4
 tev	4
@@ -1261,7 +1254,6 @@ i
 p	3
 
 ce	3
-eoi	3
 é l	3
 erb	3
 ber	3
@@ -1336,7 +1328,6 @@ vee	3
 eez	3
  cl	3
 l o	3
-ate	3
 arg	3
 sch	3
 e
@@ -1349,8 +1340,6 @@ isa	3
 omb	3
 lé 	3
 é s	3
-l
-e	3
 à
 m	3
 ger	3
@@ -1361,8 +1350,6 @@ mir	3
 m b	3
 m
 q	3
-al
-	3
 mia	3
 z t	3
 c s	3
@@ -1399,6 +1386,7 @@ a h	3
 ves	3
 orm	3
 nui	3
+elu	3
 t
 i	3
 ola	3
@@ -1428,8 +1416,8 @@ las	3
 ngu	3
 
 pi	3
-s
-f	3
+l
+n	3
 oda	3
 boi	3
 ls 	3
@@ -1454,9 +1442,6 @@ cos	3
 rit	3
 lte	3
 nec	3
-dro	3
-iz
-	3
  ac	3
 tai	3
 ann	3
@@ -1464,9 +1449,9 @@ rme	3
 s
 i	3
 n g	3
+po 	3
 o e	3
 ù l	3
-g i	3
 enc	3
 ale	3
 uta	3
@@ -1475,6 +1460,7 @@ ovi	3
 
 nu	3
 l b	3
+esu	3
 git	3
 ie
 	3
@@ -1493,23 +1479,17 @@ oni	3
 bl	3
 e
 v	3
-z
-d	2
 eno	2
 enç	2
 u o	2
 enu	2
 ime	2
 evi	2
-
-ic	2
-veo	2
 t
 h	2
 rbe	2
 lun	2
 hié	2
-nda	2
 a q	2
 m d	2
 rec	2
@@ -1524,7 +1504,7 @@ nça	2
 gem	2
 
 je	2
-l à	2
+eoi	2
 l
 c	2
 
@@ -1572,6 +1552,7 @@ ea 	2
 lél	2
 x e	2
 lal	2
+ate	2
 rum	2
 
 gi	2
@@ -1586,6 +1567,8 @@ bro	2
 bom	2
 mba	2
 flé	2
+l
+e	2
 ige	2
 c
 d	2
@@ -1601,6 +1584,8 @@ z
 c	2
 nno	2
 ism	2
+al
+	2
 eng	2
 n
 i	2
@@ -1624,15 +1609,12 @@ ai
 unu	2
 num	2
 cci	2
-lom	2
 n
 o	2
 i
 o	2
 ié
 	2
-n
-b	2
 a i	2
 l
 l	2
@@ -1678,6 +1660,8 @@ i u	2
 ava	2
 f p	2
 tul	2
+s
+f	2
 
 bo	2
 sié	2
@@ -1716,11 +1700,12 @@ g a	2
 nd 	2
 d t	2
 ré 	2
-dat	2
 nse	2
 sep	2
 rax	2
 axa	2
+n
+f	2
 vée	2
 r
 j	2
@@ -1733,10 +1718,10 @@ meu	2
 
 no	2
 no 	2
+s
+n	2
 fer	2
 f d	2
-
-bu	2
 a
 b	2
 é f	2
@@ -1756,6 +1741,7 @@ e
 r	2
 ipe	2
 min	2
+cen	2
 ilu	2
 gan	2
 r
@@ -1777,6 +1763,8 @@ a
 à	2
  he	2
 ové	2
+iz
+	2
  ot	2
 cem	2
 x n	2
@@ -1849,17 +1837,22 @@ s
 u	1
 jad	1
 adi	1
+z
+d	1
 hai	1
 nu 	1
 dim	1
 l
 r	1
 à
-i	1
+q	1
 
 he	1
 iés	1
+nda	1
 da 	1
+
+ic	1
 bel	1
 fir	1
 irm	1
@@ -1881,9 +1874,11 @@ nuz	1
 t
 j	1
 g à	1
+veo	1
 jai	1
 u
 f	1
+l à	1
 à a	1
 laq	1
 aqu	1
@@ -2028,6 +2023,8 @@ aun	1
 é
 c	1
 à s	1
+n
+b	1
 
 be	1
  l
@@ -2136,6 +2133,7 @@ uff	1
 umu	1
 uz
 	1
+lom	1
 mb 	1
 b a	1
  oc	1
@@ -2171,6 +2169,7 @@ ita	1
 ben	1
 o c	1
 rod	1
+dat	1
 epu	1
 pum	1
 xam	1
@@ -2187,8 +2186,6 @@ r m	1
 emm	1
 mmi	1
 ecu	1
-n
-f	1
 cco	1
 hal	1
 avé	1
@@ -2206,8 +2203,8 @@ a
 d	1
 f l	1
 à f	1
-s
-n	1
+
+bu	1
 
 ie	1
 g c	1
@@ -2246,6 +2243,7 @@ po
 	1
 o
 e	1
+g i	1
 uec	1
  a
 	1
@@ -2493,7 +2491,6 @@ efr	1
 vez	1
 poo	1
 oou	1
-dal	1
 heo	1
 ira	1
 paë	1

@@ -54,7 +54,6 @@ del preu et del salu de lame
 tel ert li sires et la dame
 ki aglaes aveit a non
 ne valeit pas meins se meuz non
-que si sires en sun endreit
 kar ele amoit deu et cremoit
 et se peneit de lui servir
 a son gré et a sun plesir
@@ -76,12 +75,9 @@ un fiz orent kil apelérent
 alexi deu en merciérent
 qui lor preire aveit oie
 et pramistrent que chaste vie
-tendreient dilec en avant
 a toz les jors de lor vivant
-li enfes crut et amenda
 tant que sis péres kemanda
 et vout quil fust a letres mis
-et il sest daprendre entremis
 comme soutil et de boen sens
 si bien quil fu en poi de tens
 de plusors arz preuz et vallanz
@@ -128,7 +124,6 @@ come il coveneit a teus genz
 mout i out divers estrumenz
 gigues et harpes et vieles
 dames et vaillez et puceles
-cendaus et pailes et samiz
 tanz embrasemenz de deliz
 et alumalles de luxure
 des geus et de lenveiseure
@@ -190,7 +185,6 @@ ne de mon cors ne de mon cuer
 vos dites mout bien bele suer
 fet il cest droite amor charnel
 de mariage mès por el
-le dis que vos nentendez mie
 qui bien vuelt a une partie
 de mon cors et a autre mal
 est ce amor entiére nenal
@@ -322,9 +316,7 @@ mès sor toz le pére et la mére
 mout fu lor contenance amére
 triste et plaintive et gaimentose
 lasse cheitive dolorose
-fet la mére que devendré
 ou est mon fiz ou le kerré
-je morreie orendreit mon vuel
 quer jamès jor nistrai de duel
 dangoisse ne daflictiun
 de plor de tribulaciun
@@ -335,7 +327,6 @@ est durement adolosée
 et plaint et plore et dit et jure
 que jamès por nulle aventure
 autre seignor de lui navra
-que quil demort el latendra
 eufemien fet duel mout grant
 comme pére de tel enfant
 et enveia por son fiz querre
@@ -464,15 +455,12 @@ un povres hom qui ai mestier
 ke len me doigie a mengier
 si vos requier par cherité
 por deu qui maint en trinité
-qui de mal vos gart et deffende
-et vostre fiz uncor vos rende
 vif et sain et sauf et hetié
 que vos aiez de mei pitié
 et me doingiez ma garison
 de voz aumones en meson
 eufemien bien lescouta
 dalexi son fiz li menbra
-dont grant tendror au cuer li prist
 un serjant apela et dist
 meinne cest home a mon ostel
 garde quil nait ne dun ne del
@@ -507,7 +495,6 @@ il en geuent au chapifol
 et li font honte et vilanie
 que li seignor ne sévent mie
 toz les meffez de lor ostel
-por ce quil entendent a el
 çavient sovent et lot issi
 aveneit il a alexi
 mout deboté fu et lediz
@@ -580,7 +567,6 @@ quil en feseit son estrument
 quil nert de son avilement
 de son mal ne de son hontage
 quer cert son preu et lor demage
-et en atendeit grant corone
 de deu qui les biens guerredone
 autres dis et set anz vesqui
 enz la meson son pére issi
@@ -610,7 +596,6 @@ mès ne saveient en quel terre
 ii deussent tel homme querre
 quistrent le mès pas nel trovérent
 pour ce par matin asemblérent
-le vendredi communement
 a liglise pape innocent
 i fu et li dui enperére
 archade et honoire son frére
@@ -641,7 +626,6 @@ alon i donc et si sachon
 fet pape innocent volentiers
 lors va devant tot li primiers
 eufemien por atorner
-lostel quil ni ait quamender
 a receveir si haute gent
 atant evos isnelement
 le vallet qui en garde aveit
@@ -664,7 +648,6 @@ si con dex lout enluminée
 quant sa vie fu terminée
 tant lesgarde quil aperceit
 le parchemin que il teneit
-il sabessa prendre le vout
 mès unkes aveir ne le pout
 lors vient ariére isnelement
 et a dit a pape innocent
@@ -673,7 +656,6 @@ lomme deu que nos queriun
 lores lor conte de sa vie
 comme il lout du vallet oie
 et del parchemin quil teneit
-quil vout prendre mès ne poeit
 parlant les a issi menez
 au cors ilec sont asemblez
 et font o grant devociun
@@ -686,8 +668,6 @@ et a pris lescrit en sa main
 et le baille a son chapelein
 cil lut lescrit en audience
 et li autre tindrent silence
-quant eufemien lentendi
-par poi le cuer ne li fendi
 dangoisse et de duel que il ot
 ne pout unkes parler un mot
 le cuer li tremble et refreidist
@@ -768,7 +748,6 @@ alexi beu fiz alexi
 vos ai je donc perdu issi
 oil veir je ne men puis tere
 seveaus quant je nen puis plus fere
-alexi bel fiz jatendeie
 de vos toz jors aucune joie
 et a oir daucune part
 bone novele ou tost ou tart
@@ -812,7 +791,6 @@ sest merveille quel ne se lasse
 de crier lasse lasse lasse
 lasse fet ele mon effant
 lasse ja lamoie je tant
-trente et quatre anz lai atendu
 or lai trové or lai perdu
 or puis je certeinement dire
 que jai trové dolor et ire
@@ -871,10 +849,8 @@ lasse chaitive fet el lasse
 onques noi de rien que jamasse
 joie solaz ne compaignie
 or ai usé tote ma vie
-et despendue ma jovente
 en esperance et en atente
 et or ai je del tot perdu
-ce que jai toz jorz atendu
 ceste perte est sor totes pertes
 kar or sui je vueve adecertes
 ainceis que mi sires morust
@@ -931,7 +907,6 @@ mout ont les porteors lassez
 mès miracles i out asez
 comme de contrez redrecier
 de malades essanicier
-et de rendre oie et veue
 a ceus qui laveient perdue
 quant li dui enperére veient
 les miracles qui aveneient
@@ -962,4 +937,3 @@ que nos ovec saint alexi
 puisson estre par sa preiére
 en vie et en joie planiére
 amen
-end

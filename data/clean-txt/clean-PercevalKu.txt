@@ -974,17 +974,13 @@ an la teste au vaslet salvaige
 nus qui le voit nel tient a saige
 mes trestuit cil qui le veoient
 por bel et por gent le tenoient
-amis fet li rois descendez
 et vostre chaceor randez
 cel vaslet si le gardera
 et vostre volanté fera
 fet iert a damedeu le veu
 a mannor et a vostre preu
 et li vaslez a respondu
-ja nestoient pas descendu
 cil que jancontrai an la lande
-et vos volez que je descende
-ja par mon chief ni descendrai
 mes fetes tost si man irai
 ha fet li rois biax amis chiers
 je le ferai mout volantiers
@@ -1115,7 +1111,6 @@ que dautre part del haterel
 le sanc et le cervel espant
 de la dolor li cuers li mant
 si verse et chiet toz estanduz
-et li vaslez est descenduz
 si met la lance a une part
 et lescu del col li depart
 mes il ne set venir a chief
@@ -1315,7 +1310,6 @@ lez une grant roiche naïve
 et de lautre part leve estoit
 si que leve au pié li batoit
 sor cele roche ani pandant
-qui vers mer aloit descendant
 oti chastel mout riche et fort
 si con leve aloit au regort
 torna li vaslez a senestre
@@ -1412,7 +1406,6 @@ dont grant bien venir vos verroiz
 et coi fet il que vos cresroiz
 le consoil vostre mere et moi
 par foi fet il et je lotroi
-donc descendez et il descent
 uns des vaslez son cheval prant
 desii qui furent venu la
 et li altres le desarma
@@ -1771,7 +1764,6 @@ que ni trova ne pain ne paste
 ne vin ne sidre ne cervoise
 versi palés covert datoise
 lont liiiii sergent mené
-et descendu et desarmé
 et tantost uns vaslez avale
 parmi les degrez de la sale
 qui aportai mantel gris
@@ -4083,11 +4075,9 @@ et il me dist que jel feïsse
 chevalier tot de maintenant
 je le vi bel et avenant
 si li dis frere volantiers
-mes descendez andemantiers
 tant que lan vos ait aportees
 unes armes totes dorees
 et il dist que ja nes prandroit
-ne ja a pié ne descendroit
 tant quil eüst armes vermoilles
 ancor dist il autres mervoilles
 quil ne voloit autres baillier
@@ -4883,7 +4873,6 @@ jusquavii jornees navoit
 quant la posterne ferme voit
 santre ani pré desoz la tor
 qui estoit clos de pex antor
-sest sozi chasne descenduz
 et ses escuz i a panduz
 que la gent del chastel les voient
 et li plusor grant joie avoient
@@ -5169,7 +5158,6 @@ et dit que bon gré li savoit
 qant il por ce lessié lavoit
 le tornoi il ot fet reison
 lors lanmena an sa meison
-li vavasors lors si descendent
 et les genz de la tor antandent
 a lui ancuser duremant
 et an tienent lor parlement
@@ -5624,7 +5612,6 @@ et il chace tant qua bien pres
 la retenist et arestast
 se ses chevax ne desferrast
 quant il ne pot la biche prandre
-yvonet comande a descendre
 que ses chevax mout duremant
 clochoit cil son comandement
 a fet le pié li lieve an haut
@@ -5651,7 +5638,6 @@ icil seus monseignor gauvain
 salua et prist par la main
 et dist sire ge vos detaing
 alez huimés la don ge vaing
-et descendez an mes meisons
 bien est huimés tans et reisons
 de herbergier sil ne vos poise
 jai une seror mout cortoise
@@ -6831,7 +6817,6 @@ et an riant itant li dist
 sire chevaliers par ma foi
 cest granz folie que ge voi
 quant vos mon cheval porsailliez
-descendez jus sel me bailliez
 que tost vos an porroiz grever
 et voz plaies fere escrever
 et il respont gauvains tes tan
@@ -7020,7 +7005,6 @@ la dameisele an la nef antre
 qui felon cuer avoit el vantre
 et aprés li ses palefroiz
 qui autel ot fet mainte foiz
-vassax fet ele descendez
 et aprés moi ceanz antrez
 atot vostre cheval roncin
 qui plus est meigres dun poucin
@@ -7056,7 +7040,6 @@ puis que tu le mas demandé
 ses oncles li a comandé
 quil te sive tant quil tait mort
 et ta teste an presant li port
-por ce te lo ge a descendre
 se tu la mort ne viax atandre
 antre ceanz et si tan fui
 certes ja ne fuirai por lui
@@ -7220,7 +7203,6 @@ an la nef antrent si san vont
 a lautre rive venu sont
 pres de leve fu li ostex
 au notonier et si fu tex
-que descendre i poïst uns cuens
 si fu mout aeisiez et buens
 li notoniers son oste anmeinne
 et son prison grant joie an meinne
@@ -8102,7 +8084,6 @@ si fust ce la chose premiere
 don ge vos feïsse proiere
 que vostre non me deïssiez
 se desfandu nel meüssiez
-de la tornele ensi descendent
 et vaslet corent si li randent
 ses armes por armer son cors
 et son cheval li ont trait fors
@@ -8156,7 +8137,6 @@ et messire gauvains an prant
 la fiance et puis si le rant
 au notonier qui latandoit
 et la male pucele estoit
-de son palefroi descendue
 il vient a li si la salue
 et dit remontez bele amie
 quainsi ne vos lesserai mie
@@ -8262,9 +8242,7 @@ qant sor la rive fu venuz
 si sest toz coiz an piez tenuz
 conques ne se pot removoir
 ençois covint par estovoir
-monseignor gauvain a descendre
 que mout trova son cheval tandre
-et il est descenduz tantost
 et sa talant que il li ost
 la sele et il li a ostee
 et por essuier acostee

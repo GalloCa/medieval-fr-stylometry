@@ -1,14 +1,14 @@
 Ngramme	Frequence
-et 	2092
+et 	2091
 nt 	1857
 ant	1705
 es 	1613
- de	1528
+ de	1527
 le 	1243
 ne 	1173
  et	1106
 que	1087
-de 	1072
+de 	1071
 est	1061
  la	1058
  le	1041
@@ -44,7 +44,7 @@ nt
 vos	665
 it 	664
 
-et	663
+et	662
 qui	659
 il 	658
  ch	654
@@ -96,11 +96,11 @@ s e	439
 t p	434
 voi	432
 oie	430
-s d	429
+s d	428
 e f	426
 si 	422
 e n	419
-ns 	412
+ns 	411
  po	408
 out	407
 tan	406
@@ -115,7 +115,7 @@ er
 	400
 san	398
 eva	397
-t c	396
+t c	395
 por	389
 is 	387
 son	385
@@ -163,7 +163,7 @@ s c	296
 ste	294
 i a	292
 cor	291
- ro	290
+ ro	289
  vi	287
 it
 	287
@@ -189,8 +189,8 @@ e
 e	264
 r l	264
 str	264
-e r	263
 lor	263
+e r	262
  bi	261
 s p	260
 
@@ -233,8 +233,8 @@ tot	228
 e j	228
 e q	227
 cel	226
-ver	225
 eus	225
+ver	224
 ses	224
 e
 l	221
@@ -434,8 +434,8 @@ dem	134
 n v	134
 nes	133
 men	133
-ons	132
  en	132
+ons	131
 a r	131
 e g	131
 rt
@@ -485,7 +485,6 @@ mer	119
 mis	119
 tui	118
 ens	118
-ron	118
 r d	118
  am	118
 uer	118
@@ -494,6 +493,7 @@ a v	118
 n n	117
 e
 p	117
+ron	117
 t
 d	117
 n m	117
@@ -570,11 +570,11 @@ ja 	100
 a n	100
 ni 	100
 l p	100
-ave	100
 era	99
 ast	99
 ssa	99
  ou	99
+ave	99
 ma 	98
 nne	98
 lei	97
@@ -601,13 +601,13 @@ ce
 	92
 i t	91
 i q	91
-ero	91
 r
 q	90
 dir	90
 c l	90
 aro	90
 sie	90
+ero	90
 ui
 	90
  bl	89
@@ -1063,7 +1063,6 @@ u e	39
 vra	39
 és
 	39
-rob	39
 ree	39
 ece	39
 r
@@ -1083,6 +1082,7 @@ bar	38
 lue	38
 fam	38
  is	38
+rob	38
  cl	38
 anq	38
 let	37
@@ -1136,7 +1136,6 @@ etr	35
 atr	35
 t
 j	35
-obe	35
 nue	34
 l o	34
 ala	34
@@ -1145,6 +1144,7 @@ abl	34
 tit	34
 rti	34
 pel	34
+obe	34
 il
 	34
 dor	34
@@ -1210,7 +1210,6 @@ nbe	31
 c m	31
 ge 	31
 rvi	31
- ca	30
 çoi	30
 aci	30
 en
@@ -1233,6 +1232,7 @@ lun	30
 
 en	30
 dep	29
+ ca	29
 pie	29
 cin	29
 ve 	29
@@ -1551,7 +1551,6 @@ q	19
 oss	19
 iec	19
 his	19
-ndi	19
 mav	19
 sas	19
 r i	19
@@ -1585,6 +1584,7 @@ u b	18
 cla	18
 sin	18
 elu	18
+ndi	18
 nto	18
 ega	18
 asl	18
@@ -2158,8 +2158,6 @@ jel	8
 ngl	8
 eal	8
 ede	8
-c
-e	8
 a
 c	8
 svo	8
@@ -2237,6 +2235,8 @@ ové	7
 uav	7
 eba	7
 oru	7
+c
+e	7
 si
 	7
 uma	7
@@ -2545,7 +2545,6 @@ uee	4
 din	4
  yv	4
 ici	4
-dic	4
 ahe	4
 l
 v	4
@@ -2741,6 +2740,7 @@ eil	3
 opl	3
 uri	3
 lio	3
+dic	3
 nev	3
 
 gi	3
@@ -2985,12 +2985,8 @@ loz	2
 oho	2
 ini	2
 vag	2
-cav	2
 gru	2
 az
-	2
-ben	2
-ic
 	2
 aïn	2
 lab	2
@@ -3345,6 +3341,7 @@ y	1
 
 yv	1
 z y	1
+cav	1
 iot	1
 iob	1
 leh	1
@@ -3358,8 +3355,9 @@ adu	1
 dué	1
 iéb	1
 ébr	1
-end	1
 ned	1
+ic
+	1
 gah	1
 erï	1
 ïez	1
@@ -3404,6 +3402,7 @@ rig	1
 bap	1
 apt	1
 pte	1
+ben	1
 sif	1
 ifl	1
 laü	1

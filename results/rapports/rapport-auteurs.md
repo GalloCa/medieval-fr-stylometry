@@ -1,24 +1,24 @@
 ## Analyse par Auteurs
-- *Généré le : 2026-03-09 13:18*
+- *Généré le : 2026-03-23 16:06*
 
 
 ### 1. Classification KNN 
 
-**Précision de l'algorithme KNN : 56.0%**
+**Précision de l'algorithme KNN : 60.0%**
 
 #### Les 5 paires les plus proches : 
-- **0.9825** : LancJ (Chrétien de Troyes) / PercevalKu (Chrétien de Troyes)
-- **0.9798** : Cliges (Chrétien de Troyes) / LancJ (Chrétien de Troyes)
-- **0.9738** : LancJ (Chrétien de Troyes) / ErecF (Chrétien de Troyes)
-- **0.9733** : Cliges (Chrétien de Troyes) / ErecF (Chrétien de Troyes)
-- **0.9716** : PercevalKu (Chrétien de Troyes) / ErecF (Chrétien de Troyes)
+- **0.9824** : LancJ (Chrétien de Troyes) / PercevalKu (Chrétien de Troyes)
+- **0.9797** : Cliges (Chrétien de Troyes) / LancJ (Chrétien de Troyes)
+- **0.9736** : LancJ (Chrétien de Troyes) / ErecF (Chrétien de Troyes)
+- **0.9732** : Cliges (Chrétien de Troyes) / ErecF (Chrétien de Troyes)
+- **0.9715** : PercevalKu (Chrétien de Troyes) / ErecF (Chrétien de Troyes)
 
 ### Les 5 paires les plus éloignées :
-- **0.6177** : AigarB (Anonyme) / DancusM (Anonyme)
-- **0.6438** : ChaceP (Anonyme) / AigarB (Anonyme)
-- **0.6504** : FillePonth1B1 (Anonyme) / AigarB (Anonyme)
-- **0.6524** : SGeorgDeG (Anonyme) / AigarB (Anonyme)
-- **0.6546** : AigarB (Anonyme) / JAvesnesFilleB (Anonyme)
+- **0.6170** : AigarB (Anonyme) / DancusM (Anonyme)
+- **0.6409** : ChaceP (Anonyme) / AigarB (Anonyme)
+- **0.6453** : FillePonth1B1 (Anonyme) / AigarB (Anonyme)
+- **0.6474** : AigarB (Anonyme) / JAvesnesFilleB (Anonyme)
+- **0.6485** : SGeorgDeG (Anonyme) / AigarB (Anonyme)
 
 ==================================================
 
@@ -26,8 +26,8 @@
 ### 2. Cohésion interne
 
 - **Chrétien de Troyes** : 0.9493
-- **Anonyme** : 0.8039
-- **Benoît de Saint-Maure** : 0.9597
+- **Anonyme** : 0.8017
+- **Benoît de Saint-Maure** : 0.9586
 - **Raoul de Houdenc** : *Non calculable (1 seul texte)*
 - **Adenet le Roi** : *Non calculable (1 seul texte)*
 - **Jean Renart** : *Non calculable (1 seul texte)*
@@ -41,62 +41,63 @@
 
 #### Signature : 'Adenet le Roi' 
 
-- 'léo' (ratio : 755.00)
-- 'éom' (ratio : 755.00)
-- 'clé' (ratio : 467.08)
-- 'adè' (ratio : 463.81)
-- ' là' (ratio : 372.92)
+- 'léo' (ratio : 735.00)
+- 'éom' (ratio : 735.00)
+- 'clé' (ratio : 454.77)
+- 'adè' (ratio : 452.09)
+- '
+à ' (ratio : 337.45)
 
 #### Signature : 'Anonyme' 
 
-- 'ére' (ratio : 55.66)
-- 'ke ' (ratio : 24.54)
-- 'iér' (ratio : 22.00)
-- 'pér' (ratio : 14.08)
-- 'èle' (ratio : 13.95)
+- 'ére' (ratio : 54.09)
+- 'iér' (ratio : 21.15)
+- 'ke ' (ratio : 20.73)
+- 'èle' (ratio : 13.82)
+- 'pér' (ratio : 13.62)
 
 #### Signature : 'Benoît de Saint-Maure' 
 
-- ' e ' (ratio : 66.84)
+- ' e ' (ratio : 70.78)
 - '
-e ' (ratio : 36.88)
+e ' (ratio : 36.61)
 - 'ënt' (ratio : 27.69)
-- 'poë' (ratio : 23.43)
+- 'poë' (ratio : 22.57)
 - 'iën' (ratio : 21.50)
 
 #### Signature : 'Chrétien de Troyes' 
 
-- 'anb' (ratio : 89.04)
-- 'ax ' (ratio : 67.38)
-- 'nbl' (ratio : 52.97)
+- 'anb' (ratio : 92.46)
+- 'ax ' (ratio : 72.67)
+- 'nbl' (ratio : 56.89)
 - '
-qa' (ratio : 44.80)
-- 'iax' (ratio : 39.20)
+qa' (ratio : 44.60)
+- 'an ' (ratio : 43.30)
 
 #### Signature : 'Jacques de Vitry' 
 
-- 'iou' (ratio : 8.73)
+- 'iou' (ratio : 8.37)
 - ' vn' (ratio : 7.00)
-- 'eua' (ratio : 5.33)
-- ' io' (ratio : 5.19)
 - 'vne' (ratio : 4.97)
+- ' io' (ratio : 4.86)
+- 'ouu' (ratio : 4.80)
 
 #### Signature : 'Jean Renart' 
 
+- 'mès' (ratio : 12.61)
 - 'qul' (ratio : 12.44)
-- 'mès' (ratio : 12.40)
 - '
 mè' (ratio : 9.91)
-- ' mè' (ratio : 7.58)
-- 'nss' (ratio : 7.26)
+- ' mè' (ratio : 7.78)
+- 'nss' (ratio : 7.67)
 
 #### Signature : 'Raoul de Houdenc' 
 
-- 'aug' (ratio : 40.96)
-- 'ugi' (ratio : 39.47)
-- 'elc' (ratio : 33.23)
-- 'rau' (ratio : 32.00)
-- 'gis' (ratio : 21.48)
+- 'aug' (ratio : 41.51)
+- 'ugi' (ratio : 40.00)
+- 'rau' (ratio : 32.33)
+- 'elc' (ratio : 31.38)
+- 'gis' (ratio : 22.10)
 
 ==================================================
 
@@ -134,8 +135,8 @@ Séquences de mots exactes partagées entre ses oeuvres :
 - **Cliges** et **PercevalKu** (26 caractères) :
  > «  *la ou il ert an son esgart* »
 
-- **Cliges** et **ErecF** (37 caractères) :
- > «  *ne li escuz ne li haubers ne li valut* »
+- **Cliges** et **ErecF** (32 caractères) :
+ > «  *et haut et bas et povre et riche* »
 
 - **PercevalKu** et **ErecF** (45 caractères) :
  > «  *et bele et sage et si est mout de haut parage* »
