@@ -10,6 +10,15 @@ from metrics import cos_np
 def generate_similarity_plot(matrix, txt_names, biblio, output_dir, mode='genre'):
     """
 
+    Entrées : 
+        matrix(np.ndarray) : 
+        txt_names (list) : 
+        biblio (dict) :
+        output_dir (str) ;
+        mode (str) :
+
+    Sortie : 
+        image (.png) : nuage de point
     """
     # Calcul MDS
     nb_txt = len(txt_names)
