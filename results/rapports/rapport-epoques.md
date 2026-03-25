@@ -1,6 +1,11 @@
 ## Analyse par Epoques
-- *Généré le : 2026-03-24 14:21*
+*Généré le : 2026-03-25 10:06*
 
+
+Citation: (2018). Open Medieval French. https://github.com/OpenMedFr/texts
+
+
+==================================================
 
 ### 1. Classification KNN 
 

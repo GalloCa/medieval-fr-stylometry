@@ -103,9 +103,11 @@ if __name__ == "__main__":
 
     # Etape 4 : visualisation graphique
     print("\nEtape 4 :.Génération des visualisation (scatter plot et dendogramme)... ")
+        # Scatter-plot
     generate_similarity_plot(matrix, txt_names, dico_genre, plot_output_dir, mode='genre')
     generate_similarity_plot(matrix, txt_names, dico_date, plot_output_dir, mode='dates')
     generate_similarity_plot(matrix, txt_names, dico_author, plot_output_dir, mode='auteurs')
+        # Dendogramme 
     generate_dendogramme(matrix, txt_names, dico_author, plot_output_dir)
 
     # Etape 5 : Génération des rapports

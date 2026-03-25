@@ -260,6 +260,7 @@ def ngram_signatures(matrix, txt_names, biblio, lexique, target_genre, top=10):
 
 
 # Génération d'un rapport final 
+# Rajouter citation du Git de base dans le rapport
 def generate_report(matrix, txt_names, biblio, lexique, output_path, img_path, titre=None ):
     """
     Réalise l'ensemble des analyses définies précédemment et génère un rapport global au format 
@@ -281,9 +282,12 @@ def generate_report(matrix, txt_names, biblio, lexique, output_path, img_path, t
     dd = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
     report = [
         f"## {titre}",
-        f"- *Généré le : {dd}*",
+        f"*Généré le : {dd}*",
         "\n"
     ]
+    citation_header = f'Citation: (2018). Open Medieval French. https://github.com/OpenMedFr/texts\n'       
+    report.append(citation_header)
+    report.append("\n" + "="*50 + "\n")
     report.append("### 1. Classification KNN \n")
     report.append(knn(matrix, txt_names, biblio))
 

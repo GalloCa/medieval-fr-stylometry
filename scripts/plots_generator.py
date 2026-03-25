@@ -155,12 +155,12 @@ def generate_dendogramme(matrix, txt_names, biblio, output_dir):
         image (.png) : le dendogramme dans le répertoire cible
 
     """
-    
+    # Cherche les textes avec l'étiquette "Anonyme"
     anonym = [i for i, name in enumerate(txt_names) if biblio.get(name) == 'Anonyme']
     anonym_names = [txt_names[i] for i in anonym]
 
     if len(anonym) <2:
-        print("Pas assez de textes d'auteus anonyms pour faire un arbre")
+        print("Pas assez de textes d'auteus anonymes pour faire un arbre")
         return
     
     nb_txt = len(anonym)
