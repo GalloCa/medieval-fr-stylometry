@@ -29,7 +29,6 @@ if __name__ == "__main__":
     # Répertoires de travail
     raw_txt_dir = r"/workspaces/medFR-paleao-NLP/data/raw-txt"
     clean_txt_dir = r"/workspaces/medFR-paleao-NLP/data/clean-txt"
-    filter_txt_dir = r"/workspaces/medFR-paleao-NLP/data/filtered-txt"
     freq_folder = r"/workspaces/medFR-paleao-NLP/results/frequencies"
     
     # Fichiers de métadonnées
@@ -93,25 +92,27 @@ if __name__ == "__main__":
             doc.save_freq(freq_folder)
 
             my_corpus.append(doc)
-    print(f"{len(my_corpus)} textes traités")
+    print(f"\nFin de l'étape 2 : {len(my_corpus)} textes traités (version propre enregistrée dans {clean_txt_dir} et fréquences sauvegardées dans {freq_folder}) ")
 
     # Etape 3 : Matrice de comparaison
     print("\nEtape 3 : création de la matrice et analyse.")
     matrix, lexique, txt_names = create_comparison_matrix(my_corpus)
     save_matrix_tsv(matrix, lexique, txt_names, output_matrix)
     compare_files(matrix, txt_names, compare_out_dir)
+    print("\nFin de l'étape 3")
 
     # Etape 4 : visualisation graphique
-    print("\nEtape 4 : génération des visualisation (scatter plot et dendogramme)... ")
+    print("\nEtape 4 : génération des visualisations (scatter plot et dendogramme)... ")
         # Scatter-plot
     generate_similarity_plot(matrix, txt_names, dico_genre, plot_output_dir, mode='genre')
     generate_similarity_plot(matrix, txt_names, dico_date, plot_output_dir, mode='dates')
     generate_similarity_plot(matrix, txt_names, dico_author, plot_output_dir, mode='auteurs')
         # Dendogramme 
     generate_dendogramme(matrix, txt_names, dico_author, plot_output_dir)
+    print("\nFin de l'étape 4")
 
     # Etape 5 : Génération des rapports
-    print("\nEtape 5 : génération des rapport Markdown d'analyse")
+    print("\nEtape 5 : génération des rapports Markdown d'analyse")
     generate_report(matrix, txt_names, 
                     dico_genre, lexique, genre_report_dir, 
                     scatter_plot_genre, titre="Analyse par Genres Littéraires")
@@ -125,14 +126,16 @@ if __name__ == "__main__":
                     scatter_plot_date, titre="Analyse par Epoques")
     
     # ----> ajout dendogramme au rapport auteur avant LCS ? 
+    print("\nFin de l'étape 5")
 
     # Etape 6 : LCS et rajout au rapport 'auteurs'
-    print("\nEtape 6 : recherche de séquences récurrentes pour l'auteur choisi")
-    add_lcs_report_author = analyse_auteur('Chrétien de Troyes', clean_txt_dir, dico_author)
+    auteur_lcs = "Chrétien de Troyes"
+    print(f"\nEtape 6 : recherche de séquences récurrentes pour {auteur_lcs}")
+    add_lcs_report_author = analyse_auteur(auteur_lcs, clean_txt_dir, dico_author)
 
     with open(auteurs_report_dir, mode='a', encoding='utf-8') as f:
         f.write("\n" + "="*50 + "\n")
         f.write(add_lcs_report_author)
-    print("Analyse LCS ajoutée au rapport global des auteurs")
-
-    print("Fin du triatement : pipeline exécutée avec succès")
+    print(f"Analyse LCS pour {auteur_lcs} ajoutée au rapport global des auteurs")
+    print("\nFin de l'étape 6")
+    print("\nFin du traitement : pipeline exécutée avec succès")
