@@ -199,3 +199,5 @@ def generate_dendogramme(matrix, txt_names, biblio, output_dir):
     fig.savefig(output_path, dpi=300)
     plt.close(fig) 
     print(f"Dendogramme généré avec succès : {output_path}")
+
+
