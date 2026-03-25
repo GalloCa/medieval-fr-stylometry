@@ -123,7 +123,7 @@ if __name__ == "__main__":
                     scatter_plot_date, titre="Analyse par Epoques")
     
     # Etape 6 : LCS et rajout au rapport 'auteurs'
-    print("\nEtape 6 : Recherche de séquences récurrentes pour Chrétien de Troyes")
+    print("\nEtape 6 : Recherche de séquences récurrentes pour l'auteur choisi")
     add_lcs_report_author = analyse_auteur('Chrétien de Troyes', clean_txt_dir, dico_author)
 
     with open(auteurs_report_dir, mode='a', encoding='utf-8') as f:
@@ -131,3 +131,4 @@ if __name__ == "__main__":
         f.write(add_lcs_report_author)
     print("Analyse LCS ajoutée au rapport global des auteurs")
 
+    print("Fin du triatement : pipeline exécutée avec succès")
