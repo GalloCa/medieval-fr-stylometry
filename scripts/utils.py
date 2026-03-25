@@ -6,9 +6,8 @@ pour charger les dictionnaires, nettoyer les étiquettes ou exporter des matrice
 """
 
 
-# MODULEs
+# MODULE
 import os
-import re
 
 # FONCTIONS
 def load_biblio(path):

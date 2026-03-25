@@ -1,5 +1,5 @@
 ## Analyse par Genres Littéraires
-*Généré le : 2026-03-25 10:06*
+*Généré le : 2026-03-25 10:19*
 
 
 Citation: (2018). Open Medieval French. https://github.com/OpenMedFr/texts
