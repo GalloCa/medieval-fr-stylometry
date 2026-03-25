@@ -307,6 +307,7 @@ def generate_report(matrix, txt_names, biblio, lexique, output_path, img_path, t
     if img_path:
         report.append("\n### 4. Visualisation\n")
         report.append(f"![Nuages de points des {titre}]({img_path})\n")
+    
         
        
     folder = os.path.dirname(output_path)

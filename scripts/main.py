@@ -102,7 +102,7 @@ if __name__ == "__main__":
     compare_files(matrix, txt_names, compare_out_dir)
 
     # Etape 4 : visualisation graphique
-    print("\nEtape 4 :.Génération des visualisation (scatter plot et dendogramme)... ")
+    print("\nEtape 4 : génération des visualisation (scatter plot et dendogramme)... ")
         # Scatter-plot
     generate_similarity_plot(matrix, txt_names, dico_genre, plot_output_dir, mode='genre')
     generate_similarity_plot(matrix, txt_names, dico_date, plot_output_dir, mode='dates')
@@ -111,7 +111,7 @@ if __name__ == "__main__":
     generate_dendogramme(matrix, txt_names, dico_author, plot_output_dir)
 
     # Etape 5 : Génération des rapports
-    print("\nEtape 5 : Génération des rapport Markdown d'analyse")
+    print("\nEtape 5 : génération des rapport Markdown d'analyse")
     generate_report(matrix, txt_names, 
                     dico_genre, lexique, genre_report_dir, 
                     scatter_plot_genre, titre="Analyse par Genres Littéraires")
@@ -124,8 +124,10 @@ if __name__ == "__main__":
                     dico_date, lexique, dates_report_dir, 
                     scatter_plot_date, titre="Analyse par Epoques")
     
+    # ----> ajout dendogramme au rapport auteur avant LCS ? 
+
     # Etape 6 : LCS et rajout au rapport 'auteurs'
-    print("\nEtape 6 : Recherche de séquences récurrentes pour l'auteur choisi")
+    print("\nEtape 6 : recherche de séquences récurrentes pour l'auteur choisi")
     add_lcs_report_author = analyse_auteur('Chrétien de Troyes', clean_txt_dir, dico_author)
 
     with open(auteurs_report_dir, mode='a', encoding='utf-8') as f:
