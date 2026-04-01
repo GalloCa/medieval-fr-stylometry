@@ -51,3 +51,6 @@ def jaccard_np(v1,v2):
    if union !=0:
       return inter / union
    return 0
+
+def manhattan_np(v1, v2):
+   return np.sum(np.abs(v1 - v2))

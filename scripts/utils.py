@@ -23,11 +23,18 @@ def load_biblio(path):
 
    """
    biblio = {}
-   with open(path, mode='r', encoding='utf-8') as f:
+   try : 
+       
+    with open(path, mode='r', encoding='utf-8') as f:
             for ligne in f:
                 if ":" in ligne:
                     cle, valeur = ligne.split(":", 1)
                     biblio[cle.strip()] = valeur.strip()
+   except FileNotFoundError:
+       print(f"Erreur, le chemin du dictionnaire {path} est introuvable")
+   except Exception as e : 
+       print(f"Erreur lors de la lecture de {path} : {e}")
+       
    return biblio
 
 def clean_label(name):

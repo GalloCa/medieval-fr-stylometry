@@ -1,5 +1,5 @@
 ## Analyse par Auteurs
-*Généré le : 2026-03-25 10:32*
+*Généré le : 2026-04-01 09:28*
 
 
 Citation: (2018). Open Medieval French. https://github.com/OpenMedFr/texts

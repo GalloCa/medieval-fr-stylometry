@@ -506,3 +506,40 @@ def generate_report(matrix, txt_names, biblio, lexique, output_path, titre=None)
         f.write("\n".join(report))
     
     print(f"Rapport généré dans : {output_path}")
+
+
+def cohesion_genr():
+    genres = {}
+    for idx, text in enumerate(txt_names):
+        genre = biblio.get(text)
+        if genre:
+            if genre not in genres:
+                genres[genre] = []
+            genres[genre].append(idx)
+            
+    for genre, indices in genres.items():
+        if len(indices) < 2:
+            continue
+        scores = []
+        for i in range(len(indices)):
+            for j in range(i+1, len(indices)):
+                col1 = matrix[:, indices[i]]
+                col2 = matrix[:, indices[j]]
+                scores.append(cos_np(col1, col2))
+        mean = sum(scores) / len(scores)
+        
+
+    report_lignes= []
+    for genre, indices in genres.items():
+        if len(indices) < 2:
+            report_lignes.append(f"- **{genre}** : *Non calculable (1 seul texte)*")
+            continue
+
+        scores = [cos_np(matrix[:, indices[i]], matrix[:, indices[j]])
+                    for i in range(len(indices)) 
+                    for j in range(i+1, len(indices))]
+
+        mean = sum(scores) / len(scores)
+        report_lignes.append(f"- **{genre}** : {mean :.04f}")
+    return "\n".join(report_lignes)
+    

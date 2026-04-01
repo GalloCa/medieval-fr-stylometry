@@ -47,8 +47,15 @@ class TextProcessor:
         Modifie :
             self.clean_text (str) : stockage du texte nettoyé en mémoire
         """
-        with open(self.filepath, mode = 'r', encoding='utf-8') as f:
-            text = f.read()
+        try : 
+            with open(self.filepath, mode = 'r', encoding='utf-8') as f:
+                text = f.read()
+        except FileNotFoundError : 
+            print(f"Le fichier {self.filepath} n'exite pas")
+            self.clean_text = ""
+            return
+        except UnicodeDecodeError:
+            print(f"Erreur d'encodage : le fichier {self.nom} n'est pas en UTF-8")
 
         # Suppression des en-têtes et marqueurs de métadonnées
         text = re.sub(r'^.*?--------------------------------------------------\n\n','' ,text, flags=re.DOTALL)
@@ -81,12 +88,14 @@ class TextProcessor:
 
         self.clean_text =  "\n".join(clean_lines)
         
-    def n_gramm(self,n=3):
+    def n_gramm(self,n=3, niveau='char'):
         """
-        Génère un dictionnaire de fréquences de n-grammes de caractères à partir du texte nettoyé
+        Génère un dictionnaire de fréquences de n-grammes de caractères 
+        ou de mots à partir du texte nettoyé
 
         Entrées : 
             n (int, optionnel) : taille des n-grammes, par défaut n = 3
+            niveau (str) : niveau d'analyse, accepte 'char' ou 'word'
         Modifie : 
             self.frequences (dict) : stocke les n-grammes et leur occurences : {'ngramme' : 'frequence}
         """
@@ -94,7 +103,11 @@ class TextProcessor:
             self.frequences = Counter()
             return
         
-        ngrams = [self.clean_text[i:i+n] for i in range(len(self.clean_text)-n+1)]
+        if niveau == 'char':
+            ngrams = [self.clean_text[i:i+n] for i in range(len(self.clean_text)-n+1)]
+        elif niveau == 'word':
+            words = self.clean_text.split()
+            ngrams = [" ".join(words[i:i+n]) for i in range(len(words)- n + 1)]
         self.frequences = dict(Counter(ngrams))
 
     def save_clean_txt(self, output_dir, prefix):
@@ -121,7 +134,7 @@ class TextProcessor:
         with open(path, 'w', encoding="utf-8") as f:
             f.write(self.clean_text)
 
-    def save_freq(self, output_dir):
+    def save_freq(self, output_dir, prefix):
         """
         Sauvegarde les fréquences des n-grammes dans un fichier TSV, les n-grammes sont 
         triés par ordre décroissant.
@@ -140,7 +153,7 @@ class TextProcessor:
             os.makedirs(output_dir)
             
         file_name_only = os.path.basename(self.filepath)
-        new_filename = f'freq-{file_name_only.replace(".txt", ".tsv")}'
+        new_filename = f'{prefix}-{file_name_only.replace(".txt", ".tsv")}'
         path = os.path.join(output_dir, new_filename)
         
         sorted_ngrams = sorted(self.frequences.keys(), key=lambda v: self.frequences[v], reverse = True)

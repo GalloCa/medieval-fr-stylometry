@@ -23,7 +23,7 @@ Dépendances :
 import os
 import numpy as np
 import datetime 
-from metrics import cos_np, jaccard_np
+from metrics import cos_np, jaccard_np, manhattan_np
 
 # FONCTIONS
 def compare_files(matrix, txt_names, output_path=None):
@@ -98,7 +98,7 @@ def create_comparison_matrix(liste_txt):
     return np_matrix, ordered_lex, txt_name
 
 # Rajouter argument de biblio pour les étiquettes finales 
-def knn(matrix, txt_names, biblio):
+def knn(matrix, txt_names, biblio, metric ='cosinus'):
     """
     Identifie les 5 paires de textes les plus proches et les 5 plus éloignées à
     partir de la similarité cosinus pour comparer les vecteurs.
@@ -109,6 +109,7 @@ def knn(matrix, txt_names, biblio):
         matrix (np.ndarray) : la matrice des fréquences (n-grammes x textes)
         txt_names (list) : liste des noms de textes 
         biblio (dict) : dictionnaire de métadonnées {nom : auteur | date | genre}
+        metric (str) : 
     Sorties :
         str : un rapport au format Markdown contenant les resultats
      """
@@ -118,10 +119,16 @@ def knn(matrix, txt_names, biblio):
     # Calcul de toutes les paires uniques
     for i in range(nb_txt):
         for j in range(i + 1,nb_txt) :
-            score = cos_np(matrix[:,i], matrix[:, j])
-            all_pairs.append((txt_names[i], txt_names[j], score))
-    # Tri par score décroissant
-    all_pairs.sort(key=lambda x: x[2], reverse=True)
+            if metric == "manhattan":
+                val = manhattan_np(matrix[:,i], matrix[:, j])
+            else :
+                val = cos_np(matrix[:,i], matrix[:, j])
+            all_pairs.append((txt_names[i], txt_names[j], val))
+
+    # Tri adapté par métriques 
+    is_reverse = True if metric != 'manhattan' else False
+    all_pairs.sort(key=lambda x: x[2], reverse=is_reverse)
+
     top_5 = all_pairs[:5]
     bot_5 = all_pairs[-5:]
     
@@ -137,18 +144,26 @@ def knn(matrix, txt_names, biblio):
         
         # Recherche du voisin le plus proche
         max_score = -1
+        max_dist = float('inf')
         best_knn = None
         
         for j in range(nb_txt):
-            if i ==j :
-                continue
-            score = cos_np(matrix[:,i], matrix[:, j])
-            if score > max_score:
-                max_score = score
-                best_knn = txt_names[j]
+            if i != j :
+                v1 = matrix[:,i]
+                v2 = matrix[:, j]
 
-        cat2 = biblio.get(best_knn)
-
+                if metric == 'manhattan':
+                    dist = manhattan_np(v1,v2)
+                    if dist < max_dist:
+                        max_dist = dist
+                        best_knn = txt_names[j]
+                else :
+                    score = cos_np(v1,v2)
+                    if score > max_score:
+                        max_score = score
+                        best_knn = txt_names[j]
+        if best_knn: 
+            cat2 = biblio.get(best_knn)
         if cat1 == cat2:
             good_pred +=1
         evaluated_txt +=1
@@ -157,24 +172,24 @@ def knn(matrix, txt_names, biblio):
 
     # Construction du rapport
     report_ligne= []
-    report_ligne.append(f"**Précision de l'algorithme KNN : {accuracy :.1f}%**\n")
+    report_ligne.append(f"**Précision de l'algorithme KNN ({metric}) : {accuracy :.1f}%**\n")
     
     report_ligne.append(f"#### Les 5 paires les plus proches : ")
-    for t1, t2, score in top_5 : 
+    for t1, t2, val in top_5 : 
         c1 = biblio.get(t1, 'Inconnu')
         c2 = biblio.get(t2, 'Inconnu')
-        report_ligne.append(f"- **{score:.4f}** : {t1} ({c1}) / {t2} ({c2})")
+        report_ligne.append(f"- **{val:.4f}** : {t1} ({c1}) / {t2} ({c2})")
     
     report_ligne.append(f"\n### Les 5 paires les plus éloignées :")
-    for t1, t2, score in reversed(bot_5) : 
+    for t1, t2, val in reversed(bot_5) : 
         c1 = biblio.get(t1, 'Inconnu')
         c2 = biblio.get(t2, 'Inconnu')
-        report_ligne.append(f"- **{score:.4f}** : {t1} ({c1}) / {t2} ({c2})")
+        report_ligne.append(f"- **{val:.4f}** : {t1} ({c1}) / {t2} ({c2})")
     
     return "\n".join(report_ligne)
 
 
-def genre_cohesion(matrix, txt_names, biblio):
+def genre_cohesion(matrix, txt_names, biblio, metric='cosinus'):
     """
     Calcule de la similarité moyenne à l'intérieur de chaque genre, date ou auteur
 
@@ -182,6 +197,7 @@ def genre_cohesion(matrix, txt_names, biblio):
         matrix (np.ndarray) : la matrice des fréquences (n-grammes x textes)
         txt_names (list) : liste des noms de textes 
         biblio (dict) : dictionnaire de métadonnées {nom : auteur | date | genre}
+        metric (str) : 
 
     Sorties :
         str : un rapport au format Markdown contenant les resultats
@@ -194,31 +210,27 @@ def genre_cohesion(matrix, txt_names, biblio):
             if genre not in genres:
                 genres[genre] = []
             genres[genre].append(idx)
-            
-    for genre, indices in genres.items():
-        if len(indices) < 2:
-            continue
-        scores = []
-        for i in range(len(indices)):
-            for j in range(i+1, len(indices)):
-                col1 = matrix[:, indices[i]]
-                col2 = matrix[:, indices[j]]
-                scores.append(cos_np(col1, col2))
-        mean = sum(scores) / len(scores)
-        
 
     report_lignes= []
     for genre, indices in genres.items():
         if len(indices) < 2:
             report_lignes.append(f"- **{genre}** : *Non calculable (1 seul texte)*")
-            continue
+            continue  
 
-        scores = [cos_np(matrix[:, indices[i]], matrix[:, indices[j]])
-                    for i in range(len(indices)) 
-                    for j in range(i+1, len(indices))]
+        scores = []
+        for i in range(len(indices)):
+            for j in range(i+1, len(indices)):
+                v1 = matrix[:, indices[i]]
+                v2 = matrix[:, indices[j]]
+                if metric == 'manhattan':
+                    scores.append(manhattan_np(v1,v2))
+                else :
+                    scores.append(cos_np(v1, v2))
 
         mean = sum(scores) / len(scores)
-        report_lignes.append(f"- **{genre}** : {mean :.04f}")
+        unite = "(Distance moyenne)" if metric == 'manhattan' else "(Similarité moyenne)"
+        report_lignes.append(f"- **{genre}** : {mean :.04f} {unite}")
+
     return "\n".join(report_lignes)
 
 
@@ -261,7 +273,7 @@ def ngram_signatures(matrix, txt_names, biblio, lexique, target_genre, top=10):
 
 # Génération d'un rapport final 
 # Rajouter citation du Git de base dans le rapport
-def generate_report(matrix, txt_names, biblio, lexique, output_path, img_path, titre=None ):
+def generate_report(matrix, txt_names, biblio, lexique, output_path, img_path, titre=None, metric='cosinus'):
     """
     Réalise l'ensemble des analyses définies précédemment et génère un rapport global au format 
     MarkDown. Orchestre l'appel des fonctions de classification, de cohésion et des n-grammes signature.
@@ -289,11 +301,11 @@ def generate_report(matrix, txt_names, biblio, lexique, output_path, img_path, t
     report.append(citation_header)
     report.append("\n" + "="*50 + "\n")
     report.append("### 1. Classification KNN \n")
-    report.append(knn(matrix, txt_names, biblio))
+    report.append(knn(matrix, txt_names, biblio, metric=metric))
 
     report.append("\n" + "="*50 + "\n")
     report.append("\n### 2. Cohésion interne\n")
-    cohesion = genre_cohesion(matrix, txt_names, biblio)
+    cohesion = genre_cohesion(matrix, txt_names, biblio, metric=metric)
     report.append(cohesion)
 
     report.append("\n" + "="*50 + "\n")

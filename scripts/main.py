@@ -82,16 +82,23 @@ if __name__ == "__main__":
         for filename in files : 
             input_path = os.path.join(raw_txt_dir, filename)
             file_name_clean = clean_label(filename)
+            try:
 
-            doc = TextProcessor(filepath = input_path, clean_name = file_name_clean)
+                doc = TextProcessor(filepath = input_path, clean_name = file_name_clean)
+                doc.clean_txt()
+                doc.n_gramm(n=3)
 
-            doc.clean_txt()
-            doc.n_gramm(n=3)
+                if not doc.frequences:
+                    print(f"Textes ignoré (vide ou invalide) : {filename}")
+                    continue
 
-            doc.save_clean_txt(clean_txt_dir, prefix = "clean")
-            doc.save_freq(freq_folder)
+                doc.save_clean_txt(clean_txt_dir, prefix = "clean")
+                doc.save_freq(freq_folder)
 
-            my_corpus.append(doc)
+                my_corpus.append(doc)
+            except Exception as e : 
+                print(f"Echec sur {filename} : erreur {e}")
+                continue
     print(f"\nFin de l'étape 2 : {len(my_corpus)} textes traités (version propre enregistrée dans {clean_txt_dir} et fréquences sauvegardées dans {freq_folder}) ")
 
     # Etape 3 : Matrice de comparaison
@@ -102,7 +109,7 @@ if __name__ == "__main__":
     print("\nFin de l'étape 3")
 
     # Etape 4 : visualisation graphique
-    print("\nEtape 4 : génération des visualisations (scatter plot et dendogramme)... ")
+    print("\nEtape 4 : génération des visualisations (scatter plot) ... ")
         # Scatter-plot
     generate_similarity_plot(matrix, txt_names, dico_genre, plot_output_dir, mode='genre')
     generate_similarity_plot(matrix, txt_names, dico_date, plot_output_dir, mode='dates')
