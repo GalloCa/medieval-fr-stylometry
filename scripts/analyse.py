@@ -162,8 +162,9 @@ def knn(matrix, txt_names, biblio, metric ='cosinus'):
                     if score > max_score:
                         max_score = score
                         best_knn = txt_names[j]
-        if best_knn: 
-            cat2 = biblio.get(best_knn)
+        if not best_knn:
+            continue
+        cat2 = biblio.get(best_knn)
         if cat1 == cat2:
             good_pred +=1
         evaluated_txt +=1
