@@ -35,9 +35,12 @@ def download_github_data(repo_url, local_dir):
         Enregistrement des textes bruts.
 
     """
-    GITHUB_TOKEN ='xxxxxxxxxxxxxxxxxxxxxxxxxx' 
-    # passer plutôt par os.getenv('GITHUB_TOKEN') pour éviter d'écrire le token et l'exposer
-    headers = {'User-Agent': 'Mozilla/5.0', 'Authorization' : f'token {GITHUB_TOKEN}'}
+    GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
+    if not GITHUB_TOKEN:
+        print("Erreur : variable d'environnement GITHUB_TOKEN non définie.")
+        print("Créer un fichier .env ou l'exporter avec : export GITHUB_TOKEN=ton_token")
+        return False
+    headers = {'User-Agent': 'Mozilla/5.0', 'Authorization': f'token {GITHUB_TOKEN}'}
 
     # Vérifie l'existence du dossier local et création s'il n'existe pas 
     if not os.path.exists(local_dir):
