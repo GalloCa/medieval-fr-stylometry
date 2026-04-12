@@ -57,17 +57,29 @@ def generate_similarity_plot(matrix, txt_names, biblio, output_dir, mode='genre'
                 dist = max(0.0, 1.0 - cos_np(v1,v2))
                 dissimilarity[i,j] = dist
                 dissimilarity[j,i] = dist
-    
-    mds = MDS(n_components=2, metric=True, n_init=4, random_state=42, dissimilarity='precomputed' )
-    pos = mds.fit_transform(dissimilarity)
-  
+ 
     # Configuration esthétique
     configs = {
         'genre':  {'title': 'par genres', 'file': 'genre.png', 'legend': 'Genres'},
         'dates':  {'title': 'par dates', 'file': 'dates.png', 'legend': 'Dates'},
         'auteurs':{'title': 'par auteurs', 'file': 'auteurs.png', 'legend': 'Auteurs'}
     }
-    conf = configs.get(mode)
+   
+    
+    if mode not in configs:
+        print(f"generate_similarity_plot : mode '{mode}' invalide. Choix : genre, dates, auteurs.")
+        return
+    conf = configs[mode]
+
+    if nb_txt < 3:
+        print(f"generate_similarity_plot : pas assez de textes ({nb_txt}) pour un MDS (minimum 3).")
+        return
+    try:
+        mds = MDS(n_components=2, metric=True, n_init=4, random_state=42, dissimilarity='precomputed')
+        pos = mds.fit_transform(dissimilarity)
+    except Exception as e:
+        print(f"Erreur MDS ({mode}) : {e}")
+        return
     
     color_maps = {
         'genre': {'Didactique': '#E74C3C', 'Roman courtois': '#3498DB', 'Antique': "#FCD435", 
