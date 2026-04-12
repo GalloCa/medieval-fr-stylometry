@@ -42,7 +42,7 @@ if __name__ == "__main__":
     dico_author = load_biblio(biblio_author_dir)
     dico_date = load_biblio(biblio_date_dir)
 
-        dicos = {
+    dicos = {
         'dico_genre':  (dico_genre,  biblio_genre_dir),
         'dico_author': (dico_author, biblio_author_dir),
         'dico_date':   (dico_date,   biblio_date_dir),
