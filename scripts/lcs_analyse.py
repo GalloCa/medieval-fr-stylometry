@@ -58,6 +58,19 @@ def lcs(t1, t2):
     mots_communs = mots1[end_idx - longest + 1 : end_idx + 1]
     return " ".join(mots_communs)
 
+def count_freq(sequence, texte):
+    """
+    """
+    if not sequence:
+        return 0
+    mot_seq = sequence.split()
+    mot_text = texte.split()
+    n = len(mot_seq)
+    count = 0
+    for i in range(len(mot_text) - n +1):
+        if mot_text[i:i+n] == mot_seq:
+            count +=1
+    return count 
 
 def analyse_auteur(auteur, texte_dir, dico_author):
     """
@@ -109,8 +122,11 @@ def analyse_auteur(auteur, texte_dir, dico_author):
             lcs_ct = lcs(textes[file1], textes[file2])
 
             if len(lcs_ct) > 10:
+                freq1 = count_freq(lcs_ct, textes[file1])
+                freq2 = count_freq(lcs_ct, textes[file2])
                 report_lignes.append(f"- **{nom1}** et **{nom2}** ({len(lcs_ct)} caractères) :")
-                report_lignes.append(f" > «  *{lcs_ct}* »\n")
+                report_lignes.append(f" > «  *{lcs_ct}* »")
+                report_lignes.append(f" - apparitions : {nom1} x {freq1} / {nom2} x {freq2}\n")
 
     return "\n".join(report_lignes)    
 
