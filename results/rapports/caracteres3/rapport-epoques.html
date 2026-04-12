@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analyse par Époques</title>
+  
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Fira+Code:wght@400;500&display=swap');
+
+  :root {
+    --bg:        #0f0e0c;
+    --surface:   #1a1916;
+    --border:    #2e2c28;
+    --accent:    #c9a84c;
+    --accent2:   #7a5c2e;
+    --text:      #e8e0d0;
+    --muted:     #7a7060;
+    --good:      #5a8a5a;
+    --bad:       #8a3a3a;
+    --radius:    6px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 17px;
+    line-height: 1.7;
+    padding: 0 0 80px;
+  }
+
+  /* ── En-tête ── */
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 48px 64px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 80% at 80% 50%, rgba(201,168,76,.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .header-label {
+    font-family: 'Fira Code', monospace;
+    font-size: 11px;
+    letter-spacing: .18em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  h1 {
+    font-size: clamp(1.6rem, 3vw, 2.6rem);
+    font-weight: 600;
+    letter-spacing: -.01em;
+    line-height: 1.2;
+    color: #f5ead8;
+  }
+  .meta {
+    margin-top: 18px;
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .meta-item {
+    font-family: 'Fira Code', monospace;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .meta-item span { color: var(--text); }
+
+  /* ── Navigation interne ── */
+  nav {
+    padding: 20px 64px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  nav a {
+    font-family: 'Fira Code', monospace;
+    font-size: 11px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 5px 12px;
+    border: 1px solid transparent;
+    border-radius: var(--radius);
+    transition: all .2s;
+  }
+  nav a:hover {
+    border-color: var(--accent2);
+    color: var(--accent);
+  }
+
+  /* ── Contenu principal ── */
+  main { padding: 0 64px; }
+
+  /* ── Sections ── */
+  section {
+    padding: 52px 0 40px;
+    border-bottom: 1px solid var(--border);
+  }
+  section:last-child { border-bottom: none; }
+
+  .section-number {
+    font-family: 'Fira Code', monospace;
+    font-size: 11px;
+    letter-spacing: .2em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  h2 {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #f5ead8;
+    margin-bottom: 28px;
+  }
+  h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 30px 0 12px;
+    font-family: 'Fira Code', monospace;
+    font-size: 13px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+
+  /* ── Précision KNN ── */
+  .accuracy-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 22px;
+    border: 1px solid var(--accent2);
+    border-radius: var(--radius);
+    background: rgba(201,168,76,.05);
+    margin-bottom: 32px;
+  }
+  .accuracy-value {
+    font-family: 'Fira Code', monospace;
+    font-size: 2rem;
+    font-weight: 500;
+    color: var(--accent);
+  }
+  .accuracy-label {
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+
+  /* ── Tableaux de paires ── */
+  .pairs-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 16px;
+  }
+  @media (max-width: 900px) { .pairs-grid { grid-template-columns: 1fr; } }
+
+  .pairs-block h3 { margin-top: 0; }
+
+  .pair-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .pair-row:last-child { border-bottom: none; }
+
+  .pair-score {
+    font-family: 'Fira Code', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    min-width: 54px;
+    text-align: right;
+  }
+  .pair-score.high { color: var(--good); }
+  .pair-score.low  { color: var(--bad); }
+
+  .pair-bar {
+    width: 80px;
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .pair-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    background: var(--good);
+  }
+  .pair-bar-fill.low { background: var(--bad); }
+
+  .pair-names { font-size: 14px; line-height: 1.3; }
+  .pair-names .cat { color: var(--muted); font-size: 12px; }
+
+  /* ── Cohésion ── */
+  .cohesion-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 14px;
+    margin-top: 8px;
+  }
+  .cohesion-card {
+    padding: 16px 18px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+  }
+  .cohesion-card .genre-name {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 6px;
+    font-family: 'Fira Code', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+  }
+  .cohesion-card .score {
+    font-family: 'Fira Code', monospace;
+    font-size: 1.4rem;
+    color: var(--text);
+  }
+  .cohesion-card .score.na { color: var(--muted); font-size: 1rem; }
+  .cohesion-card .unit { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  /* ── Signatures n-grammes ── */
+  .signatures-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+    margin-top: 8px;
+  }
+  .sig-card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--surface);
+  }
+  .sig-card-header {
+    padding: 12px 16px;
+    background: rgba(201,168,76,.07);
+    border-bottom: 1px solid var(--border);
+    font-family: 'Fira Code', monospace;
+    font-size: 11px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .sig-ngram {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+    transition: background .15s;
+  }
+  .sig-ngram:last-child { border-bottom: none; }
+  .sig-ngram:hover { background: rgba(255,255,255,.02); }
+  .sig-ngram code {
+    font-family: 'Fira Code', monospace;
+    font-size: 13px;
+    color: #c8d8e8;
+    background: rgba(100,140,200,.1);
+    padding: 2px 6px;
+    border-radius: 3px;
+  }
+  .sig-ratio {
+    font-family: 'Fira Code', monospace;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* ── Visualisation ── */
+  .viz-container {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--surface);
+  }
+  .viz-container img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  /* ── LCS ── */
+  .lcs-block {
+    margin-top: 16px;
+  }
+  .lcs-pair {
+    padding: 16px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    margin-bottom: 12px;
+  }
+  .lcs-pair-title {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 10px;
+    font-family: 'Fira Code', monospace;
+  }
+  blockquote {
+    border-left: 3px solid var(--accent2);
+    padding: 10px 16px;
+    font-style: italic;
+    color: #c8c0b0;
+    font-size: 15px;
+    background: rgba(201,168,76,.03);
+    border-radius: 0 var(--radius) var(--radius) 0;
+  }
+
+  /* ── Citation ── */
+  .citation {
+    padding: 20px 64px 0;
+    font-family: 'Fira Code', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+    margin-top: 60px;
+  }
+  .citation a { color: var(--accent2); }
+</style>
+
+</head>
+<body>
+
+<header>
+  <div class="header-label">Analyse Stylométrique · Ancien Français</div>
+  <h1>Analyse par Époques</h1>
+  <div class="meta">
+    <div class="meta-item">Généré le &nbsp;<span>2026-04-12 15:34</span></div>
+    <div class="meta-item">Métrique &nbsp;<span>cosinus</span></div>
+    <div class="meta-item">Textes &nbsp;<span>25</span></div>
+    <div class="meta-item">Catégories &nbsp;<span>5</span></div>
+  </div>
+</header>
+
+<nav>
+  <a href="#knn">KNN</a>
+<a href="#cohesion">Cohésion</a>
+<a href="#signatures">Signatures</a>
+<a href="#visualisation">Visualisation</a>
+</nav>
+
+<main>
+  
+    <section id="knn">
+      <div class="section-number">01 — Classification</div>
+      <h2>KNN — Voisinage le plus proche (k=1)</h2>
+      <div class="accuracy-badge">
+        <span class="accuracy-value">52.0%</span>
+        <span class="accuracy-label">Précision (cosinus)</span>
+      </div>
+      <div class="pairs-grid">
+        <div class="pairs-block">
+          <h3>▲ 5 paires les plus proches</h3>
+          
+        <div class="pair-row">
+          <span class="pair-score high">0.9824</span>
+          <div class="pair-bar">
+            <div class="pair-bar-fill " style="width:100%"></div>
+          </div>
+          <div class="pair-names">
+            LancJ <span class="cat">(XIIe siècle)</span><br>
+            PercevalKu <span class="cat">(XIIe siècle)</span>
+          </div>
+        </div>
+
+        <div class="pair-row">
+          <span class="pair-score high">0.9797</span>
+          <div class="pair-bar">
+            <div class="pair-bar-fill " style="width:75%"></div>
+          </div>
+          <div class="pair-names">
+            Cliges <span class="cat">(XIIe siècle)</span><br>
+            LancJ <span class="cat">(XIIe siècle)</span>
+          </div>
+        </div>
+
+        <div class="pair-row">
+          <span class="pair-score high">0.9736</span>
+          <div class="pair-bar">
+            <div class="pair-bar-fill " style="width:19%"></div>
+          </div>
+          <div class="pair-names">
+            LancJ <span class="cat">(XIIe siècle)</span><br>
+            ErecF <span class="cat">(XIIe siècle)</span>
+          </div>
+        </div>
+
+        <div class="pair-row">
+          <span class="pair-score high">0.9732</span>
+          <div class="pair-bar">
+            <div class="pair-bar-fill " style="width:15%"></div>
+          </div>
+          <div class="pair-names">
+            Cliges <span class="cat">(XIIe siècle)</span><br>
+            ErecF <span class="cat">(XIIe siècle)</span>
+          </div>
+        </div>
+
+        <div class="pair-row">
+          <span class="pair-score high">0.9715</span>
+          <div class="pair-bar">
+            <div class="pair-bar-fill " style="width:0%"></div>
+          </div>
+          <div class="pair-names">
+            PercevalKu <span class="cat">(XIIe siècle)</span><br>
+            ErecF <span class="cat">(XIIe siècle)</span>
+          </div>
+        </div>
+        </div>
+        <div class="pairs-block">
+          <h3>▽ 5 paires les plus éloignées</h3>
+          
+        <div class="pair-row">
+          <span class="pair-score low">0.6170</span>
+          <div class="pair-bar">
+            <div class="pair-bar-fill low" style="width:0%"></div>
+          </div>
+          <div class="pair-names">
+            AigarB <span class="cat">(XIIe siècle)</span><br>
+            DancusM <span class="cat">(XIIIe siècle)</span>
+          </div>
+        </div>
+
+        <div class="pair-row">
+          <span class="pair-score low">0.6409</span>
+          <div class="pair-bar">
+            <div class="pair-bar-fill low" style="width:75%"></div>
+          </div>
+          <div class="pair-names">
+            ChaceP <span class="cat">(XIIIe siècle)</span><br>
+            AigarB <span class="cat">(XIIe siècle)</span>
+          </div>
+        </div>
+
+        <div class="pair-row">
+          <span class="pair-score low">0.6453</span>
+          <div class="pair-bar">
+            <div class="pair-bar-fill low" style="width:89%"></div>
+          </div>
+          <div class="pair-names">
+            FillePonth1B1 <span class="cat">(XIIIe siècle)</span><br>
+            AigarB <span class="cat">(XIIe siècle)</span>
+          </div>
+        </div>
+
+        <div class="pair-row">
+          <span class="pair-score low">0.6474</span>
+          <div class="pair-bar">
+            <div class="pair-bar-fill low" style="width:96%"></div>
+          </div>
+          <div class="pair-names">
+            AigarB <span class="cat">(XIIe siècle)</span><br>
+            JAvesnesFilleB <span class="cat">(XVe siècle)</span>
+          </div>
+        </div>
+
+        <div class="pair-row">
+          <span class="pair-score low">0.6485</span>
+          <div class="pair-bar">
+            <div class="pair-bar-fill low" style="width:100%"></div>
+          </div>
+          <div class="pair-names">
+            SGeorgDeG <span class="cat">(XIVe siècle)</span><br>
+            AigarB <span class="cat">(XIIe siècle)</span>
+          </div>
+        </div>
+        </div>
+      </div>
+    </section>
+  
+    <section id="cohesion">
+      <div class="section-number">02 — Cohésion interne</div>
+      <h2>Similarité moyenne par catégorie</h2>
+      <div class="cohesion-grid">
+        
+        <div class="cohesion-card">
+          <div class="genre-name">XIIe siècle</div>
+          <div class="score">0.8551</div>
+          <div class="unit">Similarité moyenne</div>
+        </div>
+        <div class="cohesion-card">
+          <div class="genre-name">XIe siècle</div>
+          <div class="score na">N/A</div>
+          <div class="unit">1 seul texte</div>
+        </div>
+        <div class="cohesion-card">
+          <div class="genre-name">XIIIe siècle</div>
+          <div class="score">0.8335</div>
+          <div class="unit">Similarité moyenne</div>
+        </div>
+        <div class="cohesion-card">
+          <div class="genre-name">XIVe siècle</div>
+          <div class="score">0.8763</div>
+          <div class="unit">Similarité moyenne</div>
+        </div>
+        <div class="cohesion-card">
+          <div class="genre-name">XVe siècle</div>
+          <div class="score na">N/A</div>
+          <div class="unit">1 seul texte</div>
+        </div>
+      </div>
+    </section>
+  
+    <section id="signatures">
+      <div class="section-number">03 — Signatures lexicales</div>
+      <h2>N-grammes caractéristiques par catégorie</h2>
+      <div class="signatures-grid">
+        
+        <div class="sig-card">
+          <div class="sig-card-header">XIIIe siècle</div>
+          
+          <div class="sig-ngram">
+            <code> à </code>
+            <span class="sig-ratio">ratio 109.17</span>
+          </div>
+          <div class="sig-ngram">
+            <code>éom</code>
+            <span class="sig-ratio">ratio 73.50</span>
+          </div>
+          <div class="sig-ngram">
+            <code>léo</code>
+            <span class="sig-ratio">ratio 73.50</span>
+          </div>
+          <div class="sig-ngram">
+            <code>adè</code>
+            <span class="sig-ratio">ratio 43.71</span>
+          </div>
+        </div>
+        <div class="sig-card">
+          <div class="sig-card-header">XIIe siècle</div>
+          
+          <div class="sig-ngram">
+            <code>anb</code>
+            <span class="sig-ratio">ratio 40.33</span>
+          </div>
+          <div class="sig-ngram">
+            <code>eis</code>
+            <span class="sig-ratio">ratio 30.96</span>
+          </div>
+          <div class="sig-ngram">
+            <code>ax </code>
+            <span class="sig-ratio">ratio 30.83</span>
+          </div>
+          <div class="sig-ngram">
+            <code>ïne</code>
+            <span class="sig-ratio">ratio 28.64</span>
+          </div>
+          <div class="sig-ngram">
+            <code>nbl</code>
+            <span class="sig-ratio">ratio 27.36</span>
+          </div>
+        </div>
+        <div class="sig-card">
+          <div class="sig-card-header">XIVe siècle</div>
+          
+          <div class="sig-ngram">
+            <code>geo</code>
+            <span class="sig-ratio">ratio 15.22</span>
+          </div>
+          <div class="sig-ngram">
+            <code>jhe</code>
+            <span class="sig-ratio">ratio 10.62</span>
+          </div>
+          <div class="sig-ngram">
+            <code> jh</code>
+            <span class="sig-ratio">ratio 9.73</span>
+          </div>
+          <div class="sig-ngram">
+            <code>xis</code>
+            <span class="sig-ratio">ratio 7.22</span>
+          </div>
+          <div class="sig-ngram">
+            <code>ay </code>
+            <span class="sig-ratio">ratio 6.94</span>
+          </div>
+        </div>
+        <div class="sig-card">
+          <div class="sig-card-header">XIe siècle</div>
+          
+          <div class="sig-ngram">
+            <code>edr</code>
+            <span class="sig-ratio">ratio 33.33</span>
+          </div>
+          <div class="sig-ngram">
+            <code>ped</code>
+            <span class="sig-ratio">ratio 24.86</span>
+          </div>
+          <div class="sig-ngram">
+            <code>ed </code>
+            <span class="sig-ratio">ratio 14.22</span>
+          </div>
+          <div class="sig-ngram">
+            <code>at </code>
+            <span class="sig-ratio">ratio 10.69</span>
+          </div>
+          <div class="sig-ngram">
+            <code>d i</code>
+            <span class="sig-ratio">ratio 10.50</span>
+          </div>
+        </div>
+        <div class="sig-card">
+          <div class="sig-card-header">XVe siècle</div>
+          
+          <div class="sig-ngram">
+            <code>uld</code>
+            <span class="sig-ratio">ratio 65.14</span>
+          </div>
+          <div class="sig-ngram">
+            <code>ld </code>
+            <span class="sig-ratio">ratio 56.00</span>
+          </div>
+          <div class="sig-ngram">
+            <code>hib</code>
+            <span class="sig-ratio">ratio 54.00</span>
+          </div>
+          <div class="sig-ngram">
+            <code>luy</code>
+            <span class="sig-ratio">ratio 48.00</span>
+          </div>
+          <div class="sig-ngram">
+            <code>uy </code>
+            <span class="sig-ratio">ratio 48.00</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  
+    <section id="visualisation">
+      <div class="section-number">04 — Visualisation</div>
+      <h2>Nuages de points (MDS – Similarité Cosinus)</h2>
+      <div class="viz-container" style="margin-bottom:20px"><img src="../../scatter-plots/caracteres3/nuage_points_dates.png" alt="Visualisation"></div>
+
+    </section>
+  
+</main>
+
+<div class="citation">
+  Source : (2018). <em>Open Medieval French</em>.
+  <a href="https://github.com/OpenMedFr/texts" target="_blank">https://github.com/OpenMedFr/texts</a>
+</div>
+
+</body>
+</html>

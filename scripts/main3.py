@@ -12,8 +12,9 @@ from download_data import download_github_data
 from utils import load_biblio, clean_label, save_matrix_tsv
 from text_processor import TextProcessor
 from analyse import create_comparison_matrix, generate_report, compare_files
-from plots_generator import generate_similarity_plot, generate_dendogramme
+from plots_generator import generate_similarity_plot
 from lcs_analyse import analyse_auteur
+from generate_report_html import generate_report_html as generate_report, generate_combined_report_html
 
 
 # MAIN
@@ -73,7 +74,7 @@ if __name__ == "__main__":
 
     
     # START 
-    
+    result_auteurs = {}
     for exp in experiences:
         suffixe = exp['nom']
 
@@ -147,11 +148,18 @@ if __name__ == "__main__":
       
 
         # Etape 5 : Génération des rapports
-        print("\nÉtape 5 : Génération des rapports Markdown...")
+        print("\nÉtape 5 : Génération des rapports...")
         metric_use = exp['metric']
-        generate_report(matrix, txt_names, dico_genre, lexique, genre_report_dir, scatter_plot_genre, titre="Analyse par Genres Littéraires", metric=metric_use)
-        generate_report(matrix, txt_names, dico_author, lexique, auteurs_report_dir, scatter_plot_author, titre="Analyse par Auteurs", metric=metric_use)
-        generate_report(matrix, txt_names, dico_date, lexique, dates_report_dir, scatter_plot_date, titre="Analyse par Époques", metric=metric_use)
+        result_auteurs[suffixe] = {
+            'matrix' : matrix,
+            'txt_names' : txt_names,
+            'lexique' :   lexique,
+            'img_path' :  scatter_plot_author,
+            'metric' :    metric_use,
+        }
+        
+        generate_report(matrix, txt_names, dico_author, lexique, auteurs_report_dir, img_paths=[scatter_plot_author], titre="Analyse par Auteurs", metric=metric_use)
+        generate_report(matrix, txt_names, dico_date, lexique, dates_report_dir, img_paths=[scatter_plot_date], titre="Analyse par Époques", metric=metric_use)
 
         print(f"Fin du traitement pour {suffixe} !")
 
@@ -161,19 +169,16 @@ if __name__ == "__main__":
     
 
    # Construction du rapport final : MD ou HTML ? 
-    lcs_content = analyse-auteur('Chrétien de troyes', clean_txt_dir, dico_author)
-    rapport_auteurs_char3 = r"/workspaces/medFR-paleao-NLP/results/rapports/caracteres3",
-    "rapport-auteurs.html")
+    lcs_content = analyse_auteur('Chrétien de troyes', clean_txt_dir, dico_author)
+    rapport_auteurs_final = r"/workspaces/medFR-paleao-NLP/results/rapports/rapport-auteurs.html"
     
-    generate_report(
-    matrix, txt_names, dico_author, lexique,
-    output_path=rapport_auteurs_char3,
-    img_paths=[scatter_plot_author],
-    titre="Analyse par Auteurs",
-    metric='cosinus',
-    lcs_content=lcs_content
-    )
+    generate_combined_report_html(
+        resultats=result_auteurs,
+        biblio=dico_author,
+        output_path=rapport_auteurs_final,
+        lcs_content=lcs_content,
+        titre='Analyse par Auteurs')
 
-    print("Rapport auteurs (caracteres3) avec LCS généré.")
+    print("Fin.")
     
  
