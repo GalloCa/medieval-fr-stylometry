@@ -84,6 +84,7 @@ if __name__ == "__main__":
         # Création des sous-dossiers spécifiques à cette expérience
         exp_matrix_dir = os.path.join(r"/workspaces/medFR-paleao-NLP/results/matrix", suffixe)
         exp_plot_dir = os.path.join(r"/workspaces/medFR-paleao-NLP/results/scatter-plots", suffixe)
+        exp_freq_dir = os.path.join(r"/workspaces/medFR-paleao-NLP/results/frequencies", suffixe)
 
         os.makedirs(exp_matrix_dir, exist_ok=True)
         os.makedirs(exp_plot_dir, exist_ok=True)
@@ -117,8 +118,8 @@ if __name__ == "__main__":
                     print(f"⏩ Texte ignoré (vide ou invalide) : {filename}")
                     continue
 
-                # Sauvegarde avec le préfixe de l'expérience (ex: freq-word1-Yvain.tsv)
-                doc.save_freq(freq_folder, prefix=suffixe)
+                # Sauvegarde avec le préfixe de l'expérience (ex: lexical-Yain.tsv)
+                doc.save_freq(exp_freq_dir, prefix=suffixe)
                 doc.save_clean_txt(clean_txt_dir, prefix="clean")
 
                 my_corpus.append(doc)
@@ -187,7 +188,7 @@ if __name__ == "__main__":
     lcs_content = analyse_auteur('Chrétien de Troyes', clean_txt_dir, dico_author)
     rapport_auteurs_final = r"/workspaces/medFR-paleao-NLP/results/rapports/rapport-auteurs.html"
    
-    print("Expériences dans result_auteurs :", list(result_auteurs.keys()))
+    print("Expériences dans result_auteurs :", list(result_auteurs.keys())) # trace
 
     generate_combined_report_html(
         resultats=result_genre,
@@ -215,6 +216,6 @@ if __name__ == "__main__":
         )
 
 
-    print("Fin.")
+    print("Fin de la pipeline.")
     
  

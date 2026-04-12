@@ -714,7 +714,7 @@ def generate_combined_report_html(resultats, biblio, output_path, mode,
     for idx, (suffixe, data) in enumerate(resultats.items()):
         active  = "active" if idx == 0 else ""
         label   = TAB_LABELS.get(suffixe, suffixe)
-        lcs_tab = lcs_content if (mode == 'auteurs' and suffixe == 'morpho') else None
+        lcs_tab = lcs_content if (mode == 'auteurs' and suffixe == 'lexical') else None
         contenu = _build_tab(suffixe, data, biblio, mode, output_path, lcs_tab)
 
         buttons += f'<button class="tab-btn {active}" data-tab="tab-{suffixe}">{label}</button>\n'
