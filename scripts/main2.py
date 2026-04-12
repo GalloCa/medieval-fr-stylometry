@@ -41,8 +41,18 @@ if __name__ == "__main__":
     dico_author = load_biblio(biblio_author_dir)
     dico_date = load_biblio(biblio_date_dir)
 
+        dicos = {
+        'dico_genre':  (dico_genre,  biblio_genre_dir),
+        'dico_author': (dico_author, biblio_author_dir),
+        'dico_date':   (dico_date,   biblio_date_dir),
+    }
+    for nom, (dico, chemin) in dicos.items():
+        if not dico:
+            print(f"Erreur : {nom} est vide ou introuvable ({chemin}). Vérifier le fichier.")
+            exit(1)
+    print(f"Métadonnées chargées : {len(dico_genre)} genres, {len(dico_author)} auteurs, {len(dico_date)} dates.")
 
-    
+
     # ÉTAPE 1 : TÉLÉCHARGEMENT DES DONNÉES
 
     print("\nEtape 1 : Téléchargement des données brutes depuis le répertoire Open Medieval French...")
