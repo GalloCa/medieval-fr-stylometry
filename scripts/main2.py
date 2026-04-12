@@ -6,6 +6,7 @@ Mode : Multi-expérimentations (Caractères vs Mots)
 # MODULES
 import os 
 import time
+import sys
 
 from download_data import download_github_data
 from utils import load_biblio, clean_label, save_matrix_tsv
@@ -49,7 +50,7 @@ if __name__ == "__main__":
     for nom, (dico, chemin) in dicos.items():
         if not dico:
             print(f"Erreur : {nom} est vide ou introuvable ({chemin}). Vérifier le fichier.")
-            exit(1)
+            sys.exit(1)
     print(f"Métadonnées chargées : {len(dico_genre)} genres, {len(dico_author)} auteurs, {len(dico_date)} dates.")
 
 
@@ -66,7 +67,7 @@ if __name__ == "__main__":
             print("\nTéléchargement terminé avec succès")
         else :
             print("\nEchec du téléchargement (problème d'API ou de token GitHub)")
-            exit()
+            sys.exit(1)
     else :
         print(f"\nLes textes sont déjà présents dans {raw_txt_dir}. Pas besoin de les re-télécharger")
 
