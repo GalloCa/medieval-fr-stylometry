@@ -89,9 +89,9 @@ if __name__ == "__main__":
         # Chemins de sortie dynamiques
         output_matrix = os.path.join(exp_matrix_dir, "matrix.tsv")
         compare_out_dir = os.path.join(exp_matrix_dir, "compare-files.tsv")
-        genre_report_dir = os.path.join(exp_report_dir, "rapport-genre.md")
-        auteurs_report_dir = os.path.join(exp_report_dir, "rapport-auteurs.md")
-        dates_report_dir = os.path.join(exp_report_dir, "rapport-epoques.md")
+        genre_report_dir = os.path.join(exp_report_dir, "rapport-genre.html")
+        auteurs_report_dir = os.path.join(exp_report_dir, "rapport-auteurs.html")
+        dates_report_dir = os.path.join(exp_report_dir, "rapport-epoques.html")
 
         # Chemins relatifs pour insérer les images dans le Markdown
         # Depuis results/rapports/char3/ vers results/scatter-plots/char3/
@@ -161,16 +161,19 @@ if __name__ == "__main__":
     
 
    # Construction du rapport final : MD ou HTML ? 
-    rapport_cible = r"/workspaces/medFR-paleao-NLP/results/rapports/caracteres3/rapport-auteurs.md"
-    add_lcs_report_author = analyse_auteur('Chrétien de Troyes', clean_txt_dir, dico_author)
+    lcs_content = analyse-auteur('Chrétien de troyes', clean_txt_dir, dico_author)
+    rapport_auteurs_char3 = r"/workspaces/medFR-paleao-NLP/results/rapports/caracteres3",
+    "rapport-auteurs.html")
+    
+    generate_report(
+    matrix, txt_names, dico_author, lexique,
+    output_path=rapport_auteurs_char3,
+    img_paths=[scatter_plot_author],
+    titre="Analyse par Auteurs",
+    metric='cosinus',
+    lcs_content=lcs_content
+    )
 
-    try:
-        with open(rapport_cible, mode='a', encoding='utf-8') as f:
-            f.write("\n" + "="*50 + "\n\n")
-            f.write(add_lcs_report_author)
-        print("Analyse LCS ajoutée au rapport global des auteurs (caracteres3).")
-    except Exception as e:
-        print(f"Impossible d'ajouter le LCS au rapport : {e}")
-        
-    print("\nFin de l'étape 6")
+    print("Rapport auteurs (caracteres3) avec LCS généré.")
+    
  
