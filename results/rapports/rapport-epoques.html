@@ -3,26 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Analyse par Epoques · Stylométrie Ancien Français</title>
+  <title>Analyse par Epoques · Analyse corpus d'Ancien Français</title>
   <style>
-@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;1,400&family=JetBrains+Mono:wght@400;500&display=swap');
 
 :root {
-  --bg:        #f7f4ef;
+  --bg:        #f4f6f8;
   --surface:   #ffffff;
-  --surface2:  #f0ece4;
-  --border:    #ddd8ce;
-  --border2:   #cbc4b8;
-  --ink:       #1e1a16;
-  --ink2:      #4a4540;
-  --muted:     #8a8278;
-  --accent:    #7a2c2c;
-  --accent2:   #a84040;
-  --accent-bg: #f5eeee;
-  --good:      #2d6a2d;
-  --bad:       #8a2020;
-  --radius:    5px;
-  --shadow:    0 1px 4px rgba(0,0,0,.07);
+  --surface2:  #f0f2f5;
+  --border:    #e4e7eb;
+  --ink:       #1c1e21;
+  --ink2:      #4b4f56;
+  --muted:     #65676b;
+  --accent:    #0064d1; /* Un bleu plus classique et lisible */
+  --accent-bg: #e6f0ff;
+  --good:      #0e8a16;
+  --bad:       #d73a49;
+  --radius:    24px; /* Beaucoup plus arrondi, moins rigide */
+  --shadow:    0 4px 12px rgba(0,0,0,0.08);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -31,324 +29,276 @@ html { scroll-behavior: smooth; }
 body {
   background: var(--bg);
   color: var(--ink);
-  font-family: 'Lora', Georgia, serif;
-  font-size: 16px;
-  line-height: 1.75;
+  /* Police système simple, sans chichis, très lisible */
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+  font-size: 18px; /* Texte globalement plus grand */
+  line-height: 1.7;
 }
 
 /* ── HEADER ── */
 header {
   background: var(--surface);
-  border-bottom: 2px solid var(--accent);
-  padding: 44px 72px 36px;
+  padding: 50px 50px 30px;
+  border-bottom: 1px solid var(--border);
+  border-radius: 0 0 30px 30px; /* Adoucit le bas du header */
+  margin-bottom: 20px;
 }
+
 .header-eyebrow {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  letter-spacing: .22em;
+  font-size: 14px;
   text-transform: uppercase;
   color: var(--muted);
-  margin-bottom: 12px;
+  margin-bottom: 10px;
+  font-weight: bold;
 }
+
 h1 {
-  font-size: clamp(1.5rem, 2.8vw, 2.2rem);
-  font-weight: 600;
+  font-size: 2.8rem;
+  font-weight: 700;
   color: var(--ink);
-  letter-spacing: -.02em;
-  line-height: 1.2;
 }
+
 .header-meta {
-  margin-top: 18px;
+  margin-top: 20px;
   display: flex;
-  gap: 10px;
+  gap: 12px;
   flex-wrap: wrap;
 }
 .meta-chip {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  color: var(--muted);
+  font-size: 15px;
+  color: var(--ink2);
   background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 3px;
-  padding: 3px 10px;
+  border-radius: 30px; /* Forme de pilule très arrondie */
+  padding: 8px 18px;
 }
-.meta-chip b { color: var(--ink2); font-weight: 500; }
+.meta-chip b { color: var(--ink); font-weight: bold; }
 
 /* ── ONGLETS ── */
 .tabs-bar {
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  padding: 0 72px;
+  padding: 10px 50px;
   display: flex;
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  box-shadow: 0 2px 8px rgba(0,0,0,.05);
+  gap: 15px;
 }
+
 .tab-btn {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  letter-spacing: .08em;
-  text-transform: uppercase;
+  font-family: inherit;
+  font-size: 18px;
+  font-weight: bold;
   color: var(--muted);
-  background: none;
-  border: none;
-  border-bottom: 2px solid transparent;
-  padding: 14px 20px;
+  background: var(--surface);
+  padding: 12px 24px;
+  border: 2px solid transparent;
+  border-radius: 30px; /* Boutons tout ronds */
   cursor: pointer;
-  transition: color .15s, border-color .15s;
-  margin-bottom: -1px;
-  white-space: nowrap;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow);
 }
-.tab-btn:hover { color: var(--ink2); }
-.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+.tab-btn:hover { background: var(--surface2); }
+.tab-btn.active {
+  color: var(--surface);
+  background: var(--accent);
+  border-color: var(--accent);
+}
 
 /* ── PANNEAUX ── */
-.tab-panel { display: none; padding: 0 72px 80px; }
+.tab-panel { display: none; padding: 20px 50px 80px; }
 .tab-panel.active { display: block; }
 
 /* ── SECTIONS ── */
 .tab-section {
-  padding: 48px 0 40px;
-  border-bottom: 1px solid var(--border);
+  padding: 40px 0;
+  border-bottom: 2px dashed var(--border);
 }
 .tab-section:last-child { border-bottom: none; }
 
 .section-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  letter-spacing: .2em;
+  font-size: 14px;
+  font-weight: bold;
   text-transform: uppercase;
   color: var(--accent);
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 .section-title {
-  font-size: 1.3rem;
-  font-weight: 600;
+  font-size: 1.8rem;
+  font-weight: 700;
   color: var(--ink);
-  margin-bottom: 24px;
-  letter-spacing: -.01em;
+  margin-bottom: 30px;
 }
 
 /* ── KNN ── */
 .accuracy-block {
   display: inline-flex;
   align-items: center;
-  gap: 16px;
+  gap: 20px;
   background: var(--accent-bg);
-  border: 1px solid #d8b8b8;
-  border-radius: var(--radius);
-  padding: 14px 22px;
-  margin-bottom: 28px;
+  border-radius: 30px;
+  padding: 15px 30px;
+  margin-bottom: 40px;
 }
 .accuracy-num {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 2.2rem;
-  font-weight: 500;
+  font-size: 2.5rem;
+  font-weight: bold;
   color: var(--accent);
-  line-height: 1;
-  letter-spacing: -.04em;
 }
-.accuracy-label { font-size: 13px; color: var(--ink2); }
+.accuracy-label { font-size: 16px; color: var(--ink2); font-weight: bold; }
 
 .pairs-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 32px;
+  gap: 40px;
 }
 @media (max-width: 860px) { .pairs-grid { grid-template-columns: 1fr; } }
 
 .pairs-group-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  letter-spacing: .15em;
-  text-transform: uppercase;
+  font-size: 16px;
+  font-weight: bold;
   color: var(--muted);
-  margin-bottom: 12px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid var(--border);
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--border);
 }
 .pair-row {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 9px 0;
+  gap: 15px;
+  padding: 12px 0;
   border-bottom: 1px solid var(--border);
 }
-.pair-row:last-child { border-bottom: none; }
 .pair-score {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  font-weight: 500;
-  min-width: 52px;
+  font-size: 16px;
+  font-weight: bold;
+  min-width: 70px;
   text-align: right;
-  flex-shrink: 0;
 }
 .pair-score.high { color: var(--good); }
 .pair-score.low  { color: var(--bad); }
 .pair-bar {
-  width: 60px; height: 3px;
+  width: 80px; height: 8px; /* Barre plus épaisse */
   background: var(--border);
-  border-radius: 2px;
-  flex-shrink: 0;
+  border-radius: 10px;
   overflow: hidden;
 }
-.pair-bar-fill { height: 100%; border-radius: 2px; }
+.pair-bar-fill { height: 100%; border-radius: 10px; }
 .pair-bar-fill.high { background: var(--good); }
 .pair-bar-fill.low  { background: var(--bad); }
-.pair-names { font-size: 14px; line-height: 1.4; color: var(--ink2); }
-.pair-cat   { font-size: 12px; color: var(--muted); font-style: italic; }
+.pair-names { font-size: 17px; line-height: 1.5; color: var(--ink); }
+.pair-cat   { font-size: 15px; color: var(--muted); }
 
 /* ── COHÉSION ── */
 .cohesion-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
 }
 .cohesion-card {
   background: var(--surface);
-  border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 16px 18px;
+  padding: 25px;
   box-shadow: var(--shadow);
-  transition: border-color .15s;
+  text-align: center;
 }
-.cohesion-card:hover { border-color: var(--border2); }
 .coh-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  letter-spacing: .08em;
-  text-transform: uppercase;
+  font-size: 16px;
+  font-weight: bold;
   color: var(--muted);
-  margin-bottom: 6px;
+  margin-bottom: 15px;
 }
 .coh-score {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 1.4rem;
+  font-size: 2rem;
+  font-weight: bold;
   color: var(--ink);
-  line-height: 1;
 }
-.coh-score.na { color: var(--muted); font-size: 1rem; }
-.coh-unit  { font-size: 11px; color: var(--muted); margin-top: 4px; }
-.coh-bar   { margin-top: 10px; height: 2px; background: var(--border); border-radius: 1px; overflow: hidden; }
-.coh-bar-fill { height: 100%; background: var(--accent2); border-radius: 1px; }
+.coh-score.na { color: var(--muted); font-size: 1.4rem; }
+.coh-unit  { font-size: 14px; color: var(--muted); margin-top: 5px; }
 
 /* ── SIGNATURES ── */
 .signatures-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-  gap: 14px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
 }
 .sig-card {
   background: var(--surface);
-  border: 1px solid var(--border);
   border-radius: var(--radius);
   overflow: hidden;
   box-shadow: var(--shadow);
 }
 .sig-card-head {
   background: var(--surface2);
-  border-bottom: 1px solid var(--border);
-  padding: 9px 14px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  color: var(--accent);
+  padding: 15px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  color: var(--ink);
 }
 .sig-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 7px 14px;
+  padding: 12px 20px;
   border-bottom: 1px solid var(--border);
-  transition: background .1s;
 }
-.sig-row:last-child { border-bottom: none; }
-.sig-row:hover { background: var(--surface2); }
 code {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
+  font-family: inherit;
+  font-size: 18px;
+  font-weight: bold;
   background: #eef2f7;
-  color: #2a4a7a;
-  padding: 2px 6px;
-  border-radius: 3px;
-  border: 1px solid #d0dcea;
+  color: var(--accent);
+  padding: 4px 10px;
+  border-radius: 8px;
 }
 .sig-ratio {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
+  font-size: 15px;
   color: var(--muted);
+  font-weight: bold;
 }
 
 /* ── VISUALISATION ── */
 .viz-wrap {
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  overflow: hidden;
   background: var(--surface);
+  border-radius: var(--radius);
+  padding: 20px;
   box-shadow: var(--shadow);
 }
-.viz-wrap img { display: block; width: 100%; height: auto; }
-.viz-error {
-  padding: 32px;
-  text-align: center;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  color: var(--muted);
-  background: var(--surface2);
-  border: 1px dashed var(--border2);
-  border-radius: var(--radius);
-}
+.viz-wrap img { display: block; width: 100%; height: auto; border-radius: 12px; }
 
 /* ── LCS ── */
 .lcs-item {
   background: var(--surface);
-  border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 16px 20px;
-  margin-bottom: 10px;
+  padding: 25px;
+  margin-bottom: 20px;
   box-shadow: var(--shadow);
 }
 .lcs-title {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  color: var(--muted);
-  margin-bottom: 10px;
-  letter-spacing: .04em;
-}
-
-.lcs-freq {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  color: var(--muted);
-  margin-top: 8px;
-  padding-top: 8px;
-  border-top: 1px solid var(--border);
-}
-
-blockquote {
-  border-left: 3px solid var(--accent);
-  padding: 8px 16px;
-  font-style: italic;
-  color: var(--ink2);
   font-size: 15px;
-  background: var(--accent-bg);
-  border-radius: 0 var(--radius) var(--radius) 0;
+  font-weight: bold;
+  color: var(--muted);
+  margin-bottom: 15px;
+}
+.lcs-freq {
+  font-size: 15px;
+  color: var(--ink2);
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px dashed var(--border);
+}
+blockquote {
+  border-left: 6px solid var(--accent);
+  padding: 15px 20px;
+  font-size: 19px;
+  background: var(--surface2);
+  border-radius: 0 16px 16px 0;
 }
 
 /* ── FOOTER ── */
 .footer {
-  padding: 20px 72px;
-  border-top: 1px solid var(--border);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
+  padding: 30px 50px;
+  font-size: 15px;
   color: var(--muted);
-  background: var(--surface);
-  margin-top: 40px;
+  text-align: center;
 }
-.footer a { color: var(--accent2); text-decoration: none; }
-.footer a:hover { text-decoration: underline; }
+.footer a { color: var(--accent); text-decoration: none; font-weight: bold; }
 </style>
 </head>
 <body>
@@ -357,10 +307,9 @@ blockquote {
   <div class="header-eyebrow">Analyse d'un corpus d'Ancien Français</div>
   <h1>Analyse par Epoques</h1>
   <div class="header-meta">
-    <div class="meta-chip">Généré le <b>2026-04-12 21:47</b></div>
+    <div class="meta-chip">Généré le <b>2026-04-13 10:52</b></div>
     <div class="meta-chip">Textes <b>25</b></div>
     <div class="meta-chip">Époques <b>5</b></div>
-    <div class="meta-chip">Expériences <b>2</b></div>
   </div>
 </header>
 

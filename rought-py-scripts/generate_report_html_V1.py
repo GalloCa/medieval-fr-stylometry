@@ -12,6 +12,24 @@ Fonction exportée :
               mode='auteurs' → rapport-auteurs.html  (+ LCS optionnel)
               mode='dates'   → rapport-epoques.html
 
+Usage dans main.py :
+    from generate_report_html import generate_combined_report_html
+
+    # Accumuler dans la boucle :
+    resultats_genre[suffixe]   = {'matrix':…, 'txt_names':…, 'lexique':…,
+                                   'img_path':…, 'metric':…}
+    resultats_auteurs[suffixe] = {…}
+    resultats_dates[suffixe]   = {…}
+
+    # Après la boucle :
+    generate_combined_report_html(resultats_genre,   dico_genre,
+                                  output_path='…/rapport-genre.html',   mode='genre')
+    generate_combined_report_html(resultats_auteurs, dico_author,
+                                  output_path='…/rapport-auteurs.html', mode='auteurs',
+                                  lcs_content=lcs_content)
+    generate_combined_report_html(resultats_dates,   dico_date,
+                                  output_path='…/rapport-epoques.html', mode='dates')
+
 Dépendances :
     analyse.py  (knn, genre_cohesion, ngram_signatures)
 """
@@ -22,24 +40,25 @@ import datetime
 import base64
 from analyse import knn, genre_cohesion, ngram_signatures
 
-# DEFINITION DU CSS POUR LA SORTIE HTML 
 CSS = """<style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;1,400&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap');
 
 :root {
-  --bg:        #f4f6f8;
+  --bg:        #f7f4ef;
   --surface:   #ffffff;
-  --surface2:  #f0f2f5;
-  --border:    #e4e7eb;
-  --ink:       #1c1e21;
-  --ink2:      #4b4f56;
-  --muted:     #65676b;
-  --accent:    #0064d1; /* Un bleu plus classique et lisible */
-  --accent-bg: #e6f0ff;
-  --good:      #0e8a16;
-  --bad:       #d73a49;
-  --radius:    24px; /* Beaucoup plus arrondi, moins rigide */
-  --shadow:    0 4px 12px rgba(0,0,0,0.08);
+  --surface2:  #f0ece4;
+  --border:    #ddd8ce;
+  --border2:   #cbc4b8;
+  --ink:       #1e1a16;
+  --ink2:      #4a4540;
+  --muted:     #8a8278;
+  --accent:    #7a2c2c;
+  --accent2:   #a84040;
+  --accent-bg: #f5eeee;
+  --good:      #2d6a2d;
+  --bad:       #8a2020;
+  --radius:    5px;
+  --shadow:    0 1px 4px rgba(0,0,0,.07);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -48,276 +67,324 @@ html { scroll-behavior: smooth; }
 body {
   background: var(--bg);
   color: var(--ink);
-  /* Police système simple, sans chichis, très lisible */
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
-  font-size: 18px; /* Texte globalement plus grand */
-  line-height: 1.7;
+  font-family: 'Lora', Georgia, serif;
+  font-size: 16px;
+  line-height: 1.75;
 }
 
 /* ── HEADER ── */
 header {
   background: var(--surface);
-  padding: 50px 50px 30px;
-  border-bottom: 1px solid var(--border);
-  border-radius: 0 0 30px 30px; /* Adoucit le bas du header */
-  margin-bottom: 20px;
+  border-bottom: 2px solid var(--accent);
+  padding: 44px 72px 36px;
 }
-
 .header-eyebrow {
-  font-size: 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .22em;
   text-transform: uppercase;
   color: var(--muted);
-  margin-bottom: 10px;
-  font-weight: bold;
+  margin-bottom: 12px;
 }
-
 h1 {
-  font-size: 2.8rem;
-  font-weight: 700;
+  font-size: clamp(1.5rem, 2.8vw, 2.2rem);
+  font-weight: 600;
   color: var(--ink);
+  letter-spacing: -.02em;
+  line-height: 1.2;
 }
-
 .header-meta {
-  margin-top: 20px;
+  margin-top: 18px;
   display: flex;
-  gap: 12px;
+  gap: 10px;
   flex-wrap: wrap;
 }
 .meta-chip {
-  font-size: 15px;
-  color: var(--ink2);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
   background: var(--surface2);
-  border-radius: 30px; /* Forme de pilule très arrondie */
-  padding: 8px 18px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 3px 10px;
 }
-.meta-chip b { color: var(--ink); font-weight: bold; }
+.meta-chip b { color: var(--ink2); font-weight: 500; }
 
 /* ── ONGLETS ── */
 .tabs-bar {
-  padding: 10px 50px;
-  display: flex;
-  gap: 15px;
-}
-
-.tab-btn {
-  font-family: inherit;
-  font-size: 18px;
-  font-weight: bold;
-  color: var(--muted);
   background: var(--surface);
-  padding: 12px 24px;
-  border: 2px solid transparent;
-  border-radius: 30px; /* Boutons tout ronds */
+  border-bottom: 1px solid var(--border);
+  padding: 0 72px;
+  display: flex;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  box-shadow: 0 2px 8px rgba(0,0,0,.05);
+}
+.tab-btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 14px 20px;
   cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: var(--shadow);
+  transition: color .15s, border-color .15s;
+  margin-bottom: -1px;
+  white-space: nowrap;
 }
-.tab-btn:hover { background: var(--surface2); }
-.tab-btn.active {
-  color: var(--surface);
-  background: var(--accent);
-  border-color: var(--accent);
-}
+.tab-btn:hover { color: var(--ink2); }
+.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
 
 /* ── PANNEAUX ── */
-.tab-panel { display: none; padding: 20px 50px 80px; }
+.tab-panel { display: none; padding: 0 72px 80px; }
 .tab-panel.active { display: block; }
 
 /* ── SECTIONS ── */
 .tab-section {
-  padding: 40px 0;
-  border-bottom: 2px dashed var(--border);
+  padding: 48px 0 40px;
+  border-bottom: 1px solid var(--border);
 }
 .tab-section:last-child { border-bottom: none; }
 
 .section-label {
-  font-size: 14px;
-  font-weight: bold;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .2em;
   text-transform: uppercase;
   color: var(--accent);
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 .section-title {
-  font-size: 1.8rem;
-  font-weight: 700;
+  font-size: 1.3rem;
+  font-weight: 600;
   color: var(--ink);
-  margin-bottom: 30px;
+  margin-bottom: 24px;
+  letter-spacing: -.01em;
 }
 
 /* ── KNN ── */
 .accuracy-block {
   display: inline-flex;
   align-items: center;
-  gap: 20px;
+  gap: 16px;
   background: var(--accent-bg);
-  border-radius: 30px;
-  padding: 15px 30px;
-  margin-bottom: 40px;
+  border: 1px solid #d8b8b8;
+  border-radius: var(--radius);
+  padding: 14px 22px;
+  margin-bottom: 28px;
 }
 .accuracy-num {
-  font-size: 2.5rem;
-  font-weight: bold;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 2.2rem;
+  font-weight: 500;
   color: var(--accent);
+  line-height: 1;
+  letter-spacing: -.04em;
 }
-.accuracy-label { font-size: 16px; color: var(--ink2); font-weight: bold; }
+.accuracy-label { font-size: 13px; color: var(--ink2); }
 
 .pairs-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 40px;
+  gap: 32px;
 }
 @media (max-width: 860px) { .pairs-grid { grid-template-columns: 1fr; } }
 
 .pairs-group-label {
-  font-size: 16px;
-  font-weight: bold;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .15em;
+  text-transform: uppercase;
   color: var(--muted);
-  margin-bottom: 20px;
-  padding-bottom: 10px;
-  border-bottom: 2px solid var(--border);
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
 }
 .pair-row {
   display: flex;
   align-items: center;
-  gap: 15px;
-  padding: 12px 0;
+  gap: 12px;
+  padding: 9px 0;
   border-bottom: 1px solid var(--border);
 }
+.pair-row:last-child { border-bottom: none; }
 .pair-score {
-  font-size: 16px;
-  font-weight: bold;
-  min-width: 70px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 500;
+  min-width: 52px;
   text-align: right;
+  flex-shrink: 0;
 }
 .pair-score.high { color: var(--good); }
 .pair-score.low  { color: var(--bad); }
 .pair-bar {
-  width: 80px; height: 8px; /* Barre plus épaisse */
+  width: 60px; height: 3px;
   background: var(--border);
-  border-radius: 10px;
+  border-radius: 2px;
+  flex-shrink: 0;
   overflow: hidden;
 }
-.pair-bar-fill { height: 100%; border-radius: 10px; }
+.pair-bar-fill { height: 100%; border-radius: 2px; }
 .pair-bar-fill.high { background: var(--good); }
 .pair-bar-fill.low  { background: var(--bad); }
-.pair-names { font-size: 17px; line-height: 1.5; color: var(--ink); }
-.pair-cat   { font-size: 15px; color: var(--muted); }
+.pair-names { font-size: 14px; line-height: 1.4; color: var(--ink2); }
+.pair-cat   { font-size: 12px; color: var(--muted); font-style: italic; }
 
 /* ── COHÉSION ── */
 .cohesion-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 12px;
 }
 .cohesion-card {
   background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 25px;
+  padding: 16px 18px;
   box-shadow: var(--shadow);
-  text-align: center;
+  transition: border-color .15s;
 }
+.cohesion-card:hover { border-color: var(--border2); }
 .coh-label {
-  font-size: 16px;
-  font-weight: bold;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
   color: var(--muted);
-  margin-bottom: 15px;
+  margin-bottom: 6px;
 }
 .coh-score {
-  font-size: 2rem;
-  font-weight: bold;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.4rem;
   color: var(--ink);
+  line-height: 1;
 }
-.coh-score.na { color: var(--muted); font-size: 1.4rem; }
-.coh-unit  { font-size: 14px; color: var(--muted); margin-top: 5px; }
+.coh-score.na { color: var(--muted); font-size: 1rem; }
+.coh-unit  { font-size: 11px; color: var(--muted); margin-top: 4px; }
+.coh-bar   { margin-top: 10px; height: 2px; background: var(--border); border-radius: 1px; overflow: hidden; }
+.coh-bar-fill { height: 100%; background: var(--accent2); border-radius: 1px; }
 
 /* ── SIGNATURES ── */
 .signatures-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 14px;
 }
 .sig-card {
   background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: var(--radius);
   overflow: hidden;
   box-shadow: var(--shadow);
 }
 .sig-card-head {
   background: var(--surface2);
-  padding: 15px 20px;
-  font-size: 16px;
-  font-weight: bold;
-  text-align: center;
-  color: var(--ink);
+  border-bottom: 1px solid var(--border);
+  padding: 9px 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--accent);
 }
 .sig-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 20px;
+  padding: 7px 14px;
   border-bottom: 1px solid var(--border);
+  transition: background .1s;
 }
+.sig-row:last-child { border-bottom: none; }
+.sig-row:hover { background: var(--surface2); }
 code {
-  font-family: inherit;
-  font-size: 18px;
-  font-weight: bold;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
   background: #eef2f7;
-  color: var(--accent);
-  padding: 4px 10px;
-  border-radius: 8px;
+  color: #2a4a7a;
+  padding: 2px 6px;
+  border-radius: 3px;
+  border: 1px solid #d0dcea;
 }
 .sig-ratio {
-  font-size: 15px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
   color: var(--muted);
-  font-weight: bold;
 }
 
 /* ── VISUALISATION ── */
 .viz-wrap {
-  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 20px;
+  overflow: hidden;
+  background: var(--surface);
   box-shadow: var(--shadow);
 }
-.viz-wrap img { display: block; width: 100%; height: auto; border-radius: 12px; }
+.viz-wrap img { display: block; width: 100%; height: auto; }
+.viz-error {
+  padding: 32px;
+  text-align: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--muted);
+  background: var(--surface2);
+  border: 1px dashed var(--border2);
+  border-radius: var(--radius);
+}
 
 /* ── LCS ── */
 .lcs-item {
   background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 25px;
-  margin-bottom: 20px;
+  padding: 16px 20px;
+  margin-bottom: 10px;
   box-shadow: var(--shadow);
 }
 .lcs-title {
-  font-size: 15px;
-  font-weight: bold;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
   color: var(--muted);
-  margin-bottom: 15px;
+  margin-bottom: 10px;
+  letter-spacing: .04em;
 }
+
 .lcs-freq {
-  font-size: 15px;
-  color: var(--ink2);
-  margin-top: 15px;
-  padding-top: 15px;
-  border-top: 1px dashed var(--border);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
 }
+
 blockquote {
-  border-left: 6px solid var(--accent);
-  padding: 15px 20px;
-  font-size: 19px;
-  background: var(--surface2);
-  border-radius: 0 16px 16px 0;
+  border-left: 3px solid var(--accent);
+  padding: 8px 16px;
+  font-style: italic;
+  color: var(--ink2);
+  font-size: 15px;
+  background: var(--accent-bg);
+  border-radius: 0 var(--radius) var(--radius) 0;
 }
 
 /* ── FOOTER ── */
 .footer {
-  padding: 30px 50px;
-  font-size: 15px;
+  padding: 20px 72px;
+  border-top: 1px solid var(--border);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
   color: var(--muted);
-  text-align: center;
+  background: var(--surface);
+  margin-top: 40px;
 }
-.footer a { color: var(--accent); text-decoration: none; font-weight: bold; }
+.footer a { color: var(--accent2); text-decoration: none; }
+.footer a:hover { text-decoration: underline; }
 </style>"""
 
 TABS_JS = """<script>
@@ -347,20 +414,6 @@ MODE_LABELS = {
 # PARSEURS
 
 def _parse_knn(knn_str):
-    """
-    Analyse le texte brut des résultats KNN pour extraire les métriques, convertit
-    la sortie de la fonction analyse.knn() en données structurées pour le tableau html.
-
-    Entrée : 
-      knn_str (str) : la chaine de charactères brute renvoyée par le knn().
-
-    Sortie :
-      tuple : accuracy, top_pairs, bot_pairs
-          - accuracy (float) : le pourcentage de précision de l'algorithme
-          - top_pairs (list of dict) : les 5 paires les plus proches
-          - bot_pairs (list of dict) : les 5 paires les plus éloignés
-          format du dict {'score' : float, 't1' : str, 'c1' : str, 't2': str, 'c2': str}
-    """
     accuracy, top_pairs, bot_pairs = None, [], []
     current = None
     for line in knn_str.strip().split('\n'):
@@ -385,17 +438,6 @@ def _parse_knn(knn_str):
 
 
 def _parse_cohesion(cohesion_str):
-    """
-    Analyse le texte brut des résultats de cohésion pour extraire les métriques 
-    afin de construire les cartes en html
-
-    Entrée : 
-      cohesion_str (str) : la chaine de caractère brute renvoyée par genre_cohesion()
-    
-      Sortie :
-        list od dict : liste conteannt un dictionnaire par catégorie
-        format : {'genre' : str, 'na' : bool, 'score' : str ou None, 'unite" : str ou None}
-    """
     results = []
     for line in cohesion_str.strip().split('\n'):
         m = re.match(r'-\s+\*\*(.+?)\*\*\s*:\s*(.+)', line)
@@ -413,19 +455,8 @@ def _parse_cohesion(cohesion_str):
             })
     return results
 
+
 def _parse_signatures(sig_str):
-    """
-    Analyse le texte brut des résultats des signatures pour extraire les n-grammes clés et
-    leur fréquence afin des les afficher en html
-    
-    Entrée :
-      sig_str (str) :
-
-    Sortie : 
-      dict : dictionnaire groupant les n-grammes par catégorie
-      format : {'Nom_Catégorie' : [('ngramme', fréquence), ...], ...}
-
-    """
     sections = {}
     current = None
     for line in sig_str.strip().split('\n'):
@@ -441,19 +472,9 @@ def _parse_signatures(sig_str):
     return sections
 
 
-# CONSTRUCTION PAGE HTML 
-def _pair_rows(pairs, cls):
-    """
-    Fonctiuon pour générer les balises html (barres de progression et textes) pour 
-    afficher les paries de textes (plus proches  / plus éloignés)
+# Définition des pages html
 
-    Entrées : 
-      pairs (list of dict) : liste des paires extraites par _parse_knn()
-      cls (str) : classe de CSS à appliquer
-    
-      Sortie : 
-        str : le sous-bloc html formaté 
-    """
+def _pair_rows(pairs, cls):
     if not pairs:
         return '<p style="color:var(--muted);font-size:13px">Aucune paire calculable.</p>'
     scores = [p['score'] for p in pairs]
@@ -476,22 +497,33 @@ def _pair_rows(pairs, cls):
     return "\n".join(rows)
 
 
-def _build_tab(suffixe, data, biblio, mode, report_output_path, lcs_content=None):
+def _resolve_img(img_path, report_output_path):
     """
-    Construit le HTML d'un panneau d'onglet pour une expérience (ngramme de mots ou de caractères)
-    Appelle les fonctions d'analyses, les parseurs et leur résultat et génére l'interface
+    Convertit img_path en chemin relatif utilisable depuis le HTML.
+    Essaie d'abord le chemin absolu, puis relatif au dossier du rapport.
+    Retourne None si le fichier est introuvable.
+    """
+    report_dir = os.path.dirname(os.path.abspath(report_output_path))
 
-    Entrées : 
-        suffixe (str) : l'identifiant de l'expérience (ex: 'char3', 'word2')
-        data (dict) : les données de l'expérience ('matrix', 'txt_names', 'lexique', etc.)
-        biblio (dict) : le dictionnaire des métadonnées
-        mode (str) : l'axe d'analyse ('genre', 'auteurs', 'dates')
-        report_output_path (str) : le chemin où le HTML final sera sauvegardé
-        lcs_content (str, optionnel) : le texte du rapport LCS à intégrer (pour les auteurs)
-    
-    Sortie : 
-      str : le code html complet pour l'onglet
-    """
+    if os.path.isabs(img_path):
+        if os.path.exists(img_path):
+            return os.path.relpath(img_path, report_dir).replace("\\", "/")
+        return None
+
+    candidate = os.path.normpath(os.path.join(report_dir, img_path))
+    if os.path.exists(candidate):
+        return os.path.relpath(candidate, report_dir).replace("\\", "/")
+
+    # Dernier essai : relatif au CWD
+    candidate2 = os.path.normpath(os.path.join(os.getcwd(), img_path))
+    if os.path.exists(candidate2):
+        return os.path.relpath(candidate2, report_dir).replace("\\", "/")
+
+    return None
+
+
+def _build_tab(suffixe, data, biblio, mode, report_output_path, lcs_content=None):
+    """Construit le HTML d'un panneau d'onglet pour une expérience."""
 
     matrix    = data['matrix']
     txt_names = data['txt_names']
@@ -501,7 +533,7 @@ def _build_tab(suffixe, data, biblio, mode, report_output_path, lcs_content=None
 
     cat_label, _ = MODE_LABELS.get(mode, ('Catégorie', 'catégories'))
 
-    # Calculs 
+    # ── Calculs ──
     knn_str      = knn(matrix, txt_names, biblio, metric=metric)
     cohesion_str = genre_cohesion(matrix, txt_names, biblio, metric=metric)
     unique_cats  = sorted(set(biblio.values()))
@@ -517,7 +549,7 @@ def _build_tab(suffixe, data, biblio, mode, report_output_path, lcs_content=None
 
     acc_val = f"{accuracy:.1f}%" if accuracy is not None else "N/A"
 
-    # SECTION 01 : KNN 
+    # ── 01 KNN ──
     knn_html = f"""
     <div class="tab-section">
       <div class="section-label">01 — Classification</div>
@@ -538,7 +570,7 @@ def _build_tab(suffixe, data, biblio, mode, report_output_path, lcs_content=None
       </div>
     </div>"""
 
-    # SECTION 02 : COHESION
+    # ── 02 Cohésion ──
     cards = ""
     for item in cohesion_data:
         if item['na']:
@@ -565,7 +597,7 @@ def _build_tab(suffixe, data, biblio, mode, report_output_path, lcs_content=None
       <div class="cohesion-grid">{cards}</div>
     </div>"""
 
-    # SECTION 03 : N6GRAMS SIGNATURE
+    # ── 03 Signatures ──
     sig_cards = ""
     for genre, ngrams in sig_data.items():
         rows = "".join(f"""
@@ -586,7 +618,7 @@ def _build_tab(suffixe, data, biblio, mode, report_output_path, lcs_content=None
       <div class="signatures-grid">{sig_cards}</div>
     </div>"""
 
-    # SECTION 04 : VISUALISATION - SCATTER PLOT
+    # ── 04 Visualisation ──
     viz_html = ""
     if img_path:
         def _embed_img(img_path):
@@ -607,7 +639,7 @@ def _build_tab(suffixe, data, biblio, mode, report_output_path, lcs_content=None
               </div>
             </div>"""
 
-    # SECTION 05 : LCS 
+    # ── 05 LCS ──
     lcs_html = ""
     if lcs_content:
         blocks = []
@@ -648,13 +680,13 @@ def _build_tab(suffixe, data, biblio, mode, report_output_path, lcs_content=None
     return knn_html + cohesion_html + sig_html + viz_html + lcs_html
 
 
-# FONCTION PRINCIPALE - GENERATION DU RAPPORT
+# FONCTION PRINCIPALE
 def generate_combined_report_html(resultats, biblio, output_path, mode,
                                    lcs_content=None, titre=None):
     """
     Génère un rapport HTML avec onglets — une expérience par onglet.
 
-    Entrées :
+    Paramètres :
         resultats (dict)   : {suffixe: {'matrix', 'txt_names', 'lexique',
                                          'img_path', 'metric'}}
                              L'ordre d'insertion = ordre des onglets.
@@ -676,7 +708,7 @@ def generate_combined_report_html(resultats, biblio, output_path, mode,
     nb_textes  = len(first_data['txt_names'])
     nb_cats    = len(set(biblio.values()))
 
-    # Construction des onglets
+    # ── Construction des onglets ──
     buttons = ""
     panels  = ""
     for idx, (suffixe, data) in enumerate(resultats.items()):
@@ -693,7 +725,7 @@ def generate_combined_report_html(resultats, biblio, output_path, mode,
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{titre} · Analyse corpus d'Ancien Français</title>
+  <title>{titre} · Stylométrie Ancien Français</title>
   {CSS}
 </head>
 <body>
@@ -705,6 +737,7 @@ def generate_combined_report_html(resultats, biblio, output_path, mode,
     <div class="meta-chip">Généré le <b>{dd}</b></div>
     <div class="meta-chip">Textes <b>{nb_textes}</b></div>
     <div class="meta-chip">{cat_label}s <b>{nb_cats}</b></div>
+    <div class="meta-chip">Expériences <b>{len(resultats)}</b></div>
   </div>
 </header>
 
@@ -723,7 +756,7 @@ def generate_combined_report_html(resultats, biblio, output_path, mode,
 </body>
 </html>"""
 
-    # Ecriture
+    # ── Écriture ──
     abs_path = os.path.abspath(output_path)
     os.makedirs(os.path.dirname(abs_path), exist_ok=True)
 

@@ -182,13 +182,13 @@ if __name__ == "__main__":
 
 
     # Etape 6 : LCS et rajout au rapport 'auteurs'
-    print("Étape 6 : Recherche de séquences récurrentes (LCS) pour Chrétien de Troyes et génération des rapport final")
+    print("Étape 6 : Recherche de séquences récurrentes (LCS) pour Chrétien de Troyes et génération des rapports finaux")
     
-   # Construction du rapport final : MD ou HTML ? 
+   # Construction du rapport final
     lcs_content = analyse_auteur('Chrétien de Troyes', clean_txt_dir, dico_author)
     rapport_auteurs_final = r"/workspaces/medFR-paleao-NLP/results/rapports/rapport-auteurs.html"
    
-    print("Expériences dans result_auteurs :", list(result_auteurs.keys())) # trace
+    print("Expériences dans result_auteurs :", list(result_auteurs.keys())) # trace à effacer 
 
     generate_combined_report_html(
         resultats=result_genre,
@@ -216,6 +216,6 @@ if __name__ == "__main__":
         )
 
 
-    print("Fin de la pipeline.")
+    print("Fin de la pipeline d'analyse de corpus médiévaux.")
     
  
