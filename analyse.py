@@ -5,36 +5,32 @@ Module d'analyse
 Ce script centralise les opérations mathématiques et textuelles. Il transforme une collection
 d'objets textuels en une matrice Termes-Documents exploitée pour 
 
-Ce script opère le traitement de données textuelles segmentées pour mener une étude
-contrastive entre différents genres, auteurs ou époques. Il transforme une collection
-d'objets textuels en une matrice Termes-Documents exploitée pour :
-    1. Calculer des mesures de similarité (Cosinus, Jaccard)
-    2. Évaluer la prédictibilité des catégories via un algorithme KNN (K=1)
-    3. Mesurer la cohésion interne (genre, époque, auteurs)
-    4. Extraire les signatures lexicales
-
-Utilisation :
-    Conçu pour produire un rapport final au format Markdown (.md) intégrant
-    des métadonnées bibliographiques et des visualisations externes
+Il regroupe l'ensemble des fonctions analytiques de la pipeline : 
+    - Utilitaires : chargement des métadonnées, nettoyage des labels,
+                    export de la matrice TSV
+    — Métriques : similarité cosinus, indice de Jaccard, distance de Manhattan
+                           (implémentées manuellement sans scikit-learn)
+    — Analyse vectorielle : construction de la matrice Termes-Documents,
+                            comparaison par paires (cosinus + Jaccard)
+    — Classification : KNN (k=1) avec évaluation de précision,
+                        support des métriques cosinus, Jaccard et Manhattan
+    — Cohésion interne : similarité moyenne intra-catégorie
+    — Signatures : n-grammes sur-représentés par catégorie (ratio TF)
+    — LCS : plus longue sous-séquence commune de mots entre textes,
+            comptage des occurrences de la séquence dans chaque texte
 
 Dépendances :
     - NumPy : Gestion matricielle et calculs statistiques
-    - metrics : script Python possédant les 
-                fonctions personnalisées de calcul
-                de distance (cos_np, jaccard_np)
 """
+
+
 # MODULES
 import os
 import numpy as np
 import datetime 
 
 # UTILITAIRES 
-"""
-Fonctions auxiliaires utilisées à travers l'ensemble de la pipeline
-pour charger les dictionnaires, nettoyer les étiquettes ou exporter 
-des matrices au format .tsv.
-
-"""
+# Chargement des métadonnées, nettoyage des labels, export TSV
 def load_biblio(path):
    """
    Charge un fichier de metadonnées et le transforme en dictionnaire.
@@ -108,10 +104,8 @@ def save_matrix_tsv(matrix, lexique, txt_names, output_path):
     print(f"Matrice globale sauvegardée avec succès dans : {output_path}")
 
 # METRIQUES 
-"""
-Définition de fonction pouvant servir pour les 
-calculs de similarité (cosinus, jaccard, manhattan).
-"""
+# Trois mesures de similarité / distance implémentées manuellement
+# ValueError si les vecteurs n'ont pas la même dimension
 
 def cos_np(v1,v2):
    """
@@ -164,11 +158,7 @@ def manhattan_np(v1, v2):
       raise ValueError(f"manhattan_np : dimensions incompatibles {v1.shape} vs {v2.shape}")
    return np.sum(np.abs(v1 - v2))
 
-# FONCTION COMPARAISON
-"""
-Création de matrice term x document
-Comparaison des fichiers 
-"""
+# COMPARAISON PAR PAIRES
 def compare_files(matrix, txt_names, output_path=None):
     """
     Calcule les similitudes (Cosinus et Jaccard) entre tous les 
@@ -181,6 +171,9 @@ def compare_files(matrix, txt_names, output_path=None):
         matrix (numpy.ndarray) : matrice où chaque colonn représente le vecteur d'un texte
         txt_names (list) : liste des identifiants des textes (colonnes de la matrice)
         output_path(str, optionnel) :chemin de sortie du fichier
+
+    Sortie :
+        fichier .tsv avec colonnes : Texte A | Texte B | Cosinus | Jaccard
         
     """
     nb_txt = len(txt_names)
@@ -212,9 +205,9 @@ def create_comparison_matrix(liste_txt):
 
     Sorties :
         tuple : 
-            - np_matrix (numpy.ndarray) : matrice de fréquence (n-grammes x textes)
-            - ordered_lex (list) : lexique complet et ordonné
-            - txt_name (list) : liste des noms de fichiers correspondant aux colonnes
+            np_matrix (numpy.ndarray) : matrice de fréquence (n-grammes x textes)
+            ordered_lex (list) : lexique complet et ordonné
+            txt_name (list) : liste des noms de fichiers correspondant aux colonnes
     """
     full_lex = set()
     txt_name = []
@@ -242,18 +235,26 @@ def create_comparison_matrix(liste_txt):
 # ANALYSES
 def knn(matrix, txt_names, biblio, metric ='cosinus'):
     """
-    Identifie les 5 paires de textes les plus proches et les 5 plus éloignées à
-    partir de la similarité cosinus pour comparer les vecteurs.
-    Evalue la précision du voisinage (k=1)
+    Classification knn (k=1) :  évalue si la similarité stylistique
+    reflète les catégories (genre, auteur, époque)
 
-    
+    Pour chaque texte, identifie son voisin le plus proche et vérifie si ce voisin appartient
+    à la même catégorie. 
+    Calcul aussi les 5 paires les plus proches et les 5 plus éloignées
+   
+    Métriques supportées : 
+        'cosinus' : similarité angulaire (métrique par défaut)
+        'jaccard' : présence/absence
+        'manhattan' : distance absolue (disponible, non activée)
+
     Entrées :
         matrix (np.ndarray) : la matrice des fréquences (n-grammes x textes)
         txt_names (list) : liste des noms de textes 
-        biblio (dict) : dictionnaire de métadonnées {nom : auteur | date | genre}
-        metric (str) : 
+        biblio (dict) : dictionnaire de métadonnées {nom : catégorie}
+        metric (str) : métrique à utiliser
+    
     Sorties :
-        str : bloc de texte qui contient les resultats
+        str : bloc de texte qui contient les resultats (précision, top_5, bot_5)
      """
     
     all_pairs = []
@@ -334,16 +335,22 @@ def knn(matrix, txt_names, biblio, metric ='cosinus'):
 
 def genre_cohesion(matrix, txt_names, biblio, metric='cosinus'):
     """
-    Calcule de la similarité moyenne à l'intérieur de chaque genre, date ou auteur
+    Calcule de la similarité moyenne de tous les à l'intérieur 
+    d'une même catégorie
+
+    Une cohésion élevée indique que les textes du groupes partagent
+    un style lexicale ou morphologique.
+
+    Les catégories avec un seul texte retournent 'Non Calculable'
 
     Entrées :
         matrix (np.ndarray) : la matrice des fréquences (n-grammes x textes)
         txt_names (list) : liste des noms de textes 
-        biblio (dict) : dictionnaire de métadonnées {nom : auteur | date | genre}
-        metric (str) : 
+        biblio (dict) : dictionnaire de métadonnées {nom : catégorie}
+        metric (str) : 'cosinus' (défaut), 'jaccard' ou 'manhattan'
 
-    Sorties :
-        str : bloc de texte qui contient les résultats 
+    Sortie :
+        str : bloc texte avec une ligne par catégorie et son score moyen
      """
 
     genres = {}
@@ -379,18 +386,19 @@ def genre_cohesion(matrix, txt_names, biblio, metric='cosinus'):
 
 def ngram_signatures(matrix, txt_names, biblio, lexique, target_genre, top=10):
     """
-    Identifie les ngrammes caractéristiques d'un genre, auteur ou époque
+    Identifie les ngrammes csur-représentés dans une catégorie par rapport au 
+    reste du corpus via un ration de fréquences moyennes
 
     Entrées :
         matrix (np.ndarray) : la matrice des fréquences (n-grammes x textes)
         txt_names (list) : liste des noms de textes 
-        biblio (dict) : dictionnaire de métadonnées {nom : auteur | date | genre}
+        biblio (dict) : dictionnaire de métadonnées {nom : catégorie}
         lexique (list): la liste ordonnée de tous les n-grammes du corpus
-        target_genre (str): le genre littéraire à analyser (ex: "Roman courtois")
-        top (int, optional): le nombre de n-grammes à afficher, par défaut 10
+        target_genre (str): catégorie cible à analyser (ex: 'genre')
+        top (int, optional): nombre de n-grammes à afficher (défaut : 10)
     
     Sortie :
-        str : bloc de texte qui contient les résultats
+        str : bloc texte listant les top n-grammes avec leur ratio
     """
     indices_cible = [i for i, t in enumerate(txt_names) if biblio.get(t) == target_genre]
     rest_indices = [i for i, t in enumerate(txt_names) if biblio.get(t) != target_genre]
@@ -413,17 +421,16 @@ def ngram_signatures(matrix, txt_names, biblio, lexique, target_genre, top=10):
             report_lignes.append(f"- '{ng}' (ratio : {s :.2f})")
     return "\n".join(report_lignes)
 
+# LCS - SEQUENCES COMMUNES
+# Identification des séquences récurrentes exactes entre textes d'un même auteur
+# avec comptage des occurences dans chaque texte
 
-# FONCTION LCS
-"""
-Permet d'identifier les formules récurrentes exactes
-partagées entre plusieurs oeuvres d'un même auteur et calcul
-du nombre d'apparition dans les textes.
-"""
 def lcs(t1, t2):
     """
-    Algorithme LCS optimisé sans aucune librairie externe. 
-    Compare des mots entiers.
+    Algorithme LCS optimisé par indexation inversée, les positions de chaque mot dans t2
+    sont pré-indexés dans un dictionnaire, évite de parcourir t2 entièrement pour chaque mot de t1
+    
+    Complexité : O(n log n) => non - c'est quasi linéraire mais 
 
     Entrées : 
         t1 (str) : le premier texte
@@ -468,7 +475,7 @@ def lcs(t1, t2):
 
 def count_freq(sequence, texte):
     """
-    Calule le nombre d'apparation d'une séquence dans un texte
+    Compte le nombre d'apparation d'une séquence dans un texte
 
     Entrée : 
         sequence (str) : séquence de mots recherchés (ex : issue de la fonction lcs)
@@ -491,9 +498,11 @@ def count_freq(sequence, texte):
 def analyse_auteur(auteur, texte_dir, dico_author):
     """
     Analyse le corpus pour extraire les fomrules récurrentes d'un auteur ciblé.
+
     La fonction identifie tous les fichiers associés à l'auteur, les charge en mémoire,
-    puis utilise la fonction LCS pour faire une comparaison croisée, 2 à 2.
-    Les résultats sont ensuite retournés sous forme de texte brut.
+    puis utilise la fonction lcs() sur toutes les paires (i, j) avec j > i.
+    Pour chaque séquence trouvée (> 10 caractères), compte les occurences 
+    dans chaque texte via count_freq()
 
     Entrées : 
         auteur (str) : le nom de l'auteur à analyser
