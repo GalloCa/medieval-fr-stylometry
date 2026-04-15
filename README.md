@@ -15,33 +15,7 @@ medFR-paleo-NLP/
 │       ├── dico_genre.txt    # Nom du texte : Genre littéraire
 │       ├── dico_auteur.txt   # Nom du texte : Auteur
 │       └── dico_date.txt     # Nom du texte : Siècle
-│
-├── results/
-│   ├── frequencies/      # Fréquences de n-grammes par texte (.tsv)
-│   ├── matrix/           # Matrices Termes-Documents globales (.tsv)
-│   │   ├── morpho/
-│   │   └── lexical/
-│   ├── scatter-plots/    # Visualisations MDS (.png)
-│   │   ├── morpho/
-│   │   └── lexical/
-│   └── rapports/         # Rapports HTML finaux (un fichier par axe d'analyse)
-│       ├── rapport-genre.html
-│       ├── rapport-auteurs.html
-│       └── rapport-epoques.html
-│
-├── download_data.py         # Acquisition via l'API GitHub
-├── text_processor.py        # Nettoyage et extraction de n-grammes
-├── metrics.py               # Similarité cosinus, Jaccard, Manhattan
-├── analyse.py               # KNN, cohésion interne, signatures lexicales
-├── plots_generator.py       # Scatter plots MDS et dendogramme
-├── lcs_analyse.py           # Recherche de séquences communes (LCS)
-├── generate_report_html.py  # Génération des rapports HTML avec onglets
-├── utils.py                 # Chargement métadonnées, nettoyage labels
-├── main.py                  # Point d'entrée — orchestre tout le pipeline
-│
-├── requirements.txt
-├── .gitignore
-└── README.md
+
 ```
 
 ### Format des fichiers de métadonnées
@@ -51,13 +25,7 @@ Les trois fichiers dans `data/metadata/` suivent le même format, une entrée pa
 ```
 NomDuFichierSansExtension : Catégorie
 ```
-
-Exemple pour `dico_genre.txt` :
-```
-Yvain        : Roman courtois
-Roland       : Epique
-StAlexis     : Hagiographie
-```
+Mettre un exemple -
 
 Les clés doivent correspondre exactement aux noms de fichiers dans `raw-txt/` (sans `.txt`).
 
@@ -71,15 +39,8 @@ cd medFR-paleo-NLP
 pip install -r requirements.txt
 ```
 
-Configurer le token GitHub (nécessaire pour le téléchargement du corpus) :
+Mettre la configuration du token GitHub => nécessaire pour le téléchargement du corpus
 
-```bash
-# Linux / macOS
-export GITHUB_TOKEN=ghp_votre_token
-
-# Windows (PowerShell)
-$env:GITHUB_TOKEN = "ghp_votre_token"
-```
 
 Ne pas écrire le token dans le code. Ne pas le committer.
 
@@ -96,7 +57,7 @@ Le pipeline s'exécute en 6 étapes automatiques :
 1. **Téléchargement** — récupère les textes depuis OpenMedFr via l'API GitHub (sauté si déjà présents)
 2. **Nettoyage** — suppression des métadonnées, ponctuation, normalisation
 3. **Matrice Termes-Documents** — construction de la matrice de fréquences de n-grammes
-4. **Visualisation** — scatter plots MDS et dendogramme des auteurs anonymes
+4. **Visualisation** — scatter plots MDS
 5. **Accumulation** — les résultats de chaque expérience sont stockés en mémoire
 6. **LCS + Rapports** — extraction des formules récurrentes (Chrétien de Troyes) puis génération des trois rapports HTML combinés
 
@@ -107,13 +68,13 @@ Les deux expériences configurées dans `main.py` sont exécutées en séquence,
 | `morpho`   | Caractères      | 3 | Cosinus  | Niveau morphologique et graphique |
 | `lexical`  | Mots            | 2 | Cosinus  | Niveau lexical et syntagmatique |
 
-Chaque rapport HTML (`rapport-genre.html`, `rapport-auteurs.html`, `rapport-epoques.html`) présente les deux expériences dans des onglets séparés, avec pour chacune : classification KNN, cohésion interne, signatures lexicales et visualisation MDS. Le rapport auteurs inclut en plus l'analyse LCS dans l'onglet `lexical`.
+Chaque rapport HTML (`rapport-genre.html`, `rapport-auteurs.html`, `rapport-epoques.html`) présente les deux expériences dans des onglets séparés, avec pour chacune : classification KNN, cohésion interne, signatures lexicales et visualisation MDS. Le rapport auteurs inclut en plus l'analyse LCS dans l'onglet `ngramme de mot`
 
-Les visualisations matplotlib sont encodées en base64 et intégrées directement dans le HTML — les rapports sont donc **autonomes** et s'ouvrent sans dépendances externes.
+Préciser que visu matplotlib sont encodées en base64 et intégrées directement dans le HTML => les rapports sont donc autonomes et s'ouvrent sans dépendances externes.
 
 ---
 
-## Approche algorithmique
+## Algorithmique
 
 ### Représentation vectorielle
 
@@ -134,7 +95,7 @@ Trois métriques sont implémentées manuellement sans scikit-learn :
 cos(A, B) = (A · B) / (‖A‖ × ‖B‖)
 ```
 
-**Indice de Jaccard** — compare les ensembles de n-grammes présents (binarisation des vecteurs). Sensible à la présence/absence plutôt qu'aux fréquences. Utilisé dans `compare_files` pour la comparaison par paires.
+**Indice de Jaccard** — compare les ensembles de n-grammes présents (binarisation des vecteurs). Sensible à la présence/absence plutôt qu'aux fréquences. Utilisé dans `compare_files` pour la comparaison par paires. Un fichier TSV est crée pour faire d'autres analyse (?) - si le temps regarder pour prévoir une visualisation gephi -
 
 ```
 J(A, B) = |A ∩ B| / |A ∪ B|
@@ -172,7 +133,7 @@ Le MDS (*Multidimensional Scaling*) projette la matrice de dissimilarité (1 −
 
 ### Séquences communes — LCS (`lcs_analyse.py`)
 
-Algorithme LCS (*Longest Common Subsequence*) optimisé par indexation inversée des positions : au lieu de comparer chaque mot de t1 avec chaque mot de t2 en O(n²), on pré-indexe les positions de chaque mot dans t2, ce qui réduit le nombre de comparaisons inutiles.
+Algorithme LCS (longest common substring => formule partagée exacxte sans gap) optimisé par indexation inversée des positions : au lieu de comparer chaque mot de t1 avec chaque mot de t2 en O(n²), on pré-indexe les positions de chaque mot dans t2, ce qui réduit le nombre de comparaisons inutiles.
 
 ### Rapports HTML (`generate_report_html.py`)
 
