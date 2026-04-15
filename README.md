@@ -4,7 +4,7 @@ Pipeline d'analyse sur un corpus de 25 textes en moyen et ancien français (XI�
 
 ---
 
-## Structure du dépôt
+## Structure du dépôt (WIP)
 
 ```
 medFR-paleo-NLP/
@@ -18,7 +18,7 @@ medFR-paleo-NLP/
 
 ```
 
-### Format des fichiers de métadonnées
+### Format des fichiers de métadonnées (WIP)
 
 Les trois fichiers dans `data/metadata/` suivent le même format, une entrée par ligne :
 
@@ -31,7 +31,7 @@ Les clés doivent correspondre exactement aux noms de fichiers dans `raw-txt/` (
 
 ---
 
-## Installation
+## Installation (WIP)
 
 ```bash
 git clone https://github.com/votre-utilisateur/medFR-paleo-NLP.git
