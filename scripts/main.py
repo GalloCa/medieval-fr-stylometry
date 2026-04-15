@@ -111,7 +111,7 @@ if __name__ == "__main__":
                 doc = TextProcessor(filepath=input_path, clean_name=file_name_clean)
                 doc.clean_txt()
                 
-                # C'est ici que la magie opère selon l'expérience en cours !
+                
                 doc.n_gramm(n=exp['n'], niveau=exp['niveau']) 
 
                 if not doc.frequences:
@@ -132,6 +132,7 @@ if __name__ == "__main__":
 
         # ETAPE 3 : MATRICE DE COMPARAISON
         print("\nÉtape 3 : Création de la matrice Termes-Documents...")
+        
         matrix, lexique, txt_names = create_comparison_matrix(my_corpus)
         save_matrix_tsv(matrix, lexique, txt_names, output_matrix)
         compare_files(matrix, txt_names, compare_out_dir)
@@ -139,6 +140,7 @@ if __name__ == "__main__":
 
         # ETAPE 4 : VISUALISATION
         print("\nEtape 4 : Génération des visualisations (scatter plot) ... ")
+        
         generate_similarity_plot(matrix, txt_names, dico_genre, exp_plot_dir, mode='genre')
         generate_similarity_plot(matrix, txt_names, dico_date, exp_plot_dir, mode='dates')
         generate_similarity_plot(matrix, txt_names, dico_author, exp_plot_dir, mode='auteurs')
@@ -146,7 +148,9 @@ if __name__ == "__main__":
 
         # ETAPE 5 : PREPARATION DES RAPPORTS HTML
         print("\nÉtape 5 : Préparation des rapports")
+       
         metric_use = exp['metric']
+        
         result_auteurs[suffixe] = {
             'matrix' : matrix,
             'txt_names' : txt_names,
@@ -154,6 +158,7 @@ if __name__ == "__main__":
             'img_path' :  os.path.join(exp_plot_dir, "nuage_points_auteurs.png"),
             'metric' :    metric_use,
         }
+        
         result_genre[suffixe] = {
             'matrix':    matrix,
             'txt_names': txt_names,
