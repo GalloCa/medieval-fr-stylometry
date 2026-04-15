@@ -28,11 +28,11 @@ CSS = """<style>
   --ink:       #1c1e21;
   --ink2:      #4b4f56;
   --muted:     #65676b;
-  --accent:    #0064d1; /* Un bleu plus classique et lisible */
+  --accent:    #0064d1; 
   --accent-bg: #e6f0ff;
   --good:      #0e8a16;
   --bad:       #d73a49;
-  --radius:    24px; /* Beaucoup plus arrondi, moins rigide */
+  --radius:    24px; 
   --shadow:    0 4px 12px rgba(0,0,0,0.08);
 }
 
@@ -42,9 +42,9 @@ html { scroll-behavior: smooth; }
 body {
   background: var(--bg);
   color: var(--ink);
-  /* Police système simple, sans chichis, très lisible */
+  /* Police système simple */
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
-  font-size: 18px; /* Texte globalement plus grand */
+  font-size: 18px; /* Taille texte */
   line-height: 1.7;
 }
 
@@ -53,7 +53,7 @@ header {
   background: var(--surface);
   padding: 50px 50px 30px;
   border-bottom: 1px solid var(--border);
-  border-radius: 0 0 30px 30px; /* Adoucit le bas du header */
+  border-radius: 0 0 30px 30px; 
   margin-bottom: 20px;
 }
 
@@ -82,7 +82,7 @@ h1 {
   font-size: 15px;
   color: var(--ink2);
   background: var(--surface2);
-  border-radius: 30px; /* Forme de pilule très arrondie */
+  border-radius: 40px; 
   padding: 8px 18px;
 }
 
@@ -103,7 +103,7 @@ h1 {
   background: var(--surface);
   padding: 12px 24px;
   border: 2px solid transparent;
-  border-radius: 30px; /* Boutons tout ronds */
+  border-radius: 30px; 
   cursor: pointer;
   transition: all 0.2s ease;
   box-shadow: var(--shadow);
@@ -197,7 +197,7 @@ h1 {
 .pair-score.high { color: var(--good); }
 .pair-score.low  { color: var(--bad); }
 .pair-bar {
-  width: 80px; height: 8px; /* Barre plus épaisse */
+  width: 80px; height: 8px; 
   background: var(--border);
   border-radius: 10px;
   overflow: hidden;
@@ -330,6 +330,7 @@ blockquote {
 .footer a { color: var(--accent); text-decoration: none; font-weight: bold; }
 </style>"""
 
+# DEFINITION DU JS POUR LA GESTION DES ONGLETS
 TABS_JS = """<script>
 document.querySelectorAll('.tab-btn').forEach(btn => {
   btn.addEventListener('click', () => {
@@ -343,11 +344,13 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
 });
 </script>"""
 
+# LABELS POUR LES ONGLETS ET SECTIONS
 TAB_LABELS = {
     'morpho': 'N-grammes caractères (n=3)',
     'lexical': 'N-grammes mots (n=2)',
 }
 
+# LABELS POUR LES CATÉGORIES D'ANALYSE
 MODE_LABELS = {
     'genre':   ('Genre littéraire', 'genres'),
     'auteurs': ('Auteur','auteurs'),
@@ -392,7 +395,6 @@ def _parse_knn(knn_str):
                          't2': m.group(4).strip(), 'c2': m.group(5).strip()}
                 (top_pairs if current == 'top' else bot_pairs).append(entry)
     return accuracy, top_pairs, bot_pairs
-
 
 def _parse_cohesion(cohesion_str):
     """
@@ -511,7 +513,7 @@ def _build_tab(suffixe, data, biblio, mode, report_output_path, lcs_content=None
 
     cat_label, _ = MODE_LABELS.get(mode, ('Catégorie', 'catégories'))
 
-    # Calculs 
+    # Appel des fonctions d'analyse et parseurs pour extraire les données structurées
     knn_str      = knn(matrix, txt_names, biblio, metric=metric)
     cohesion_str = genre_cohesion(matrix, txt_names, biblio, metric=metric)
     unique_cats  = sorted(set(biblio.values()))
@@ -692,7 +694,7 @@ def generate_combined_report_html(resultats, biblio, output_path, mode,
     nb_textes  = len(first_data['txt_names'])
     nb_cats    = len(set(biblio.values()))
 
-    # Construction des onglets
+    # Construction du HTML pour les onglets et leurs contenus
     buttons = ""
     panels  = ""
     for idx, (suffixe, data) in enumerate(resultats.items()):
@@ -739,7 +741,7 @@ def generate_combined_report_html(resultats, biblio, output_path, mode,
         </body>
         </html>"""
 
-    # Ecriture
+    # Sauvegarde du HTML dans le fichier de sortie
     abs_path = os.path.abspath(output_path)
     os.makedirs(os.path.dirname(abs_path), exist_ok=True)
 
