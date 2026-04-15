@@ -9,11 +9,9 @@ import time
 import sys
 
 from download_data import download_github_data
-from utils import load_biblio, clean_label, save_matrix_tsv
 from text_processor import TextProcessor
-from analyse import create_comparison_matrix, compare_files
+from analyse import create_comparison_matrix, compare_files, load_biblio, clean_label, save_matrix_tsv, analyse_auteur
 from plots_generator import generate_similarity_plot
-from lcs_analyse import analyse_auteur
 from generate_report_html import generate_combined_report_html
 
 

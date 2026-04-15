@@ -8,7 +8,6 @@ partagées entre plusieurs oeuvres d'un même auteur.
 
 # MODULES
 import os 
-from difflib import SequenceMatcher
 
 # FONCTIONS
 def lcs(t1, t2):
@@ -60,6 +59,14 @@ def lcs(t1, t2):
 
 def count_freq(sequence, texte):
     """
+    Calule le nombre d'apparation d'une séquence dans un texte
+
+    Entrée : 
+        sequence (str) : séquence de mots recherchés (ex : issue de la fonction lcs)
+        texte (str) : le texte source
+
+    Sortie : 
+        count (int) : la fréquence de la séquence dans le texte
     """
     if not sequence:
         return 0
@@ -77,8 +84,7 @@ def analyse_auteur(auteur, texte_dir, dico_author):
     Analyse le corpus pour extraire les fomrules récurrentes d'un auteur ciblé.
     La fonction identifie tous les fichiers associés à l'auteur, les charge en mémoire,
     puis utilise la fonction LCS pour faire une comparaison croisée, 2 à 2.
-    Les résultats sont ensuite formatés pour s'intégrer directement dans le rapport Markdown spécifique 
-    des auteurs.
+    Les résultats sont ensuite retournés sous forme de texte brut.
 
     Entrées : 
         auteur (str) : le nom de l'auteur à analyser
@@ -86,7 +92,7 @@ def analyse_auteur(auteur, texte_dir, dico_author):
         dico_author (dict) : le dictionnaire de métadonnées liant les textes aux auteurs
 
     Sortie :
-        str : bloc de texte au format Markdown contenant les citations récurrentes entre les textes.
+        str : bloc de texte contenant les citations récurrentes entre les textes.
               Retourne un avertissement s'il n'y a pas assez de textes à comparer
     """
     fichiers_auteur = []

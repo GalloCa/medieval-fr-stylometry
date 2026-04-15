@@ -25,7 +25,7 @@ from adjustText import adjust_text
 import numpy as np
 from scipy.cluster.hierarchy import dendrogram, linkage
 from scipy.spatial.distance import squareform
-from metrics import cos_np
+from analyse import cos_np
 
 
 # FONCTIONS

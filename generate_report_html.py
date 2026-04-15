@@ -1,13 +1,7 @@
 """
 Module de génération de rapports HTML stylisés
-Analyse Stylométrique de l'Ancien Français
-
-Fonction exportée :
-    generate_combined_report_html(resultats, biblio, output_path, mode,
-                                  lcs_content=None, titre=None)
-
-        → Génère un rapport HTML avec onglets (une expérience par onglet)
-          pour les trois axes d'analyse :
+Génère un rapport HTML avec onglets (une expérience par onglet)
+pour les trois axes d'analyse :
               mode='genre'   → rapport-genre.html
               mode='auteurs' → rapport-auteurs.html  (+ LCS optionnel)
               mode='dates'   → rapport-epoques.html
@@ -22,7 +16,7 @@ import datetime
 import base64
 from analyse import knn, genre_cohesion, ngram_signatures
 
-# DEFINITION DU CSS POUR LA SORTIE HTML 
+# DEFINITION DU CSS A APPLIQUER POUR LA SORTIE HTML 
 CSS = """<style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;1,400&family=JetBrains+Mono:wght@400;500&display=swap');
 
@@ -54,7 +48,7 @@ body {
   line-height: 1.7;
 }
 
-/* ── HEADER ── */
+/* HEADER */
 header {
   background: var(--surface);
   padding: 50px 50px 30px;
@@ -83,6 +77,7 @@ h1 {
   gap: 12px;
   flex-wrap: wrap;
 }
+
 .meta-chip {
   font-size: 15px;
   color: var(--ink2);
@@ -90,9 +85,10 @@ h1 {
   border-radius: 30px; /* Forme de pilule très arrondie */
   padding: 8px 18px;
 }
+
 .meta-chip b { color: var(--ink); font-weight: bold; }
 
-/* ── ONGLETS ── */
+/* ONGLETS */
 .tabs-bar {
   padding: 10px 50px;
   display: flex;
@@ -112,6 +108,7 @@ h1 {
   transition: all 0.2s ease;
   box-shadow: var(--shadow);
 }
+
 .tab-btn:hover { background: var(--surface2); }
 .tab-btn.active {
   color: var(--surface);
@@ -119,15 +116,16 @@ h1 {
   border-color: var(--accent);
 }
 
-/* ── PANNEAUX ── */
+/* PANNEAUX  */
 .tab-panel { display: none; padding: 20px 50px 80px; }
 .tab-panel.active { display: block; }
 
-/* ── SECTIONS ── */
+/* SECTIONS */
 .tab-section {
   padding: 40px 0;
   border-bottom: 2px dashed var(--border);
 }
+
 .tab-section:last-child { border-bottom: none; }
 
 .section-label {
@@ -137,6 +135,7 @@ h1 {
   color: var(--accent);
   margin-bottom: 10px;
 }
+
 .section-title {
   font-size: 1.8rem;
   font-weight: 700;
@@ -144,7 +143,7 @@ h1 {
   margin-bottom: 30px;
 }
 
-/* ── KNN ── */
+/* SECTION KNN */
 .accuracy-block {
   display: inline-flex;
   align-items: center;
@@ -154,11 +153,13 @@ h1 {
   padding: 15px 30px;
   margin-bottom: 40px;
 }
+
 .accuracy-num {
   font-size: 2.5rem;
   font-weight: bold;
   color: var(--accent);
 }
+
 .accuracy-label { font-size: 16px; color: var(--ink2); font-weight: bold; }
 
 .pairs-grid {
@@ -166,6 +167,7 @@ h1 {
   grid-template-columns: 1fr 1fr;
   gap: 40px;
 }
+
 @media (max-width: 860px) { .pairs-grid { grid-template-columns: 1fr; } }
 
 .pairs-group-label {
@@ -176,6 +178,7 @@ h1 {
   padding-bottom: 10px;
   border-bottom: 2px solid var(--border);
 }
+
 .pair-row {
   display: flex;
   align-items: center;
@@ -183,12 +186,14 @@ h1 {
   padding: 12px 0;
   border-bottom: 1px solid var(--border);
 }
+
 .pair-score {
   font-size: 16px;
   font-weight: bold;
   min-width: 70px;
   text-align: right;
 }
+
 .pair-score.high { color: var(--good); }
 .pair-score.low  { color: var(--bad); }
 .pair-bar {
@@ -197,18 +202,20 @@ h1 {
   border-radius: 10px;
   overflow: hidden;
 }
+
 .pair-bar-fill { height: 100%; border-radius: 10px; }
 .pair-bar-fill.high { background: var(--good); }
 .pair-bar-fill.low  { background: var(--bad); }
 .pair-names { font-size: 17px; line-height: 1.5; color: var(--ink); }
 .pair-cat   { font-size: 15px; color: var(--muted); }
 
-/* ── COHÉSION ── */
+/* SECTION COHESION */
 .cohesion-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 20px;
 }
+
 .cohesion-card {
   background: var(--surface);
   border-radius: var(--radius);
@@ -216,21 +223,24 @@ h1 {
   box-shadow: var(--shadow);
   text-align: center;
 }
+
 .coh-label {
   font-size: 16px;
   font-weight: bold;
   color: var(--muted);
   margin-bottom: 15px;
 }
+
 .coh-score {
   font-size: 2rem;
   font-weight: bold;
   color: var(--ink);
 }
+
 .coh-score.na { color: var(--muted); font-size: 1.4rem; }
 .coh-unit  { font-size: 14px; color: var(--muted); margin-top: 5px; }
 
-/* ── SIGNATURES ── */
+/* SECTION SIGNATURES */
 .signatures-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -272,7 +282,7 @@ code {
   font-weight: bold;
 }
 
-/* ── VISUALISATION ── */
+/* SECTION VISUALISATION */
 .viz-wrap {
   background: var(--surface);
   border-radius: var(--radius);
@@ -281,7 +291,7 @@ code {
 }
 .viz-wrap img { display: block; width: 100%; height: auto; border-radius: 12px; }
 
-/* ── LCS ── */
+/* SECTION LCS */
 .lcs-item {
   background: var(--surface);
   border-radius: var(--radius);
@@ -310,7 +320,7 @@ blockquote {
   border-radius: 0 16px 16px 0;
 }
 
-/* ── FOOTER ── */
+/* FOOTER */
 .footer {
   padding: 30px 50px;
   font-size: 15px;
@@ -393,7 +403,7 @@ def _parse_cohesion(cohesion_str):
       cohesion_str (str) : la chaine de caractère brute renvoyée par genre_cohesion()
     
       Sortie :
-        list od dict : liste conteannt un dictionnaire par catégorie
+        list oD dict : liste contenant un dictionnaire par catégorie
         format : {'genre' : str, 'na' : bool, 'score' : str ou None, 'unite" : str ou None}
     """
     results = []
@@ -416,7 +426,7 @@ def _parse_cohesion(cohesion_str):
 def _parse_signatures(sig_str):
     """
     Analyse le texte brut des résultats des signatures pour extraire les n-grammes clés et
-    leur fréquence afin des les afficher en html
+    leurs fréquences afin des les afficher en html
     
     Entrée :
       sig_str (str) :
@@ -478,8 +488,8 @@ def _pair_rows(pairs, cls):
 
 def _build_tab(suffixe, data, biblio, mode, report_output_path, lcs_content=None):
     """
-    Construit le HTML d'un panneau d'onglet pour une expérience (ngramme de mots ou de caractères)
-    Appelle les fonctions d'analyses, les parseurs et leur résultat et génére l'interface
+    Construit le html d'un panneau d'onglet pour une expérience (ngramme de mots ou de caractères)
+    Appelle les fonctions d'analyses, les parseurs et leurs résultats et génére l'interface de sortie
 
     Entrées : 
         suffixe (str) : l'identifiant de l'expérience (ex: 'char3', 'word2')
@@ -610,6 +620,11 @@ def _build_tab(suffixe, data, biblio, mode, report_output_path, lcs_content=None
     # SECTION 05 : LCS 
     lcs_html = ""
     if lcs_content:
+        auteur_cible = "Auteur Inconnu"
+        nom_auteur = re.search(r"Séquences récurrentes de\s+(.+)", lcs_content)
+        if nom_auteur:
+            auteur_cible = nom_auteur.group(1).strip()
+            
         blocks = []
         cur_title, cur_quote, cur_freq = None, None, None
         for line in lcs_content.split('\n'):
@@ -641,7 +656,7 @@ def _build_tab(suffixe, data, biblio, mode, report_output_path, lcs_content=None
         lcs_html = f"""
     <div class="tab-section">
       <div class="section-label">05 — Séquences récurrentes</div>
-      <div class="section-title">LCS — Formules partagées · Chrétien de Troyes</div>
+      <div class="section-title">LCS — Formules partagées · {auteur_cible}</div>
       <div>{items}</div>
     </div>"""
 
@@ -653,6 +668,7 @@ def generate_combined_report_html(resultats, biblio, output_path, mode,
                                    lcs_content=None, titre=None):
     """
     Génère un rapport HTML avec onglets — une expérience par onglet.
+    Récupère 
 
     Entrées :
         resultats (dict)   : {suffixe: {'matrix', 'txt_names', 'lexique',
@@ -689,39 +705,39 @@ def generate_combined_report_html(resultats, biblio, output_path, mode,
         panels  += f'<div class="tab-panel {active}" id="tab-{suffixe}">{contenu}</div>\n'
 
     html = f"""<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{titre} · Analyse corpus d'Ancien Français</title>
-  {CSS}
-</head>
-<body>
+          <html lang="fr">
+          <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>{titre} · Analyse corpus d'Ancien Français</title>
+          {CSS}
+        </head>
+        <body>
 
-<header>
-  <div class="header-eyebrow">Analyse d'un corpus d'Ancien Français</div>
-  <h1>{titre}</h1>
-  <div class="header-meta">
-    <div class="meta-chip">Généré le <b>{dd}</b></div>
-    <div class="meta-chip">Textes <b>{nb_textes}</b></div>
-    <div class="meta-chip">{cat_label}s <b>{nb_cats}</b></div>
-  </div>
-</header>
+        <header>
+          <div class="header-eyebrow">Analyse d'un corpus d'Ancien Français</div>
+          <h1>{titre}</h1>
+          <div class="header-meta">
+            <div class="meta-chip">Généré le <b>{dd}</b></div>
+            <div class="meta-chip">Textes <b>{nb_textes}</b></div>
+            <div class="meta-chip">{cat_label}s <b>{nb_cats}</b></div>
+          </div>
+        </header>
 
-<div class="tabs-bar">
-{buttons}
-</div>
+        <div class="tabs-bar">
+        {buttons}
+        </div>
 
-{panels}
+        {panels}
 
-<div class="footer">
-  Source : (2018). <em>Open Medieval French</em>.
-  <a href="https://github.com/OpenMedFr/texts" target="_blank">https://github.com/OpenMedFr/texts</a>
-</div>
+        <div class="footer">
+          Source : (2018). <em>Open Medieval French</em>.
+          <a href="https://github.com/OpenMedFr/texts" target="_blank">https://github.com/OpenMedFr/texts</a>
+        </div>
 
-{TABS_JS}
-</body>
-</html>"""
+        {TABS_JS}
+        </body>
+        </html>"""
 
     # Ecriture
     abs_path = os.path.abspath(output_path)
