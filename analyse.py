@@ -1,47 +1,48 @@
 
 """
-Module d'analyse
+Module central d'analyse stylométrique de l'Ancien Français.
 
-Ce script centralise les opérations mathématiques et textuelles. Il transforme une collection
-d'objets textuels en une matrice Termes-Documents exploitée pour 
-
-Il regroupe l'ensemble des fonctions analytiques de la pipeline : 
-    - Utilitaires : chargement des métadonnées, nettoyage des labels,
-                    export de la matrice TSV
-    — Métriques : similarité cosinus, indice de Jaccard, distance de Manhattan
+Regroupe l'ensemble des fonctions analytiques du pipeline :
+    — Utilitaires        : chargement des métadonnées, nettoyage des labels,
+                           export de la matrice TSV
+    — Métriques          : similarité cosinus, indice de Jaccard, distance de Manhattan
                            (implémentées manuellement sans scikit-learn)
     — Analyse vectorielle : construction de la matrice Termes-Documents,
                             comparaison par paires (cosinus + Jaccard)
-    — Classification : KNN (k=1) avec évaluation de précision,
-                        support des métriques cosinus, Jaccard et Manhattan
-    — Cohésion interne : similarité moyenne intra-catégorie
-    — Signatures : n-grammes sur-représentés par catégorie (ratio TF)
-    — LCS : plus longue sous-séquence commune de mots entre textes,
-            comptage des occurrences de la séquence dans chaque texte
+    — Classification     : KNN (k=1) avec évaluation de précision,
+                           support des métriques cosinus, Jaccard et Manhattan
+    — Cohésion interne   : similarité moyenne intra-catégorie
+    — Signatures         : n-grammes sur-représentés par catégorie (ratio TF)
+    — LCS                : plus longue sous-séquence commune de mots entre textes,
+                           comptage des occurrences de la séquence dans chaque texte
+
+Expériences disponibles (configurées dans main.py) :
+    morpho  — trigrammes de caractères, cosinus  → niveau morphologique
+    lexical — bigrammes de mots, cosinus          → niveau lexical
+    jaccard — trigrammes de caractères, Jaccard   → présence/absence morphologique
 
 Dépendances :
-    - NumPy : Gestion matricielle et calculs statistiques
+    - numpy : matrices et calculs vectoriels
 """
-
-
 # MODULES
 import os
 import numpy as np
 import datetime 
 
-# UTILITAIRES 
+# UTILITAIRES
 # Chargement des métadonnées, nettoyage des labels, export TSV
 def load_biblio(path):
    """
-   Charge un fichier de metadonnées et le transforme en dictionnaire.
-   Le fichier est formaté comme ceci : NomDuTexte : Catégorie
+   Charge un fichier de métadonnées et le transforme en dictionnaire.
 
-   Entrée : 
-        path (str) : le chemin absolu ou relatif du fichier de métadonnées
+   Format attendu (une entrée par ligne) :
+       NomDuFichierSansExtension : Catégorie
 
-   Sortie : 
-        dict : une dictionnaire  associant le nom de l'oeuvre à sa métadonnées{ 'Oeuvre' : 'Genre'}
+   Entrée :
+       path (str) : chemin vers le fichier de métadonnées
 
+   Sortie :
+       dict : {'NomTexte': 'Catégorie'} — retourne {} si le fichier est absent
    """
    biblio = {}
    try : 
@@ -60,15 +61,13 @@ def load_biblio(path):
 
 def clean_label(name):
     """
-    Nettoyage des étiquettes de fichiers pour isoler le nom du texte.
-    Suppression des préfixes techniques liés au filtrage des fréquences et des extensions
-    de fichiers.
+    Isole le nom du texte en supprimant les préfixes et extensions techniques.
 
     Entrée :
-        name (str) : Le nom original de la colonne ou du fichier à nettoyer.
+        name (str) : nom brut du fichier (ex : 'clean-Yvain.txt')
 
     Sortie :
-        str : Le nom du texte nettoyé (ex : 'clean-Yvain.txt' devient 'Yvain')
+        str : nom nettoyé (ex : 'Yvain')
     """
     for prefix in ['freq-', 'clean-']:
         name = name.replace(prefix, '')
@@ -78,17 +77,20 @@ def clean_label(name):
 
 def save_matrix_tsv(matrix, lexique, txt_names, output_path):
     """
-    Sauvegarde la matrice Numpy en mémoire vers un fichier TSV. Structuré sous la forme
-    noms de textes pour les colonnes et n-grammes sur les lignes.
+    Exporte la matrice Termes-Documents au format TSV.
+
+    Structure du fichier :
+        — 1ère ligne  : en-tête avec les noms de textes (colonnes)
+        — lignes N+1  : un n-gramme par ligne, suivi de ses fréquences
 
     Entrées :
-        matrix (np.ndarray) : la matrice des fréquences (n-grammes x textes)
-        lexique (list): la liste ordonnée de tous les n-grammes du corpus
-        txt_names (list) : liste des noms de textes 
-        output_path (str) : le chemin de sauvegarde du fichier .tsv
-         
-    Sortie : 
-        Génération et sauvegarde du fichier .tsv
+        matrix (np.ndarray) : matrice de fréquences (n-grammes × textes)
+        lexique (list)       : n-grammes ordonnés (index des lignes)
+        txt_names (list)     : noms des textes (index des colonnes)
+        output_path (str)    : chemin de sortie (.tsv)
+
+    Sortie :
+        fichier .tsv écrit dans output_path
     """
     folder = os.path.dirname(output_path)
     if folder and not os.path.exists(folder):
@@ -103,23 +105,26 @@ def save_matrix_tsv(matrix, lexique, txt_names, output_path):
             
     print(f"Matrice globale sauvegardée avec succès dans : {output_path}")
 
-# METRIQUES 
-# Trois mesures de similarité / distance implémentées manuellement
-# ValueError si les vecteurs n'ont pas la même dimension
+# MÉTRIQUES
+# Trois mesures de similarité/distance implémentées sans scikit-learn.
+# Toutes lèvent ValueError si les vecteurs n'ont pas la même dimension.
 
-def cos_np(v1,v2):
+def cos_np(v1, v2):
    """
-   Calcule la similarité cosinus entre deux vecteurs.
+   Similarité cosinus entre deux vecteurs de fréquences.
 
-   Formules : (A ⋅ B) / (||A|| * ||B||)
+   Mesure l'angle entre les vecteurs — indépendante de leur norme,
+   donc robuste aux différences de longueur entre textes.
+   Formule : (A · B) / (‖A‖ × ‖B‖)
 
    Entrées :
-        v1 (np.ndarray) : le premier vecteur 
-        v2 (np.ndarray) : le deuxième vecteur 
+       v1, v2 (np.ndarray) : vecteurs de même dimension
 
-   Sortie : 
-        float : le score de simlarité cosinus (entre 0 et 1). 
-                Retourne 0 si l'un des deux vecteurs est nul
+   Sortie :
+       float : score dans [0, 1] — 0 si l'un des vecteurs est nul
+
+   Lève :
+       ValueError : si v1 et v2 n'ont pas la même dimension
    """
    if v1.shape != v2.shape:
       raise ValueError(f"cos_np : dimensions incompatibles {v1.shape} vs {v2.shape}")
@@ -130,18 +135,23 @@ def cos_np(v1,v2):
       return produit / (norme1 * norme2)
    return 0
 
-def jaccard_np(v1,v2):
+def jaccard_np(v1, v2):
    """
-   Calcule l'indice de Jaccard entre deux vecteurs.
+   Indice de Jaccard entre deux vecteurs de fréquences.
 
+   Binarise les vecteurs (présence/absence) puis calcule le rapport
+   intersection / union. Utilisé dans l'expérience 'jaccard' (KNN)
+   et dans compare_files (comparaison par paires).
    Formule : |A ∩ B| / |A ∪ B|
 
-   Entrées : 
-        v1 (np.ndarray) : le premier vecteur 
-        v2 (np.ndarray) : le deuxième vecteur 
+   Entrées :
+       v1, v2 (np.ndarray) : vecteurs de même dimension
 
-   Sortie : 
-        float : l'indice de Jaccard (entre 0 et 1)
+   Sortie :
+       float : indice dans [0, 1] — 0 si union vide
+
+   Lève :
+       ValueError : si v1 et v2 n'ont pas la même dimension
    """
    if v1.shape != v2.shape:
       raise ValueError(f"jaccard_np : dimensions incompatibles {v1.shape} vs {v2.shape}")
@@ -154,6 +164,23 @@ def jaccard_np(v1,v2):
    return 0
 
 def manhattan_np(v1, v2):
+   """
+   Distance de Manhattan entre deux vecteurs de fréquences.
+
+   Somme des différences absolues — sensible aux écarts de fréquence brute.
+   Implémentée et branchée dans le pipeline (paramètre metric='manhattan'),
+   non activée dans les expériences actuelles.
+   Formule : Σ |aᵢ − bᵢ|
+
+   Entrées :
+       v1, v2 (np.ndarray) : vecteurs de même dimension
+
+   Sortie :
+       float : distance (≥ 0)
+
+   Lève :
+       ValueError : si v1 et v2 n'ont pas la même dimension
+   """
    if v1.shape != v2.shape:
       raise ValueError(f"manhattan_np : dimensions incompatibles {v1.shape} vs {v2.shape}")
    return np.sum(np.abs(v1 - v2))
@@ -161,20 +188,19 @@ def manhattan_np(v1, v2):
 # COMPARAISON PAR PAIRES
 def compare_files(matrix, txt_names, output_path=None):
     """
-    Calcule les similitudes (Cosinus et Jaccard) entre tous les 
-    couples uniques de textes.
-    La fonction parcours une matrice et compare chaque texte i 
-    avec chaque texte j (où j > i) pour éviter les doublons et auto-comparaisons.
-    Les résultats sont exportés dans un fichier .tsv
+    Calcule cosinus et Jaccard pour tous les couples uniques de textes
+    et exporte les résultats dans un fichier TSV.
 
-    Entrées : 
-        matrix (numpy.ndarray) : matrice où chaque colonn représente le vecteur d'un texte
-        txt_names (list) : liste des identifiants des textes (colonnes de la matrice)
-        output_path(str, optionnel) :chemin de sortie du fichier
+    Parcourt la matrice en ne traitant que les paires (i, j) avec j > i
+    pour éviter doublons et auto-comparaisons.
+
+    Entrées :
+        matrix (np.ndarray) : matrice de fréquences (n-grammes × textes)
+        txt_names (list)     : noms des textes (colonnes de la matrice)
+        output_path (str)    : chemin de sortie du fichier .tsv
 
     Sortie :
         fichier .tsv avec colonnes : Texte A | Texte B | Cosinus | Jaccard
-        
     """
     nb_txt = len(txt_names)
 
@@ -196,18 +222,19 @@ def compare_files(matrix, txt_names, output_path=None):
 
 def create_comparison_matrix(liste_txt):
     """
-    Construit la matrice Termes-Documents globale à partir d'une liste d'objets.
-    Centralise tous les n-grammes rencontrés.
-    Chaque colonne représente un texte, chaque ligne un n-gramme spécifique
+    Construit la matrice Termes-Documents globale à partir d'une liste d'objets TextProcessor.
 
-    Entrées : 
-        liste_txt (list) : liste d'objets instanciés et traités (tokenisation et calcul de fréquences)
+    Centralise tous les n-grammes du corpus dans un lexique ordonné commun,
+    puis remplit la matrice avec les fréquences de chaque texte.
+
+    Entrées :
+        liste_txt (list) : objets TextProcessor après clean_txt() et n_gramm()
 
     Sorties :
-        tuple : 
-            np_matrix (numpy.ndarray) : matrice de fréquence (n-grammes x textes)
-            ordered_lex (list) : lexique complet et ordonné
-            txt_name (list) : liste des noms de fichiers correspondant aux colonnes
+        tuple :
+            np_matrix (np.ndarray) : matrice de fréquences (n-grammes × textes)
+            ordered_lex (list)     : lexique complet et ordonné (index des lignes)
+            txt_name (list)        : noms des textes (index des colonnes)
     """
     full_lex = set()
     txt_name = []
@@ -233,49 +260,55 @@ def create_comparison_matrix(liste_txt):
     return np_matrix, ordered_lex, txt_name
 
 # ANALYSES
-def knn(matrix, txt_names, biblio, metric ='cosinus'):
+def knn(matrix, txt_names, biblio, metric='cosinus'):
     """
-    Classification knn (k=1) :  évalue si la similarité stylistique
-    reflète les catégories (genre, auteur, époque)
+    Classification KNN (k=1) : évalue dans quelle mesure la similarité stylistique
+    reflète les catégories éditoriales (genre, auteur, époque).
 
-    Pour chaque texte, identifie son voisin le plus proche et vérifie si ce voisin appartient
-    à la même catégorie. 
-    Calcul aussi les 5 paires les plus proches et les 5 plus éloignées
-   
-    Métriques supportées : 
-        'cosinus' : similarité angulaire (métrique par défaut)
-        'jaccard' : présence/absence
-        'manhattan' : distance absolue (disponible, non activée)
+    Pour chaque texte, identifie son voisin le plus proche et vérifie si ce voisin
+    appartient à la même catégorie. Calcule aussi les 5 paires les plus proches
+    et les 5 plus éloignées du corpus.
+
+    Métriques supportées :
+        'cosinus'  — similarité angulaire (défaut, expérience morpho)
+        'jaccard'  — présence/absence (expérience jaccard)
+        'manhattan'— distance absolue (disponible, non activée)
 
     Entrées :
-        matrix (np.ndarray) : la matrice des fréquences (n-grammes x textes)
-        txt_names (list) : liste des noms de textes 
-        biblio (dict) : dictionnaire de métadonnées {nom : catégorie}
-        metric (str) : métrique à utiliser
-    
-    Sorties :
-        str : bloc de texte qui contient les resultats (précision, top_5, bot_5)
-     """
-    
+        matrix (np.ndarray) : matrice de fréquences (n-grammes × textes)
+        txt_names (list)     : noms des textes
+        biblio (dict)        : métadonnées {nom_texte : catégorie}
+        metric (str)         : métrique à utiliser
+
+    Sortie :
+        dict :
+            'accuracy' (float)  : précision en pourcentage
+            'top'      (list)   : 5 paires les plus proches,
+                                  chaque élément → {'t1', 'c1', 't2', 'c2', 'score'}
+            'bot'      (list)   : 5 paires les plus éloignées, même structure
+    """
+
     all_pairs = []
     nb_txt = len(txt_names)
     # Calcul de toutes les paires uniques
     for i in range(nb_txt):
-        for j in range(i + 1,nb_txt) :
-            if metric == "manhattan":
-                val = manhattan_np(matrix[:,i], matrix[:, j])
-            else :
-                val = cos_np(matrix[:,i], matrix[:, j])
+        for j in range(i + 1, nb_txt):
+            if metric == 'manhattan':
+                val = manhattan_np(matrix[:, i], matrix[:, j])
+            elif metric == 'jaccard':
+                val = jaccard_np(matrix[:, i], matrix[:, j])
+            else:
+                val = cos_np(matrix[:, i], matrix[:, j])
             all_pairs.append((txt_names[i], txt_names[j], val))
 
-    # Tri adapté par métriques / cosinus : + score grand = proche ; inverse pour manhattan 
-    is_reverse = True if metric != 'manhattan' else False
+    # Tri adapté par métriques / cosinus : + score grand = proche ; inverse pour manhattan
+    is_reverse = metric != 'manhattan'
     all_pairs.sort(key=lambda x: x[2], reverse=is_reverse)
 
     top_5 = all_pairs[:5]
     bot_5 = all_pairs[-5:]
-    
-    # Mise en place pour évaluation de la précision
+
+    # Évaluation de la précision
     good_pred = 0
     evaluated_txt = 0
 
@@ -284,74 +317,66 @@ def knn(matrix, txt_names, biblio, metric ='cosinus'):
         cat1 = biblio.get(t1)
         if not cat1:
             continue
-        
-        # Recherche du voisin le plus proche
+
         max_score = -1
         max_dist = float('inf')
         best_knn = None
-        
-        for j in range(nb_txt):
-            if i != j :
-                v1 = matrix[:,i]
-                v2 = matrix[:, j]
 
+        for j in range(nb_txt):
+            if i != j:
+                v1 = matrix[:, i]
+                v2 = matrix[:, j]
                 if metric == 'manhattan':
-                    dist = manhattan_np(v1,v2)
+                    dist = manhattan_np(v1, v2)
                     if dist < max_dist:
                         max_dist = dist
                         best_knn = txt_names[j]
-                else :
-                    score = cos_np(v1,v2)
+                else:
+                    score = jaccard_np(v1, v2) if metric == 'jaccard' else cos_np(v1, v2)
                     if score > max_score:
                         max_score = score
                         best_knn = txt_names[j]
+
         if not best_knn:
             continue
         cat2 = biblio.get(best_knn)
-        if cat1 == cat2:
-            good_pred +=1
-        evaluated_txt +=1
-    
+        if cat2 and cat1 == cat2:
+            good_pred += 1
+        evaluated_txt += 1
+
     accuracy = (good_pred / evaluated_txt) * 100 if evaluated_txt > 0 else 0
 
-    # Construction du bloc de texte final
-    report_ligne= []
-    report_ligne.append(f"**Précision de l'algorithme KNN ({metric}) : {accuracy :.1f}%**\n")
-    
-    report_ligne.append(f"#### Les 5 paires les plus proches : ")
-    for t1, t2, val in top_5 : 
-        c1 = biblio.get(t1, 'Inconnu')
-        c2 = biblio.get(t2, 'Inconnu')
-        report_ligne.append(f"- **{val:.4f}** : {t1} ({c1}) / {t2} ({c2})")
-    
-    report_ligne.append(f"\n### Les 5 paires les plus éloignées :")
-    for t1, t2, val in reversed(bot_5) : 
-        c1 = biblio.get(t1, 'Inconnu')
-        c2 = biblio.get(t2, 'Inconnu')
-        report_ligne.append(f"- **{val:.4f}** : {t1} ({c1}) / {t2} ({c2})")
-    
-    return "\n".join(report_ligne)
+    def _pair_dict(t1, t2, val):
+        return {'t1': t1, 'c1': biblio.get(t1, 'Inconnu'),
+                't2': t2, 'c2': biblio.get(t2, 'Inconnu'),
+                'score': round(val, 4)}
+
+    return {
+        'accuracy': round(accuracy, 1),
+        'top': [_pair_dict(t1, t2, v) for t1, t2, v in top_5],
+        'bot': [_pair_dict(t1, t2, v) for t1, t2, v in reversed(bot_5)],
+    }
 
 
 def genre_cohesion(matrix, txt_names, biblio, metric='cosinus'):
     """
-    Calcule de la similarité moyenne de tous les à l'intérieur 
-    d'une même catégorie
+    Calcule la similarité moyenne entre tous les textes d'une même catégorie.
 
-    Une cohésion élevée indique que les textes du groupes partagent
-    un style lexicale ou morphologique.
-
-    Les catégories avec un seul texte retournent 'Non Calculable'
+    Une cohésion élevée indique que les textes du groupe partagent
+    un style lexical ou morphologique homogène. Catégories avec un seul
+    texte retournent 'Non calculable'.
 
     Entrées :
-        matrix (np.ndarray) : la matrice des fréquences (n-grammes x textes)
-        txt_names (list) : liste des noms de textes 
-        biblio (dict) : dictionnaire de métadonnées {nom : catégorie}
-        metric (str) : 'cosinus' (défaut), 'jaccard' ou 'manhattan'
+        matrix (np.ndarray) : matrice de fréquences (n-grammes × textes)
+        txt_names (list)     : noms des textes
+        biblio (dict)        : métadonnées {nom_texte : catégorie}
+        metric (str)         : 'cosinus' (défaut), 'jaccard' ou 'manhattan'
 
     Sortie :
-        str : bloc texte avec une ligne par catégorie et son score moyen
-     """
+        list : une entrée par catégorie →
+               {'cat': str, 'score': float|None, 'unite': str, 'na': bool}
+               na=True si la catégorie ne contient qu'un seul texte
+    """
 
     genres = {}
     for idx, text in enumerate(txt_names):
@@ -361,84 +386,91 @@ def genre_cohesion(matrix, txt_names, biblio, metric='cosinus'):
                 genres[genre] = []
             genres[genre].append(idx)
 
-    report_lignes= []
+    results = []
     for genre, indices in genres.items():
         if len(indices) < 2:
-            report_lignes.append(f"- **{genre}** : *Non calculable (1 seul texte)*")
-            continue  
+            results.append({'cat': genre, 'score': None, 'unite': None, 'na': True})
+            continue
 
         scores = []
         for i in range(len(indices)):
-            for j in range(i+1, len(indices)):
+            for j in range(i + 1, len(indices)):
                 v1 = matrix[:, indices[i]]
                 v2 = matrix[:, indices[j]]
                 if metric == 'manhattan':
-                    scores.append(manhattan_np(v1,v2))
-                else :
+                    scores.append(manhattan_np(v1, v2))
+                else:
                     scores.append(cos_np(v1, v2))
 
         mean = sum(scores) / len(scores)
-        unite = "(Distance moyenne)" if metric == 'manhattan' else "(Similarité moyenne)"
-        report_lignes.append(f"- **{genre}** : {mean :.04f} {unite}")
+        unite = 'Distance moyenne' if metric == 'manhattan' else 'Similarité moyenne'
+        results.append({'cat': genre, 'score': round(mean, 4), 'unite': unite, 'na': False})
 
-    return "\n".join(report_lignes)
+    return results
 
 
 def ngram_signatures(matrix, txt_names, biblio, lexique, target_genre, top=10):
     """
-    Identifie les ngrammes csur-représentés dans une catégorie par rapport au 
-    reste du corpus via un ration de fréquences moyennes
+    Identifie les n-grammes sur-représentés dans une catégorie par rapport
+    au reste du corpus via un ratio de fréquences moyennes.
+
+    Formule : score(ng) = freq_moy_cible / (freq_moy_reste + 1)
+    Le +1 évite la division par zéro et pénalise les n-grammes absents du reste.
 
     Entrées :
-        matrix (np.ndarray) : la matrice des fréquences (n-grammes x textes)
-        txt_names (list) : liste des noms de textes 
-        biblio (dict) : dictionnaire de métadonnées {nom : catégorie}
-        lexique (list): la liste ordonnée de tous les n-grammes du corpus
-        target_genre (str): catégorie cible à analyser (ex: 'genre')
-        top (int, optional): nombre de n-grammes à afficher (défaut : 10)
-    
+        matrix (np.ndarray)  : matrice de fréquences (n-grammes × textes)
+        txt_names (list)      : noms des textes
+        biblio (dict)         : métadonnées {nom_texte : catégorie}
+        lexique (list)        : n-grammes ordonnés (index des lignes)
+        target_genre (str)    : catégorie cible (ex : 'Roman courtois')
+        top (int)             : nombre de n-grammes à retourner (défaut : 10)
+
     Sortie :
-        str : bloc texte listant les top n-grammes avec leur ratio
+        list : jusqu'à `top` entrées → {'ngram': str, 'ratio': float}
+               liste vide si la catégorie est absente du corpus
     """
     indices_cible = [i for i, t in enumerate(txt_names) if biblio.get(t) == target_genre]
-    rest_indices = [i for i, t in enumerate(txt_names) if biblio.get(t) != target_genre]
+    rest_indices  = [i for i, t in enumerate(txt_names) if biblio.get(t) != target_genre]
 
     if not indices_cible:
-        return f"\n Signature du genre '{target_genre}' : Aucun textes trouvé."
-    
-    target_freq = np.mean(matrix[:, indices_cible], axis=1)
-    reste_freq = np.mean(matrix[:, rest_indices], axis=1)
+        return []
 
-    scores = target_freq / (reste_freq + 1)
+    target_freq = np.mean(matrix[:, indices_cible], axis=1)
+    reste_freq  = np.mean(matrix[:, rest_indices],  axis=1)
+    scores      = target_freq / (reste_freq + 1)
 
     indices_tries = np.argsort(scores)[::-1]
 
-    report_lignes = [f"\n#### Signature : '{target_genre}' \n"]
-    for idx in indices_tries[:top]:
-        ng = lexique[idx]
-        s = scores[idx]
-        if s > 0:
-            report_lignes.append(f"- '{ng}' (ratio : {s :.2f})")
-    return "\n".join(report_lignes)
+    return [
+        {'ngram': lexique[idx], 'ratio': round(float(scores[idx]), 2)}
+        for idx in indices_tries[:top]
+        if scores[idx] > 0
+    ]
 
-# LCS - SEQUENCES COMMUNES
-# Identification des séquences récurrentes exactes entre textes d'un même auteur
-# avec comptage des occurences dans chaque texte
+
+
+# LCS — SÉQUENCES COMMUNES
+# Identification des formules récurrentes exactes entre textes d'un même auteur,
+# avec comptage des occurrences dans chaque texte.
 
 def lcs(t1, t2):
     """
-    Algorithme LCS optimisé par indexation inversée, les positions de chaque mot dans t2
-    sont pré-indexés dans un dictionnaire, évite de parcourir t2 entièrement pour chaque mot de t1
-    
-    Complexité : O(n log n) => non - c'est quasi linéraire mais 
+    Plus longue sous-séquence commune de mots (Longest Common Substring) entre deux textes.
 
-    Entrées : 
-        t1 (str) : le premier texte
-        t2 (str) : le deuxième texte
+    Algorithme optimisé par indexation inversée : les positions de chaque mot dans t2
+    sont pré-indexées dans un dictionnaire, ce qui évite de parcourir t2 entièrement
+    pour chaque mot de t1.
+
+    Complexité : meilleure que O(n×m) en pratique grâce à l'index,
+    bien que le pire cas reste quadratique sur des vocabulaires très partagés.
+
+    Entrées :
+        t1 (str) : premier texte (chaîne de mots séparés par des espaces)
+        t2 (str) : deuxième texte
 
     Sortie :
-        str : la plus longue séquence de mots exactes partagées entre les deux textes.
-              retourne chaine vide si aucune correspondance n'est trouvée.
+        str : séquence de mots la plus longue commune aux deux textes,
+              chaîne vide si aucune correspondance
     """
     mots1 = t1.split()
     mots2 = t2.split()
@@ -453,6 +485,7 @@ def lcs(t1, t2):
     end_idx = 0
     
     suivi_longueurs = {} 
+    
     
     for i, mot in enumerate(mots1):
         nouveau_suivi = {}
@@ -475,14 +508,17 @@ def lcs(t1, t2):
 
 def count_freq(sequence, texte):
     """
-    Compte le nombre d'apparation d'une séquence dans un texte
+    Compte les occurrences exactes d'une séquence de mots dans un texte.
 
-    Entrée : 
-        sequence (str) : séquence de mots recherchés (ex : issue de la fonction lcs)
-        texte (str) : le texte source
+    Utilisée après lcs() pour mesurer combien de fois la formule identifiée
+    apparaît dans chacun des deux textes comparés.
 
-    Sortie : 
-        count (int) : la fréquence de la séquence dans le texte
+    Entrées :
+        sequence (str) : séquence de mots à rechercher (sortie de lcs())
+        texte (str)    : texte dans lequel compter les occurrences
+
+    Sortie :
+        int : nombre d'occurrences exactes — 0 si séquence vide
     """
     if not sequence:
         return 0
@@ -497,21 +533,23 @@ def count_freq(sequence, texte):
 
 def analyse_auteur(auteur, texte_dir, dico_author):
     """
-    Analyse le corpus pour extraire les fomrules récurrentes d'un auteur ciblé.
+    Extrait les formules récurrentes entre toutes les œuvres d'un auteur ciblé.
 
-    La fonction identifie tous les fichiers associés à l'auteur, les charge en mémoire,
-    puis utilise la fonction lcs() sur toutes les paires (i, j) avec j > i.
-    Pour chaque séquence trouvée (> 10 caractères), compte les occurences 
-    dans chaque texte via count_freq()
+    Identifie les fichiers associés à l'auteur dans dico_author, les charge,
+    puis applique lcs() sur toutes les paires (i, j) avec j > i.
+    Pour chaque séquence trouvée (> 10 caractères), compte ses occurrences
+    dans chaque texte via count_freq().
 
-    Entrées : 
-        auteur (str) : le nom de l'auteur à analyser
-        texte_dir (str) : le chemin vers le répertoir contenant les fichiers textes nettoyés
-        dico_author (dict) : le dictionnaire de métadonnées liant les textes aux auteurs
+    Entrées :
+        auteur (str)       : nom exact de l'auteur tel qu'il apparaît dans dico_author
+                             (casse sensible — ex : 'Chrétien de Troyes')
+        texte_dir (str)    : répertoire contenant les fichiers textes nettoyés (clean-*.txt)
+        dico_author (dict) : métadonnées {nom_texte : auteur}
 
     Sortie :
-        str : bloc de texte contenant les citations récurrentes entre les textes.
-              Retourne un avertissement s'il n'y a pas assez de textes à comparer
+        str : bloc texte formaté avec pour chaque paire la séquence commune
+              et le nombre d'occurrences dans chaque texte.
+              Retourne un message d'avertissement si moins de 2 textes trouvés.
     """
     fichiers_auteur = []
 
