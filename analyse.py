@@ -290,21 +290,28 @@ def knn(matrix, txt_names, biblio, metric='cosinus'):
 
     all_pairs = []
     nb_txt = len(txt_names)
+    sim_matrix = np.full((nb_txt, nb_txt), -1.0 if metric != 'manhattan' else float('inf'))
     # Calcul de toutes les paires uniques
     for i in range(nb_txt):
+        v1 = matrix[:, i]
         for j in range(i + 1, nb_txt):
+            v2 = matrix[:, j]
             if metric == 'manhattan':
-                val = manhattan_np(matrix[:, i], matrix[:, j])
+                val = manhattan_np(v1, v2)
             elif metric == 'jaccard':
-                val = jaccard_np(matrix[:, i], matrix[:, j])
+                val = jaccard_np(v1, v2)
             else:
-                val = cos_np(matrix[:, i], matrix[:, j])
+                val = cos_np(v1, v2)
+
+            sim_matrix[i,j] = val
+            sim_matrix[j,i] = val
             all_pairs.append((txt_names[i], txt_names[j], val))
 
     # Tri adapté par métriques / cosinus : + score grand = proche ; inverse pour manhattan
     is_reverse = metric != 'manhattan'
     all_pairs.sort(key=lambda x: x[2], reverse=is_reverse)
 
+    # Slice de all_pair pour obtenir top_5 et bot_5
     top_5 = all_pairs[:5]
     bot_5 = all_pairs[-5:]
 
@@ -317,26 +324,16 @@ def knn(matrix, txt_names, biblio, metric='cosinus'):
         cat1 = biblio.get(t1)
         if not cat1:
             continue
+        scores_i = sim_matrix[i, :]
+        
+        if metric == 'manhattan':
+            best_idx = np.argmin(scores_i)
+        else :
+            best_idx = np.argmax(scores_i)
 
-        max_score = -1
-        max_dist = float('inf')
-        best_knn = None
-
-        for j in range(nb_txt):
-            if i != j:
-                v1 = matrix[:, i]
-                v2 = matrix[:, j]
-                if metric == 'manhattan':
-                    dist = manhattan_np(v1, v2)
-                    if dist < max_dist:
-                        max_dist = dist
-                        best_knn = txt_names[j]
-                else:
-                    score = jaccard_np(v1, v2) if metric == 'jaccard' else cos_np(v1, v2)
-                    if score > max_score:
-                        max_score = score
-                        best_knn = txt_names[j]
-
+        best_knn = txt_names[best_idx]
+        cat2 = biblio.get(best_knn)
+        
         if not best_knn:
             continue
         cat2 = biblio.get(best_knn)
@@ -346,9 +343,13 @@ def knn(matrix, txt_names, biblio, metric='cosinus'):
 
     accuracy = (good_pred / evaluated_txt) * 100 if evaluated_txt > 0 else 0
 
+    # Utilitaire inter pour transformer données brutes en format lisible et structuré
+    # Transforme tuple en dict
     def _pair_dict(t1, t2, val):
-        return {'t1': t1, 'c1': biblio.get(t1, 'Inconnu'),
-                't2': t2, 'c2': biblio.get(t2, 'Inconnu'),
+        return {'t1': t1, 
+                'c1': biblio.get(t1, 'Inconnu'),
+                't2': t2, 
+                'c2': biblio.get(t2, 'Inconnu'),
                 'score': round(val, 4)}
 
     return {
