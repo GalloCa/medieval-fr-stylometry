@@ -582,9 +582,8 @@ def _html_lcs(lcs_content):
     </div>"""
 
 
-# ═══════════════════════════════════════════════════════════════
+
 # CONSTRUCTION D'UN ONGLET
-# ═══════════════════════════════════════════════════════════════
 
 def _build_tab(suffixe, data, biblio, mode, lcs_content=None):
     """
@@ -623,10 +622,7 @@ def _build_tab(suffixe, data, biblio, mode, lcs_content=None):
     )
 
 
-# ═══════════════════════════════════════════════════════════════
 # FONCTION PRINCIPALE
-# ═══════════════════════════════════════════════════════════════
-
 def generate_combined_report_html(resultats, biblio, output_path, mode,
                                    lcs_content=None, titre=None):
     """
@@ -674,7 +670,7 @@ def generate_combined_report_html(resultats, biblio, output_path, mode,
 <body>
 
 <header>
-  <div class="header-eyebrow">Analyse Stylométrique · Ancien Français</div>
+  <div class="header-eyebrow">Analyse · Ancien Français</div>
   <h1>{titre}</h1>
   <div class="header-meta">
     <div class="meta-chip">Généré le <b>{dd}</b></div>
