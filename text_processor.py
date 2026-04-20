@@ -1,5 +1,5 @@
 """
-Module de prétraitement et de tokénisation des textes
+Module de prétraitement des textes
 
 Ce script contient la classe TextProcessor, elle est responsable du chargement des textes bruts, 
 de leur nettoyage (suppression des métadonnées originales, de la ponctuation ou autres marques) 
