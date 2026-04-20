@@ -383,23 +383,23 @@ def genre_cohesion(matrix, txt_names, biblio, metric='cosinus'):
     """
 
     groupes = {}
-    for idx, text in enumerate(txt_names):
-        groupe = biblio.get(text)
-        if groupe:
-            if groupe not in groupes:
-                groupes[groupe] = []
-            groupes[g].append(idx)
+    for idx, nom in enumerate(txt_names):
+        cat = biblio.get(nom)
+        if cat :
+            if cat not in groupes:
+                groupes[cat] = []
+            groupes[cat].append(idx)
 
     results = []
-    for groupe, indices in groupes.items():
+    for cat, indices in groupes.items():
         if len(indices) < 2:
-            results.append({'cat': groupe, 'score': None, 'unite': None, 'na': True})
+            results.append({'cat': cat, 'score': None, 'unite': None, 'na': True})
             continue
 
         scores = []
         for i in range(len(indices)):
+            v1 = matrix[:, indices[i]]
             for j in range(i + 1, len(indices)):
-                v1 = matrix[:, indices[i]]
                 v2 = matrix[:, indices[j]]
                 if metric == 'manhattan':
                     scores.append(manhattan_np(v1, v2))
@@ -408,12 +408,12 @@ def genre_cohesion(matrix, txt_names, biblio, metric='cosinus'):
 
         mean = sum(scores) / len(scores)
         unite = 'Distance moyenne' if metric == 'manhattan' else 'Similarité moyenne'
-        results.append({'cat': groupe, 'score': round(mean, 4), 'unite': unite, 'na': False})
+        results.append({'cat': cat, 'score': round(mean, 4), 'unite': unite, 'na': False})
 
     return results
 
 
-def ngram_signatures(matrix, txt_names, biblio, lexique, target_genre, top=10):
+def ngram_signatures(matrix, txt_names, biblio, lexique, target_cat, top=10):
     """
     Identifie les n-grammes sur-représentés dans une catégorie par rapport
     au reste du corpus via un ratio de fréquences moyennes.
@@ -426,22 +426,27 @@ def ngram_signatures(matrix, txt_names, biblio, lexique, target_genre, top=10):
         txt_names (list)      : noms des textes
         biblio (dict)         : métadonnées {nom_texte : catégorie}
         lexique (list)        : n-grammes ordonnés (index des lignes)
-        target_genre (str)    : catégorie cible (ex : 'Roman courtois')
+        target_cat (str)    : catégorie cible (ex : 'Roman courtois')
         top (int)             : nombre de n-grammes à retourner (défaut : 10)
 
     Sortie :
         list : jusqu'à `top` entrées → {'ngram': str, 'ratio': float}
                liste vide si la catégorie est absente du corpus
     """
-    indices_cible = [i for i, t in enumerate(txt_names) if biblio.get(t) == target_genre]
-    rest_indices  = [i for i, t in enumerate(txt_names) if biblio.get(t) != target_genre]
+    indices_cible = [i for i, t in enumerate(txt_names) if biblio.get(t) == target_cat]
+    rest_indices  = [i for i, t in enumerate(txt_names) if biblio.get(t) != target_cat]
 
     if not indices_cible:
         return []
+    freq_cible = np.mean(matrix[:, indices_cible], axis=1)
 
-    target_freq = np.mean(matrix[:, indices_cible], axis=1)
-    reste_freq  = np.mean(matrix[:, rest_indices],  axis=1)
-    scores      = target_freq / (reste_freq + 1)
+    # Sécurité si une seule catégorie dans le corpus
+    if not rest_indices :
+        reste_freq  = freq_reste = np.zeros(matrix.shape[0])    
+    else : 
+         reste_freq  = np.mean(matrix[:, rest_indices],  axis=1)
+     
+    scores  = freq_cible / (reste_freq + 1)
 
     indices_tries = np.argsort(scores)[::-1]
 
@@ -450,7 +455,6 @@ def ngram_signatures(matrix, txt_names, biblio, lexique, target_genre, top=10):
         for idx in indices_tries[:top]
         if scores[idx] > 0
     ]
-
 
 
 # LCS — SÉQUENCES COMMUNES
