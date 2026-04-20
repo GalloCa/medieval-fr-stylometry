@@ -1,27 +1,23 @@
 
 """
-Module central d'analyse stylométrique de l'Ancien Français.
+Module central d'analyse.
 
 Regroupe l'ensemble des fonctions analytiques du pipeline :
-    — Utilitaires        : chargement des métadonnées, nettoyage des labels,
+    — Utilitaires : chargement des métadonnées, nettoyage des labels,
                            export de la matrice TSV
-    — Métriques          : similarité cosinus, distance de Manhattan
-                           (implémentées manuellement sans scikit-learn)
-    — Analyse vectorielle : construction de la matrice Termes-Documents,
+    — Métriques : similarité cosinus, indice Jaccard, distance de Manhattan (implémentées manuellement sans scikit-learn)
+    — Analyse vectorielle : construction de la matrice Termes-Documents, 
                             comparaison par paires (cosinus + Jaccard)
-    — Classification     : KNN (k=1) avec évaluation de précision,
+    — Classification : KNN (k=1) avec évaluation de précision,
                            support des métriques cosinus, Jaccard et Manhattan
-    — Cohésion interne   : similarité moyenne intra-catégorie
-    — Signatures         : n-grammes sur-représentés par catégorie (ratio TF)
-    — LCS                : plus longue sous-séquence commune de mots entre textes,
-                           comptage des occurrences de la séquence dans chaque texte
+    — Cohésion interne : similarité moyenne intra-catégorie
+    — Signatures : n-grammes sur-représentés par catégorie (ratio TF)
+    — LCS : plus longue sous-séquence commune de mots entre textes,
+            comptage des occurrences de la séquence dans chaque texte
 
 Expériences disponibles (configurées dans main.py) :
     morpho  — trigrammes de caractères, cosinus  → niveau morphologique
-    lexical — bigrammes de mots, cosinus          → niveau lexical
-    
-Dépendances :
-    - numpy : matrices et calculs vectoriels
+    lexical — bigrammes de mots, cosinus  → niveau lexical
 """
 # MODULES
 import os
