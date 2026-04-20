@@ -291,6 +291,7 @@ def knn(matrix, txt_names, biblio, metric='cosinus'):
         v1 = matrix[:, i]
         for j in range(i + 1, nb_txt):
             v2 = matrix[:, j]
+             
             if metric == 'manhattan':
                 val = manhattan_np(v1, v2)
             elif metric == 'jaccard':
@@ -310,6 +311,12 @@ def knn(matrix, txt_names, biblio, metric='cosinus'):
     top_5 = all_pairs[:5]
     bot_5 = all_pairs[-5:]
 
+    # Attention ne pas évaluer un texte comme son propre voisin
+    if metric == 'manhattan':
+        np.fill_diagonal(sim_matrix, np.inf) #
+    else:
+        np.fill_diagonal(sim_matrix, -np.inf)
+    
     # Évaluation de la précision
     good_pred = 0
     evaluated_txt = 0
@@ -319,16 +326,17 @@ def knn(matrix, txt_names, biblio, metric='cosinus'):
         cat1 = biblio.get(t1)
         if not cat1:
             continue
+       
         scores_i = sim_matrix[i, :]
-        
-        if metric == 'manhattan':
-            best_idx = np.argmin(scores_i)
-        else :
-            best_idx = np.argmax(scores_i)
-
+        try :
+            if metric == 'manhattan':
+                best_idx = np.argmin(scores_i)
+            else :
+                best_idx = np.argmax(scores_i)
+        except ValueError :
+            continue
+            
         best_knn = txt_names[best_idx]
-        cat2 = biblio.get(best_knn)
-        
         if not best_knn:
             continue
         cat2 = biblio.get(best_knn)
@@ -374,18 +382,18 @@ def genre_cohesion(matrix, txt_names, biblio, metric='cosinus'):
                na=True si la catégorie ne contient qu'un seul texte
     """
 
-    genres = {}
+    groupes = {}
     for idx, text in enumerate(txt_names):
-        genre = biblio.get(text)
-        if genre:
-            if genre not in genres:
-                genres[genre] = []
-            genres[genre].append(idx)
+        groupe = biblio.get(text)
+        if groupe:
+            if groupe not in groupes:
+                groupes[groupe] = []
+            groupes[g].append(idx)
 
     results = []
-    for genre, indices in genres.items():
+    for groupe, indices in groupes.items():
         if len(indices) < 2:
-            results.append({'cat': genre, 'score': None, 'unite': None, 'na': True})
+            results.append({'cat': groupe, 'score': None, 'unite': None, 'na': True})
             continue
 
         scores = []
@@ -400,7 +408,7 @@ def genre_cohesion(matrix, txt_names, biblio, metric='cosinus'):
 
         mean = sum(scores) / len(scores)
         unite = 'Distance moyenne' if metric == 'manhattan' else 'Similarité moyenne'
-        results.append({'cat': genre, 'score': round(mean, 4), 'unite': unite, 'na': False})
+        results.append({'cat': groupe, 'score': round(mean, 4), 'unite': unite, 'na': False})
 
     return results
 
