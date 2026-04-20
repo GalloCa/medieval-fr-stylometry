@@ -20,12 +20,6 @@ import datetime
 from analyse import knn, genre_cohesion, ngram_signatures
 
 
-# ═══════════════════════════════════════════════════════════════
-# DESIGN — sobre / académique
-# Palette : parchemin chaud, encre foncée, rehauts bordeaux
-# Typo    : Lora (serif) + JetBrains Mono (code)
-# ═══════════════════════════════════════════════════════════════
-
 CSS = """<style>
 @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap');
 
@@ -608,7 +602,7 @@ def _build_tab(suffixe, data, biblio, mode, lcs_content=None):
     unique_cats = sorted(set(biblio.values()))
     sig_data    = {
         cat: ngram_signatures(matrix, txt_names, biblio, lexique,
-                              target_genre=cat, top=5)
+                              target_cat=cat, top=5)
         for cat in unique_cats
     }
 

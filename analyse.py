@@ -442,7 +442,7 @@ def ngram_signatures(matrix, txt_names, biblio, lexique, target_cat, top=10):
 
     # Sécurité si une seule catégorie dans le corpus
     if not rest_indices :
-        reste_freq  = freq_reste = np.zeros(matrix.shape[0])    
+        reste_freq  = np.zeros(matrix.shape[0])    
     else : 
          reste_freq  = np.mean(matrix[:, rest_indices],  axis=1)
      
