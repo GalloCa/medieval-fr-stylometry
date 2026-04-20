@@ -1,5 +1,5 @@
 """
-Pipeline global d'Analyse Stylométrique de l'Ancien Français.
+Pipeline global d'Analyse d'un corpus de l'Ancien Français.
 Mode : Multi-expérimentations (Caractères vs Mots)
 """
 
