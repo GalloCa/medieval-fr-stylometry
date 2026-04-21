@@ -10,7 +10,7 @@ import sys
 
 from download_data import download_github_data
 from text_processor import TextProcessor
-from analyse import create_comparison_matrix, compare_files, load_biblio, clean_label, save_matrix_tsv, analyse_auteur
+from analyse import create_comparison_matrix, compare_files, load_biblio, clean_label, save_matrix_tsv, analyse_auteur, gexf
 from plots_generator import generate_similarity_plot
 from generate_report_html import generate_combined_report_html
 
@@ -96,6 +96,8 @@ if __name__ == "__main__":
         scatter_plot_author = os.path.join(exp_plot_dir, "nuage_points_auteurs.png")
         scatter_plot_date   = os.path.join(exp_plot_dir, "nuage_points_dates.png")
 
+        results_dir = r"/workspaces/medFR-paleao-NLP/results"
+
         # ETAPE 2 : NETTOYAGE ET FRÉQUENCES 
         print(f"\nÉtape 2 : Nettoyage et extraction des n-grammes ({exp['niveau']}, n={exp['n']})...")
         my_corpus = []
@@ -135,6 +137,20 @@ if __name__ == "__main__":
         save_matrix_tsv(matrix, lexique, txt_names, output_matrix)
         compare_files(matrix, txt_names, compare_out_dir)
 
+        # TEST 
+        print("Archivage global des comparaisons...")
+        chemin_tsv = os.path.join(results_dir, "matrix", "morpho/compare-files.tsv")
+        compare_files(matrix, txt_names, chemin_tsv)
+
+        print("Génération des fichiers réseaux Gephi...")
+        chemin_gexf_cos = os.path.join(results_dir, "gephi", "reseau_cosinus.gexf")
+        chemin_gexf_jac = os.path.join(results_dir, "gephi", "reseau_jaccard.gexf")
+
+        # cos
+        gexf(matrix, txt_names, dico_author, chemin_gexf_cos, metric='cosinus')
+
+        # jac
+        gexf(matrix, txt_names, dico_author, chemin_gexf_jac, metric='jaccard')
 
         # ETAPE 4 : VISUALISATION
         print("\nEtape 4 : Génération des visualisations (scatter plot) ... ")

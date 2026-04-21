@@ -601,3 +601,75 @@ def analyse_auteur(auteur, texte_dir, dico_author):
 
     return resultats   
 
+
+# TEST 
+
+def gexf(matrix, txt_names, biblio, output_path, metric='cosinus'):
+    """
+    Exporte les similarités cosinus entre textes au format GEXF pour visualisation dans Gephi.
+
+    Génère un fichier .gexf avec :
+        — nœuds : chaque texte (id = nom du texte, label = nom du texte + catégorie)
+        — arêtes : similarité cosinus entre paires de textes (poids = score)
+    """
+
+    date_str = datetime.datetime.now().strftime("%Y-%m-%d")
+    nb_txt = len(txt_names)
+
+    gexf = [
+        '<?xml version="1.0" encoding="UTF-8"?>',
+        '<gexf xmlns="http://www.gexf.net/1.2draft" version="1.2">',
+        f'  <meta lastmodifieddate="{date_str}">',
+        '    <creator>Pipeline Stylométrie</creator>',
+        '    <description>Réseau de similarité des textes</description>',
+        '  </meta>',
+        '  <graph defaultedgetype="undirected" mode="static">',
+        '    <attributes class="node">',
+        '      <attribute id="0" title="Categorie" type="string"/>',
+        '    </attributes>',
+        '    <nodes>'
+    ]
+    for i, nom in enumerate(txt_names):
+        cat = biblio.get(nom, "Inconnu")
+        gexf.append(f'      <node id="{i}" label="{nom}">')
+        gexf.append(f'        <attvalues>')
+        gexf.append(f'          <attvalue for="0" value="{cat}"/>')
+        gexf.append(f'        </attvalues>')
+        gexf.append(f'      </node>')
+    gexf.append('    </nodes>')
+
+    gexf.append('    <edges>')
+    edge_id = 0
+    for i in range(nb_txt):
+        for j in range(i+1, nb_txt):
+            v1 = matrix[:, i]
+            v2 = matrix[:, j]
+
+            if metric == 'manhattan':
+                # Manhattan est une distance. Gephi a besoin d'une similarité (poids).
+                # On inverse la distance pour créer un poids (plus c'est proche de 0, plus le poids est fort)
+                weight = 1 / (1 + manhattan_np(v1, v2)) 
+            elif metric == 'jaccard':
+                weight = jaccard_np(v1, v2)
+            else:
+                weight = cos_np(v1, v2)
+
+            # Optimisation : on ne crée un lien que si les textes ont un minimum de ressemblance
+            # Cela évite d'avoir une "boule de poils" illisible dans Gephi
+            if weight > 0.05: 
+                gexf.append(f'      <edge id="{edge_id}" source="{i}" target="{j}" weight="{weight:.4f}"/>')
+                edge_id += 1
+
+    gexf.append('    </edges>')
+    gexf.append('  </graph>')
+    gexf.append('</gexf>')
+
+    # 4. Sauvegarde
+    folder = os.path.dirname(output_path)
+    if folder and not os.path.exists(folder):
+        os.makedirs(folder)
+
+    with open(output_path, 'w', encoding='utf-8') as f:
+        f.write("\n".join(gexf))
+        
+    print(f"Réseau Gephi exporté avec succès dans : {output_path}")
