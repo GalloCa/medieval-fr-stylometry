@@ -578,10 +578,8 @@ def analyse_auteur(auteur, texte_dir, dico_author):
         with open(chemin, 'r', encoding='utf-8') as file:
             textes[f] = file.read()
 
-    report_lignes = [f"## 5. LCS - Séquences récurrentes de {auteur} \n"]  
-    report_lignes.append(f"Séquences de mots exactes partagées entre ses oeuvres : \n")  
-
     # Comparaison des textes 2 à 2
+    resultats = []
     for i in range(len(fichiers_auteur)):
         for j in range(i + 1, len(fichiers_auteur)):
             file1 = fichiers_auteur[i]
@@ -592,11 +590,14 @@ def analyse_auteur(auteur, texte_dir, dico_author):
             lcs_ct = lcs(textes[file1], textes[file2])
 
             if len(lcs_ct) > 10:
-                freq1 = count_freq(lcs_ct, textes[file1])
-                freq2 = count_freq(lcs_ct, textes[file2])
-                report_lignes.append(f"- **{nom1}** et **{nom2}** ({len(lcs_ct)} caractères) :")
-                report_lignes.append(f" > «  *{lcs_ct}* »")
-                report_lignes.append(f" - apparitions : {nom1} x {freq1} / {nom2} x {freq2}\n")
+                resultats.append({
+                    'nom1' : nom1,
+                    'nom2' : nom2,
+                    'seq' : lcs_ct,
+                    'len' : len(lcs_ct),
+                    'freq1' : count_freq(lcs_ct, textes[files1]),
+                    'freq2' : count_freq(lcs_ct, textes[files2]),
+                 })
 
-    return "\n".join(report_lignes)    
+    return resultats   
 
