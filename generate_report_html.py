@@ -522,51 +522,17 @@ def _html_viz(img_path, suffixe):
     </div>"""
 
 
-def _html_lcs(lcs_content):
-    """
-    Section LCS depuis la chaîne brute retournée par analyse_auteur().
-    Parse le format :
-        - **nom1** et **nom2** (N caractères) :
-         > « séquence »
-         - apparitions : nom1 x N / nom2 x N
-    """
-    if not lcs_content:
-        return ""
-
-    blocks = []
-    cur = {'title': None, 'quote': None, 'freq': None}
-
-    for line in lcs_content.split('\n'):
-        m_t = re.match(
-            r'-\s+\*\*(.+?)\*\*\s+et\s+\*\*(.+?)\*\*\s+\((\d+)\s+caractères\)', line)
-        m_q = re.match(r'\s*>\s*[«»\s]*\*?(.+?)\*?\s*»?\s*$', line)
-        m_f = re.match(r'\s*-\s*apparitions\s*:\s*(.+)', line)
-
-        if m_t:
-            if cur['title']:
-                blocks.append(dict(cur))
-            cur = {
-                'title': f"{m_t.group(1)} × {m_t.group(2)} ({m_t.group(3)} car.)",
-                'quote': None,
-                'freq':  None,
-            }
-        elif m_q and cur['title']:
-            cur['quote'] = m_q.group(1).strip()
-        elif m_f and cur['title']:
-            cur['freq'] = m_f.group(1).strip()
-
-    if cur['title']:
-        blocks.append(dict(cur))
-
-    if not blocks:
+def _html_lcs(lcs_data):
+    """Section LCS depuis la liste retournée par analyse_auteur()."""
+    if not lcs_data:
         return ""
 
     items = "".join(f"""
       <div class="lcs-item">
-        <div class="lcs-title">{b['title']}</div>
-        {"<blockquote>« " + b['quote'] + " »</blockquote>" if b['quote'] else ""}
-        {"<div class='lcs-freq'>" + b['freq'] + "</div>" if b['freq'] else ""}
-      </div>""" for b in blocks)
+        <div class="lcs-title">{b['nom1']} × {b['nom2']} ({b['len']} car.)</div>
+        <blockquote>« {b['seq']} »</blockquote>
+        <div class="lcs-freq">{b['nom1']} ×{b['freq1']} / {b['nom2']} ×{b['freq2']}</div>
+      </div>""" for b in lcs_data)
 
     return f"""
     <div class="tab-section">
