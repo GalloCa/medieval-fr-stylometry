@@ -362,7 +362,7 @@ def knn(matrix, txt_names, biblio, metric='cosinus'):
     }
 
 
-def genre_cohesion(matrix, txt_names, biblio, metric='cosinus'):
+def groupe_cohesion(matrix, txt_names, biblio, metric='cosinus'):
     """
     Calcule la similarité moyenne entre tous les textes d'une même catégorie.
 

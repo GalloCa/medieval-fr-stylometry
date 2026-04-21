@@ -17,7 +17,7 @@ import os
 import re
 import base64
 import datetime
-from analyse import knn, genre_cohesion, ngram_signatures
+from analyse import knn, groupe_cohesion, ngram_signatures
 
 
 CSS = """<style>
@@ -388,9 +388,9 @@ MODE_LABELS = {
 }
 
 
-# ═══════════════════════════════════════════════════════════════
-# BLOCS HTML — consomment directement les structures de données
-# ═══════════════════════════════════════════════════════════════
+
+# BLOCS HTML 
+
 
 def _embed_img(img_path):
     """Encode une image PNG en base64 pour l'intégrer dans le HTML."""
@@ -561,9 +561,9 @@ def _build_tab(suffixe, data, biblio, mode, lcs_content=None):
 
     cat_label, _ = MODE_LABELS.get(mode, ('Catégorie', 'catégories'))
 
-    # ── Calculs → structures de données ──
+    # Calculs
     knn_data      = knn(matrix, txt_names, biblio, metric=metric)
-    cohesion_data = genre_cohesion(matrix, txt_names, biblio, metric=metric)
+    cohesion_data = groupe_cohesion(matrix, txt_names, biblio, metric=metric)
 
     unique_cats = sorted(set(biblio.values()))
     sig_data    = {
