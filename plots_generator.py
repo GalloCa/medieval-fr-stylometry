@@ -50,7 +50,7 @@ def generate_similarity_plot(matrix, txt_names, biblio, output_dir, mode='genre'
     dissimilarity = np.zeros((nb_txt, nb_txt))
 
     for i in range(nb_txt):
-        for j in range(nb_txt):
+        for j in range(i + 1,nb_txt):
                 v1 = matrix[:,i]
                 v2 = matrix[:,j]
                 
@@ -90,7 +90,7 @@ def generate_similarity_plot(matrix, txt_names, biblio, output_dir, mode='genre'
     }
     current_map = color_maps.get(mode, {})
 
-    # Marges forcées
+    # Marges forcées 
     fig, ax = plt.subplots(figsize=(14, 9), dpi=100)
     fig.subplots_adjust(right=0.75, left=0.1, top=0.88, bottom=0.1)
     
@@ -98,17 +98,16 @@ def generate_similarity_plot(matrix, txt_names, biblio, output_dir, mode='genre'
     
     texts = []
     handles_labels = {} 
-
+    #  Nuage de points
     for i, txt in enumerate(txt_names):
         cat = biblio.get(txt, 'Inconnu')
         couleur = current_map.get(cat, '#BDC3C7')
-
         scatter = ax.scatter(pos[i, 0], pos[i, 1], c=couleur, s=180, 
                              edgecolors='white', linewidth=0.8, alpha=0.85)
         
         if cat not in handles_labels:
             handles_labels[cat] = scatter
-
+            
         texts.append(ax.text(pos[i, 0], pos[i, 1], txt, fontsize=9, fontweight='medium'))
 
     # Ajustement des labels

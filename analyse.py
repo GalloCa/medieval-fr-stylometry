@@ -595,8 +595,8 @@ def analyse_auteur(auteur, texte_dir, dico_author):
                     'nom2' : nom2,
                     'seq' : lcs_ct,
                     'len' : len(lcs_ct),
-                    'freq1' : count_freq(lcs_ct, textes[files1]),
-                    'freq2' : count_freq(lcs_ct, textes[files2]),
+                    'freq1' : count_freq(lcs_ct, textes[file1]),
+                    'freq2' : count_freq(lcs_ct, textes[file2]),
                  })
 
     return resultats   
