@@ -176,9 +176,11 @@ L'exécution du pipeline sur ce corpus médiéval met en lumière plusieurs phé
 
 **L'empreinte forte des auteurs** : Les modèles basés sur les n-grammes de caractères (n=3) réussissent avec une meilleure précision à regrouper les œuvres d'un même auteur (ex: le cluster très dense formé par les œuvres de Chrétien de Troyes dans l'espace MDS, visible dans `rapport-auteurs.html`).
 
-**La volatilité orthographique** : Le passage aux n-grammes de mots diminue la précision de l'algorithme KNN, démontrant l'instabilité orthographique des scribes en ancien français par rapport aux caractères. Le corpus est hétérigène en terme d'époque, il semble aussi y avoir certains textes en occitan et d'autres en loc d'oïl => différences.
+**La volatilité orthographique** : Le passage aux n-grammes de mots diminue la précision de l'algorithme KNN. Cela démontre non seulement l'instabilité orthographique des scribes, mais souligne également la grande hétérogénéité du corpus : les textes s'étalent sur plusieurs siècles et croisent différentes aires linguistiques (textes en ancien occitan et en langue d'oïl), ce qui multiplie les variations pour un même mot.
 
 **La prévisibilité des genres** : Les textes épiques ou hagiographiques partagent un lexique thématique très typé, ce qui se traduit par des scores de cohésion interne particulièrement élevés lors des calculs de similarité vectorielle.
+
+**Le poids des mots-outils (stopwords) dans les signatures :** L'extraction des signatures lexicales ayant été réalisée sans filtrage des *stopwords*, les mots les plus distinctifs qui ressortent sont très souvent des mots grammaticaux courts ("a", "ce", etc.). Loin d'être un biais, cela confirme un principe classique de la stylométrie : l'identité stylistique d'un texte (ou d'un auteur) repose souvent davantage sur ses tics syntaxiques inconscients que sur son vocabulaire thématique conscient.
 
 
 ## Corpus
