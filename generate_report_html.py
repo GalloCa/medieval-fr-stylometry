@@ -563,7 +563,7 @@ def _build_tab(suffixe, data, biblio, mode, lcs_content=None):
         for cat in unique_cats
     }
 
-    # HTML 
+    # ── HTML ──
     return (
         _html_knn(knn_data, metric)
         + _html_cohesion(cohesion_data, cat_label)
@@ -646,6 +646,7 @@ def generate_combined_report_html(resultats, biblio, output_path, mode,
 </body>
 </html>"""
 
+    # Ecriture
     abs_path = os.path.abspath(output_path)
     os.makedirs(os.path.dirname(abs_path), exist_ok=True)
 
