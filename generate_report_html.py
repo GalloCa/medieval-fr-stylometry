@@ -19,7 +19,7 @@ import base64
 import datetime
 from analyse import knn, groupe_cohesion, ngram_signatures
 
-
+# Visuel de la page --> PAS LA BONNE 
 CSS = """<style>
 @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap');
 
@@ -375,12 +375,13 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
 });
 </script>"""
 
+# NOMS DES ONGLETS
 TAB_LABELS = {
     'morpho':  'N-grammes morphologiques (n=3)',
     'lexical': 'N-grammes lexicaux (n=2)',
-    'jaccard': 'Jaccard — morphologique (n=3)',
 }
 
+# MODE D'EXPERIENCE
 MODE_LABELS = {
     'genre':   ('Genre littéraire', 'genres'),
     'auteurs': ('Auteur',           'auteurs'),
@@ -390,8 +391,6 @@ MODE_LABELS = {
 
 
 # BLOCS HTML 
-
-
 def _embed_img(img_path):
     """Encode une image PNG en base64 pour l'intégrer dans le HTML."""
     try:
@@ -425,7 +424,6 @@ def _html_pairs(pairs, cls):
       </div>""")
     return "\n".join(rows)
 
-
 def _html_knn(knn_data, metric):
     """Section KNN depuis le dict retourné par knn()."""
     acc = f"{knn_data['accuracy']:.1f}%"
@@ -448,7 +446,6 @@ def _html_knn(knn_data, metric):
         </div>
       </div>
     </div>"""
-
 
 def _html_cohesion(cohesion_data, cat_label):
     """Section cohésion depuis la liste retournée par genre_cohesion()."""
@@ -477,7 +474,6 @@ def _html_cohesion(cohesion_data, cat_label):
       <div class="cohesion-grid">{cards}</div>
     </div>"""
 
-
 def _html_signatures(sig_data, cat_label):
     """Section signatures depuis le dict {cat: [{'ngram', 'ratio'}]} ."""
     cards = ""
@@ -498,7 +494,6 @@ def _html_signatures(sig_data, cat_label):
       <div class="section-title">N-grammes caractéristiques par {cat_label.lower()}</div>
       <div class="signatures-grid">{cards}</div>
     </div>"""
-
 
 def _html_viz(img_path, suffixe):
     """Section visualisation avec image encodée en base64."""
@@ -521,7 +516,6 @@ def _html_viz(img_path, suffixe):
       <div class="viz-error">⚠ Image introuvable : {img_path}</div>
     </div>"""
 
-
 def _html_lcs(lcs_data):
     """Section LCS depuis la liste retournée par analyse_auteur()."""
     if not lcs_data:
@@ -541,10 +535,7 @@ def _html_lcs(lcs_data):
       <div>{items}</div>
     </div>"""
 
-
-
 # CONSTRUCTION D'UN ONGLET
-
 def _build_tab(suffixe, data, biblio, mode, lcs_content=None):
     """
     Construit le HTML complet d'un panneau d'onglet.
@@ -572,7 +563,7 @@ def _build_tab(suffixe, data, biblio, mode, lcs_content=None):
         for cat in unique_cats
     }
 
-    # ── HTML ──
+    # HTML 
     return (
         _html_knn(knn_data, metric)
         + _html_cohesion(cohesion_data, cat_label)
