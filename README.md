@@ -43,4 +43,6 @@ medFR-paleo-NLP/
 └── README.md
 ```
 
+Format des fichiers de métadonnées
+Les trois fichiers dans data/metadata/ suivent le même format, une entrée par ligne :
 
