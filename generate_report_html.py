@@ -1,6 +1,6 @@
 """
 Module de génération de rapports HTML stylisés
-Analyse Stylométrique de l'Ancien Français
+Analyse d'un corpus de l'Ancien Français
 
 Consomme directement les structures de données retournées par analyse.py
 (dicts et listes) — aucun parsing de Markdown intermédiaire.
