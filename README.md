@@ -4,7 +4,7 @@ Pipeline d'analyse sur un corpus de 25 textes en moyen et ancien français (XI�
 
 ---
 
-## Structure du dépôt (WIP)
+## Structure du dépôt
 
 ```
 medFR-paleo-NLP/
