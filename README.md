@@ -39,7 +39,7 @@ medFR-paleo-NLP/
 │
 ├── requirements.txt
 ├── .gitignore
-├── Algorithmes.pdf          # Explications des structures de données et pseudo-code
+├── algorithmiques.pdf       # Explications des structures de données et pseudo-code
 └── README.md
 ```
 
@@ -79,7 +79,7 @@ export GITHUB_TOKEN = ghp_votre_token
 # Windows (PowerShell)
 $env : GITHUB_TOKEN = "ghp_votre_token"
 ```
-Attention de pas écrire le token dans le code au risque de le corrompre.
+*Attention à ne jamais écrire ce token en clair dans le code Python au risque de le compromettre publiquement sur GitHub*
 
 # Utilisation
 
@@ -96,7 +96,8 @@ Le pipeline s'exécute en 6 étapes automatiques :
 5. **Accumulation** — les résultats de chaque expérience sont stockés en mémoire
 6. **LCS + Rapports** — extraction des formules récurrentes (Chrétien de Troyes) puis génération des trois rapports HTML combinés
 
-Les deux expériences configurées dans main.py sont exécutées en séquence, et leurs résultats sont fusionnés dans chaque rapport sous forme d'onglets :
+**Les expériences**
+Les deux expériences configurées dans `main.py` sont exécutées en séquence, et leurs résultats sont fusionnés dans chaque rapport sous forme d'onglets :
 
 | Expérience | Type de n-gramme | n | Métrique | Ce qu'elle capture |
 |------------|-----------------|---|----------|--------------------|
@@ -112,63 +113,72 @@ Chaque rapport HTML `rapport-genre.html`,  `rapport-auteurs.html`, `rapport-epoq
 
 Le rapport auteurs inclus en plus l'analyse LCS (*Longest Common Substring*) dans l'onglet lexical.
 
-les visualisation matplotlib sont encodées en base64 et intégrée directement dans le HTML. Les rapports sont donc autonomes et s'ouvrent sans dépendances externes.
+Les visualisations matplotlib sont encodées en base64 et intégrées directement dans le HTML.\
+Les rapports sont donc autonomes et s'ouvrent dans n'importe quel navigateur sans dépendances externes.
 
 ## Approche algorithmique 
 ## EXPLICATION SCRIPT 
-Détaillée dans le fichier `algorithmique.pdf`
 
-Représentation vectorielle
+*Une explication plus détaillée est disponible dans le fichier* `algorithmique.pdf`
+
+**Représentation vectorielle**
 
 Chaque texte est représenté comme un vecteur dans un espace de n-grammes. La matrice globale Termes x Documents (construite dans `analyse.py > create_comparaison_matrix`) a pour dimension :
 
-  -  lignes : tous les n-grammes uniques du corpus
-  -  colonnes : chaque texte
+  -  **lignes** : tous les n-grammes uniques du corpus
+  -  **colonnes** : chaque texte
 
 Chaque cellule contient la fréquence brute du n-gramme dans ce texte.
 
-# Mesures de similarité (analyse.py)
+**Mesures de similarité** (`analyse.py`)
 
-Trois métriques sont implémentées manuellement, sans scikit-learn, directement dans analyse.py : 
+Trois métriques sont implémentées manuellement en s'appuyant sur NumPy
 
-- Similarité cosinus =>
-- Indice Jaccard =>
-- Distance de Manhattan =>
+- **Similarité cosinus** : ∣∣A∣∣×∣∣B∣∣A⋅B​ Évalue l'angle entre deux vecteurs. C'est la métrique la plus robuste pour comparer des textes de longueurs inégales en se basant sur la fréquence des termes.
+- **Indice Jaccard** : ∣A∪B∣∣A∩B∣​ Mesure le taux de chevauchement du vocabulaire brut, indépendamment des fréquences de répétition.
+- **Distance de Manhattan** : ∑i=1n​∣Ai​−Bi​∣ Calcule la somme des différences absolues de fréquences
 
-Classification KNN (k=1) ()
+**Classification KNN(k=1)** (`analyse.py > knn`)
 
 Pour chaque texte, on identifiee son voisin le plus proche dans le corpus (k=1) et on vérifie si ce voisin appartient à la même catégorie.
 La précison globale indique dans quelle mesure la similarité stylistique reflète les catégories (genre, auteur, époque).
 
-La fonction supporte trois métriques via le paramètre metric : cosinus, Jaccard et Manhattan.
-Les expériences par défaut utilisent toutes cosinus. 
+La fonction supporte trois métriques via le paramètre `metric` : cosinus, Jaccard et Manhattan.\
+Les expériences par défaut utilisent toutes cosinus.
 
-*Mettre un peu analyse de résultats ? Les résultats*
-
-Cohésion interne ()
+**Cohésion interne** (`analyse.py > groupe_cohesion`)
 
 Calcule la similarité cosinus moyenne entre tous les textes d'une même catégorie. 
 
-Signatures 
+**Signatures** (`analyse.py > ngram_signatures`)
 
 Identifie les n-grammes sur-représentés dans une catégorie par rapport au reste du corpus via un ratio ()
 
-Réduction de dimension ── MDS (plot_generator.py)
+**Réduction de dimension** ── MDS (`plot_generator.py`)
 
-Le MDS (Multidimensional Scaling) projette la matrice de dissimilarité (1 - cosinus) en 2D pour visualiser le regroupements stylistiques.
+Le MDS (Multidimensional Scaling) projette la matrice de dissimilarité (1 - cosinus) en 2D pour visualiser les regroupements stylistiques.
 La dissimilarité est calculée manuellement avant d'être passée à scikit-learn en mode `precomputed`.
 
-Séquences communes ── LCS (script)
+**Séquences communes** ── LCS (`analyse.py > lcs, count_freq, analyse_auteur`)
 
-Algorithme LCS (Longest Common Substring) optimisé par indexation inversée des positions : les positions de chaque mot dans t2 sont pré-indexées dans un dictionnaire, ce qui évite de parcourir t2 entièrement pour chaque mot de t1.
+Algorithme LCS (*Longest Common Substring*) optimisé par indexation inversée des positions : les positions de chaque mot dans t2 sont pré-indexées dans un dictionnaire, ce qui évite de parcourir t2 entièrement pour chaque mot de t1.
 `count_freq` : compte les occurrences exactes de la séquences trouvée dans chaque texte.
 
 `analyse_auteur` : orchestre l'utilisation de fonction lcs et count_freq sur un auteur choisi dans le corpus
 
-Rapport HTML (script repport)
+**Rapport HTML** (script repport)
 
+`generate_combined_report_html` produit un fichier HTML autonome pour chaucun des trois axes d'analyses (auteurs, genres, époques).
 
+# Aperçu des résultats 
 
+L'exécution du pipeline sur ce corpus médiéval met en lumière plusieurs phénomènes littéraires :
+
+**L'empreinte forte des auteurs** : Les modèles basés sur les n-grammes de caractères (n=3) réussissent avec une meilleure précision à regrouper les œuvres d'un même auteur (ex: le cluster très dense formé par les œuvres de Chrétien de Troyes dans l'espace MDS, visible dans `rapport-auteurs.html`).
+
+**La volatilité orthographique** : Le passage aux n-grammes de mots diminue la précision de l'algorithme KNN, démontrant l'instabilité orthographique des scribes en ancien français par rapport aux caractères. Le corpus est hétérigène en terme d'époque, il semble aussi y avoir certains textes en occitan et d'autres en loc d'oïl => différences.
+
+**La prévisibilité des genres** : Les textes épiques ou hagiographiques partagent un lexique thématique très typé, ce qui se traduit par des scores de cohésion interne particulièrement élevés lors des calculs de similarité vectorielle.
 
 
 ## Corpus
