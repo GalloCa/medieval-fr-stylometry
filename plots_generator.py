@@ -75,7 +75,7 @@ def generate_similarity_plot(matrix, txt_names, biblio, output_dir, mode='genre'
         print(f"generate_similarity_plot : pas assez de textes ({nb_txt}) pour un MDS (minimum 3).")
         return
     try:
-        mds = MDS(n_components=2, metric=True, n_init=4, random_state=42, dissimilarity='precomputed')
+        mds = MDS(n_components=2, metric='precomputed', init='classical_mds', metric_mds=True, n_init=1, random_state=42, )
         pos = mds.fit_transform(dissimilarity)
     except Exception as e:
         print(f"Erreur MDS ({mode}) : {e}")
@@ -301,6 +301,7 @@ def generate_dendogramme(matrix, txt_names, biblio, output_dir):
  
     print(f"edges.csv généré  : {edges_path} ({len(paires)} arêtes, "
           f"seuil cosinus >= {threshold_cos})")
+
 
 
 

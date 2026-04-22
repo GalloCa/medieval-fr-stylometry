@@ -10,15 +10,15 @@ import sys
 
 from download_data import download_github_data
 from text_processor import TextProcessor
-from analyse import create_comparison_matrix, compare_files, load_biblio, clean_label, save_matrix_tsv, analyse_auteur
-from plots_generator import generate_similarity_plot, export_gephi_files
+from analyse import create_comparison_matrix, compare_files, load_biblio, clean_label, save_matrix_tsv, analyse_auteur, gexf
+from plots_generator import generate_similarity_plot, generate_dendogramme
 from generate_report_html import generate_combined_report_html
 
 
 # MAIN
 if __name__ == "__main__":
 
-    # CONFIGURATION DES METADONNEE 
+    # CONFIGURATION DES METADONNEES
     # DEFINIR SI NGRAMS CARACTERES OU MOTS TAILLE ET METRIQUE UTILISEE
     
     experiences = [
@@ -151,11 +151,12 @@ if __name__ == "__main__":
  
 
         # ETAPE 4 : VISUALISATION
-        print("\nEtape 4 : Génération des visualisations (scatter plot) ... ")
+        print("\nEtape 4 : Génération des visualisations... ")
         
         generate_similarity_plot(matrix, txt_names, dico_genre, exp_plot_dir, mode='genre')
         generate_similarity_plot(matrix, txt_names, dico_date, exp_plot_dir, mode='dates')
         generate_similarity_plot(matrix, txt_names, dico_author, exp_plot_dir, mode='auteurs')
+        generate_dendogramme(matrix, txt_names, dico_author, exp_plot_dir) ## changer la sortie - faire dendogramme car et mots ? le mettre dans sortie html ? 
       
 
         # ETAPE 5 : PREPARATION DES RAPPORTS HTML

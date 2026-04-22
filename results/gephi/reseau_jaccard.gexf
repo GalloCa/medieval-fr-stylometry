@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gexf xmlns="http://www.gexf.net/1.2draft" version="1.2">
+  <meta lastmodifieddate="2026-04-22">
+    <creator>Pipeline Stylométrie</creator>
+    <description>Réseau de similarité des textes</description>
+  </meta>
+  <graph defaultedgetype="undirected" mode="static">
+    <attributes class="node">
+      <attribute id="0" title="Categorie" type="string"/>
+    </attributes>
+    <nodes>
+      <node id="0" label="Cliges">
+        <attvalues>
+          <attvalue for="0" value="Chrétien de Troyes"/>
+        </attvalues>
+      </node>
+      <node id="1" label="Yvain">
+        <attvalues>
+          <attvalue for="0" value="Chrétien de Troyes"/>
+        </attvalues>
+      </node>
+      <node id="2" label="AlexisP11">
+        <attvalues>
+          <attvalue for="0" value="Anonyme"/>
+        </attvalues>
+      </node>
+      <node id="3" label="ThebesC">
+        <attvalues>
+          <attvalue for="0" value="Anonyme"/>
+        </attvalues>
+      </node>
+      <node id="4" label="AlexisPRI">
+        <attvalues>
+          <attvalue for="0" value="Anonyme"/>
+        </attvalues>
+      </node>
+      <node id="5" label="FillePonth1B1">
+        <attvalues>
+          <attvalue for="0" value="Anonyme"/>
+        </attvalues>
+      </node>
+      <node id="6" label="AlexisP13">
+        <attvalues>
+          <attvalue for="0" value="Anonyme"/>
+        </attvalues>
+      </node>
+      <node id="7" label="BenTroieC_1partial">
+        <attvalues>
+          <attvalue for="0" value="Benoît de Saint-Maure"/>
+        </attvalues>
+      </node>
+      <node id="8" label="ChaceP">
+        <attvalues>
+          <attvalue for="0" value="Anonyme"/>
+        </attvalues>
+      </node>
+      <node id="9" label="AlexisOctP">
+        <attvalues>
+          <attvalue for="0" value="Anonyme"/>
+        </attvalues>
+      </node>
+      <node id="10" label="SGeorgDeG">
+        <attvalues>
+          <attvalue for="0" value="Anonyme"/>
+        </attvalues>
+      </node>
+      <node id="11" label="MeraugisF">
+        <attvalues>
+          <attvalue for="0" value="Raoul de Houdenc"/>
+        </attvalues>
+      </node>
+      <node id="12" label="SGeorgVosL">
+        <attvalues>
+          <attvalue for="0" value="Anonyme"/>
+        </attvalues>
+      </node>
+      <node id="13" label="AigarB">
+        <attvalues>
+          <attvalue for="0" value="Anonyme"/>
+        </attvalues>
+      </node>
+      <node id="14" label="LancJ">
+        <attvalues>
+          <attvalue for="0" value="Chrétien de Troyes"/>
+        </attvalues>
+      </node>
+      <node id="15" label="PercevalKu">
+        <attvalues>
+          <attvalue for="0" value="Chrétien de Troyes"/>
+        </attvalues>
+      </node>
+      <node id="16" label="CleomHas">
+        <attvalues>
+          <attvalue for="0" value="Adenet le Roi"/>
+        </attvalues>
+      </node>
+      <node id="17" label="BenTroieC_4partial">
+        <attvalues>
+          <attvalue for="0" value="Benoît de Saint-Maure"/>
+        </attvalues>
+      </node>
+      <node id="18" label="ErecF">
+        <attvalues>
+          <attvalue for="0" value="Chrétien de Troyes"/>
+        </attvalues>
+      </node>
+      <node id="19" label="DancusM">
+        <attvalues>
+          <attvalue for="0" value="Anonyme"/>
+        </attvalues>
+      </node>
+      <node id="20" label="JAvesnesFilleB">
+        <attvalues>
+          <attvalue for="0" value="Anonyme"/>
+        </attvalues>
+      </node>
+      <node id="21" label="JugAmD">
+        <attvalues>
+          <attvalue for="0" value="Anonyme"/>
+        </attvalues>
+      </node>
+      <node id="22" label="OmbreB2">
+        <attvalues>
+          <attvalue for="0" value="Jean Renart"/>
+        </attvalues>
+      </node>
+      <node id="23" label="UnicornecW">
+        <attvalues>
+          <attvalue for="0" value="Jacques de Vitry"/>
+        </attvalues>
+      </node>
+      <node id="24" label="AlexisPQ">
+        <attvalues>
+          <attvalue for="0" value="Anonyme"/>
+        </attvalues>
+      </node>
+    </nodes>
+    <edges>
+      <edge id="0" source="0" target="1" weight="0.0596"/>
+      <edge id="1" source="0" target="3" weight="0.0504"/>
+      <edge id="2" source="0" target="11" weight="0.0663"/>
+      <edge id="3" source="0" target="14" weight="0.1066"/>
+      <edge id="4" source="0" target="15" weight="0.1010"/>
+      <edge id="5" source="0" target="18" weight="0.0970"/>
+      <edge id="6" source="1" target="11" weight="0.0554"/>
+      <edge id="7" source="1" target="14" weight="0.0635"/>
+      <edge id="8" source="1" target="15" weight="0.0613"/>
+      <edge id="9" source="1" target="16" weight="0.0626"/>
+      <edge id="10" source="1" target="18" weight="0.0567"/>
+      <edge id="11" source="2" target="4" weight="0.0596"/>
+      <edge id="12" source="3" target="7" weight="0.0730"/>
+      <edge id="13" source="3" target="18" weight="0.0509"/>
+      <edge id="14" source="4" target="6" weight="0.0589"/>
+      <edge id="15" source="11" target="14" weight="0.0704"/>
+      <edge id="16" source="11" target="15" weight="0.0671"/>
+      <edge id="17" source="11" target="18" weight="0.0666"/>
+      <edge id="18" source="14" target="15" weight="0.1145"/>
+      <edge id="19" source="14" target="18" weight="0.1023"/>
+      <edge id="20" source="15" target="18" weight="0.1012"/>
+    </edges>
+  </graph>
+</gexf>
