@@ -43,16 +43,21 @@ medFR-paleo-NLP/
 └── README.md
 ```
 
-Format des fichiers de métadonnées
+# Format des fichiers de métadonnées
+
 Les trois fichiers dans data/metadata/ suivent le même format, une entrée par ligne :
 
+```
 NomDuFichierSansExtension : Catégorie
+```
 
 Exemple pour dico_genre.txt :
 
+```
 Yvain        : Roman courtois
 Roland       : Epique
 StAlexis     : Hagiographie
+```
 
 Les clés doivent correspondre exactement aux noms de fichiers dans raw-txt/ (sans .txt).
 
