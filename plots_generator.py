@@ -212,29 +212,28 @@ def generate_dendogramme(matrix, txt_names, biblio, output_dir):
     print(f"Dendogramme généré avec succès : {output_path}")
 
     
-    # TEST GEPHI 
-    def export_gephi_files(compare_tsv_path, biblio_list, output_dir,
+def export_gephi_files(compare_tsv_path, biblio_list, output_dir,
                        threshold_cos=0.3, threshold_jac=0.0):
     """
     Génère deux fichiers CSV pour Gephi depuis le .tsv de comparaison par paires.
- 
+    
     Le fichier nodes.csv associe chaque texte à ses métadonnées (une ligne par nœud).
     Le fichier edges.csv liste les arêtes filtrées par seuil (une ligne par paire).
- 
+    
     Les arêtes sont filtrées pour ne conserver que les liens significatifs,
     afin d'éviter un graphe trop dense (25 nœuds = 300 arêtes potentielles).
- 
+    
     Entrées :
         compare_tsv_path (str)    : chemin vers le .tsv produit par compare_files()
-                                    colonnes attendues : Texte A | Texte B | Cosinus | Jaccard
+                                        colonnes attendues : Texte A | Texte B | Cosinus | Jaccard
         biblio_list (list[dict])  : liste de dicts {nom_texte: catégorie} pour les métadonnées
-                                    ex : [dico_genre, dico_author, dico_date]
-                                    chaque dict ajoute une colonne dans nodes.csv
+                                        ex : [dico_genre, dico_author, dico_date]
+                                        chaque dict ajoute une colonne dans nodes.csv
         output_dir (str)          : dossier de sortie pour nodes.csv et edges.csv
         threshold_cos (float)     : seuil minimum de similarité cosinus (défaut : 0.3)
-                                    les arêtes en dessous sont ignorées
+                                        les arêtes en dessous sont ignorées
         threshold_jac (float)     : seuil minimum pour Jaccard (défaut : 0.0, pas de filtre)
- 
+    
     Sorties :
         nodes.csv : Id | Label | genre | auteur | date  (selon biblio_list)
         edges.csv : Source | Target | Weight | jaccard | Type
@@ -242,11 +241,11 @@ def generate_dendogramme(matrix, txt_names, biblio, output_dir):
     if not os.path.exists(compare_tsv_path):
         print(f"export_gephi_files : fichier introuvable ({compare_tsv_path})")
         return
- 
-    # ── Lecture du .tsv ──────────────────────────────────────────
+    
+        # ── Lecture du .tsv ──────────────────────────────────────────
     paires = []
     noms   = set()
- 
+    
     with open(compare_tsv_path, mode='r', encoding='utf-8') as f:
         next(f)    # skip header
         for ligne in f:
@@ -259,49 +258,50 @@ def generate_dendogramme(matrix, txt_names, biblio, output_dir):
                 jac = float(parts[3].strip())
             except ValueError:
                 continue
- 
+    
             noms.add(t1)
             noms.add(t2)
- 
+    
             # Filtre par seuil
             if cos >= threshold_cos and jac >= threshold_jac:
                 paires.append((t1, t2, cos, jac))
- 
-    if not paires:
-        print(f"export_gephi_files : aucune arête après filtrage "
-              f"(seuil cosinus={threshold_cos}, jaccard={threshold_jac}). "
-              f"Essaie un seuil plus bas.")
-        return
- 
-    os.makedirs(output_dir, exist_ok=True)
- 
-    # ── nodes.csv ────────────────────────────────────────────────
-    # En-tête dynamique selon les dicts fournis dans biblio_list
-    col_names = ['genre', 'auteur', 'date'][:len(biblio_list)]
-    nodes_path = os.path.join(output_dir, 'nodes.csv')
- 
-    with open(nodes_path, mode='w', encoding='utf-8') as f:
-        header = 'Id;Label;' + ';'.join(col_names)
-        f.write(header + '\n')
- 
-        for nom in sorted(noms):
-            meta = [d.get(nom, 'Inconnu') for d in biblio_list]
-            ligne = f'{nom};{nom};' + ';'.join(meta)
-            f.write(ligne + '\n')
- 
-    print(f"nodes.csv généré : {nodes_path} ({len(noms)} nœuds)")
- 
-    # ── edges.csv ────────────────────────────────────────────────
-    edges_path = os.path.join(output_dir, 'edges.csv')
- 
-    with open(edges_path, mode='w', encoding='utf-8') as f:
-        f.write('Source;Target;Weight;jaccard;Type\n')
-        for t1, t2, cos, jac in paires:
-            f.write(f'{t1};{t2};{cos:.4f};{jac:.4f};Undirected\n')
- 
-    print(f"edges.csv généré  : {edges_path} ({len(paires)} arêtes, "
-          f"seuil cosinus >= {threshold_cos})")
+    
+        if not paires:
+            print(f"export_gephi_files : aucune arête après filtrage "
+                f"(seuil cosinus={threshold_cos}, jaccard={threshold_jac}). "
+                f"Essaie un seuil plus bas.")
+            return
+    
+        os.makedirs(output_dir, exist_ok=True)
+    
+        # ── nodes.csv ────────────────────────────────────────────────
+        # En-tête dynamique selon les dicts fournis dans biblio_list
+        col_names = ['genre', 'auteur', 'date'][:len(biblio_list)]
+        nodes_path = os.path.join(output_dir, 'nodes.csv')
+    
+        with open(nodes_path, mode='w', encoding='utf-8') as f:
+            header = 'Id;Label;' + ';'.join(col_names)
+            f.write(header + '\n')
+    
+            for nom in sorted(noms):
+                meta = [d.get(nom, 'Inconnu') for d in biblio_list]
+                ligne = f'{nom};{nom};' + ';'.join(meta)
+                f.write(ligne + '\n')
+    
+        print(f"nodes.csv généré : {nodes_path} ({len(noms)} nœuds)")
+    
+        # ── edges.csv ────────────────────────────────────────────────
+        edges_path = os.path.join(output_dir, 'edges.csv')
+    
+        with open(edges_path, mode='w', encoding='utf-8') as f:
+            f.write('Source;Target;Weight;jaccard;Type\n')
+            for t1, t2, cos, jac in paires:
+                f.write(f'{t1};{t2};{cos:.4f};{jac:.4f};Undirected\n')
+    
+        print(f"edges.csv généré  : {edges_path} ({len(paires)} arêtes, "
+            f"seuil cosinus >= {threshold_cos})")
 
+        
 
 
 
