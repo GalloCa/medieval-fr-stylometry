@@ -27,14 +27,14 @@ if __name__ == "__main__":
     ]
 
     # Répertoires de travail globaux
-    raw_txt_dir = r"/workspaces/medFR-paleao-NLP/data/raw-txt"
-    clean_txt_dir = r"/workspaces/medFR-paleao-NLP/data/clean-txt"
-    freq_folder = r"/workspaces/medFR-paleao-NLP/results/frequencies"
+    raw_txt_dir = r"/workspaces/mmedieval-fr-stylometry/data/raw-txt"
+    clean_txt_dir = r"/workspaces/medieval-fr-stylometry/data/clean-txt"
+    freq_folder = r"/workspaces/medieval-fr-stylometry/results/frequencies"
     
     # Fichiers de métadonnées
-    biblio_genre_dir = r"/workspaces/medFR-paleao-NLP/data/metadata/dico_genre.txt"
-    biblio_author_dir = r"/workspaces/medFR-paleao-NLP/data/metadata/dico_auteur.txt"
-    biblio_date_dir = r"/workspaces/medFR-paleao-NLP/data/metadata/dico_date.txt"
+    biblio_genre_dir = r"/workspaces/medieval-fr-stylometry/data/metadata/dico_genre.txt"
+    biblio_author_dir = r"/workspaces/medieval-fr-stylometry/data/metadata/dico_auteur.txt"
+    biblio_date_dir = r"/workspaces/medieval-fr-stylometry/data/metadata/dico_date.txt"
 
     # Chargement sécurisé des dictionnaires
     dico_genre = load_biblio(biblio_genre_dir)
@@ -80,9 +80,9 @@ if __name__ == "__main__":
         suffixe = exp['nom']
 
         # Création des sous-dossiers spécifiques à cette expérience
-        exp_matrix_dir = os.path.join(r"/workspaces/medFR-paleao-NLP/results/matrix", suffixe)
-        exp_plot_dir = os.path.join(r"/workspaces/medFR-paleao-NLP/results/scatter-plots", suffixe)
-        exp_freq_dir = os.path.join(r"/workspaces/medFR-paleao-NLP/results/frequencies", suffixe)
+        exp_matrix_dir = os.path.join(r"/workspaces/medieval-fr-stylometry/results/matrix", suffixe)
+        exp_plot_dir = os.path.join(r"/workspaces/medieval-fr-stylometry/results/scatter-plots", suffixe)
+        exp_freq_dir = os.path.join(r"/workspaces/medieval-fr-stylometry/results/frequencies", suffixe)
 
         os.makedirs(exp_matrix_dir, exist_ok=True)
         os.makedirs(exp_plot_dir, exist_ok=True)
@@ -96,7 +96,7 @@ if __name__ == "__main__":
         scatter_plot_author = os.path.join(exp_plot_dir, "nuage_points_auteurs.png")
         scatter_plot_date   = os.path.join(exp_plot_dir, "nuage_points_dates.png")
 
-        results_dir = r"/workspaces/medFR-paleao-NLP/results"
+        results_dir = r"/workspaces/medieval-fr-stylometry/results"
 
         # ETAPE 2 : NETTOYAGE ET FRÉQUENCES 
         print(f"\nÉtape 2 : Nettoyage et extraction des n-grammes ({exp['niveau']}, n={exp['n']})...")
@@ -188,7 +188,7 @@ if __name__ == "__main__":
             'metric':    metric_use,
         }
 
-        rapports_dir = r"/workspaces/medFR-paleao-NLP/results/rapports"
+        rapports_dir = r"/workspaces/medieval-fr-stylometry/results/rapports"
         os.makedirs(rapports_dir, exist_ok=True)
         
         genre_report_path   = os.path.join(rapports_dir, "rapport-genre.html")
@@ -204,7 +204,7 @@ if __name__ == "__main__":
     
    # Construction du rapport final
     lcs_content = analyse_auteur('Chrétien de Troyes', clean_txt_dir, dico_author)
-    rapport_auteurs_final = r"/workspaces/medFR-paleao-NLP/results/rapports/rapport-auteurs.html"
+    rapport_auteurs_final = r"/workspaces/medieval-fr-stylometry/results/rapports/rapport-auteurs.html"
    
     print("Expériences dans result_auteurs :", list(result_auteurs.keys())) # trace à effacer 
 
