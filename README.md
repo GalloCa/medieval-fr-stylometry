@@ -111,7 +111,7 @@ Chaque rapport HTML `rapport-genre.html`,  `rapport-auteurs.html`, `rapport-epoq
 - Signatures lexicales
 - Visualisation MDS.
 
-Le rapport auteurs inclus en plus l'analyse LCS (*Longest Common Substring*) dans l'onglet lexical.
+Le rapport auteurs inclut en plus l'analyse LCS (*Longest Common Substring*) dans l'onglet lexical.
 
 Les visualisations matplotlib sont encodées en base64 et intégrées directement dans le HTML.\
 Les rapports sont donc autonomes et s'ouvrent dans n'importe quel navigateur sans dépendances externes.
@@ -140,8 +140,8 @@ Trois métriques sont implémentées manuellement en s'appuyant sur NumPy
 
 **Classification KNN(k=1)** (`analyse.py > knn`)
 
-Pour chaque texte, on identifiee son voisin le plus proche dans le corpus (k=1) et on vérifie si ce voisin appartient à la même catégorie.
-La précison globale indique dans quelle mesure la similarité stylistique reflète les catégories (genre, auteur, époque).
+Pour chaque texte, on identifie son voisin le plus proche dans le corpus (k=1) et on vérifie si ce voisin appartient à la même catégorie.
+La précision globale indique dans quelle mesure la similarité stylistique reflète les catégories (genre, auteur, époque).
 
 La fonction supporte trois métriques via le paramètre `metric` : cosinus, Jaccard et Manhattan.\
 Les expériences par défaut utilisent toutes cosinus.
