@@ -134,9 +134,9 @@ Chaque cellule contient la fréquence brute du n-gramme dans ce texte.
 
 Trois métriques sont implémentées manuellement en s'appuyant sur NumPy
 
-- **Similarité cosinus** : ∣∣A∣∣×∣∣B∣∣A⋅B​ Évalue l'angle entre deux vecteurs. C'est la métrique la plus robuste pour comparer des textes de longueurs inégales en se basant sur la fréquence des termes.
-- **Indice Jaccard** : ∣A∪B∣∣A∩B∣​ Mesure le taux de chevauchement du vocabulaire brut, indépendamment des fréquences de répétition.
-- **Distance de Manhattan** : ∑i=1n​∣Ai​−Bi​∣ Calcule la somme des différences absolues de fréquences
+- **Similarité cosinus** : cos(A, B) = (A · B) / (‖A‖ × ‖B‖) ─ Évalue l'angle entre deux vecteurs. C'est la métrique la plus robuste pour comparer des textes de longueurs inégales en se basant sur la fréquence des termes.
+- **Indice Jaccard** : J(A, B)   = |A ∩ B| / |A ∪ B| ─​ Mesure le taux de chevauchement du vocabulaire brut, indépendamment des fréquences de répétition.
+- **Distance de Manhattan** : d(A, B)   = Σ |Aᵢ − Bᵢ| ─ Calcule la somme des différences absolues de fréquences
 
 **Classification KNN(k=1)** (`analyse.py > knn`)
 
