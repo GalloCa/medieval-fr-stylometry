@@ -64,8 +64,8 @@ Les clés doivent correspondre exactement aux noms de fichiers dans `raw-txt/` (
 # Installation
 
 ```
-git clone https://github.com/votre-utilisateur/medFR-paleo-NLP.git
-cd medFR-paleo-NLP
+git clone https://github.com/votre-utilisateur/medieval-fr-stylometry.git
+cd medieval-fr-stylometry
 pip install -r requirements.txt
 
 ```
