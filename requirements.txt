@@ -5,4 +5,4 @@ scikit-learn
 scipy
 requests
 adjustText
-base64
+
