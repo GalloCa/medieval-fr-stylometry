@@ -148,70 +148,7 @@ def generate_similarity_plot(matrix, txt_names, biblio, output_dir, mode='genre'
     plt.close(fig) 
     print(f"Scatter Plot généré avec succès : {output_path}")
 
-
-def generate_dendogramme(matrix, txt_names, biblio, output_dir):    
-    """
-    Génère un dendogramme illustrant les regroupements stylistiques 
-    au sein du sous-corpus des textes d'auteurs 'Anonyme'
-
-    Calcule leur matrice de dissimilarité, puis applique un algorithme de clustering 
-    ascendant.
-
-    Entrées : 
-        matrix(np.ndarray) : matrice des fréquences (n-grammes x textes)
-        txt_names (list) : liste des noms de textes
-        biblio (dict) : dictionnaire de métadonnées {nom : auteur | date | genre}
-        output_dir (str) : le chemin du dossier où sauvegarder l'image générée
-    Sortie : 
-        image (.png) : le dendogramme dans le répertoire cible
-
-    """
-    # Cherche les textes avec l'étiquette "Anonyme"
-    anonym = [i for i, name in enumerate(txt_names) if biblio.get(name) == 'Anonyme']
-    anonym_names = [txt_names[i] for i in anonym]
-
-    if len(anonym) <2:
-        print("Pas assez de textes d'auteus anonymes pour faire un arbre")
-        return
-    
-    nb_txt = len(anonym)
-    dissimilarity = np.zeros((nb_txt, nb_txt))
-
-    for i in range(nb_txt):
-        for j in range(nb_txt):
-            if i!=j:
-                v1 = matrix[:,anonym[i]]
-                v2 = matrix[:,anonym[j]]
-                dist = max(0.0, 1.0 - cos_np(v1,v2))
-                dissimilarity[i,j] = dist
-                dissimilarity[j,i] = dist
-
-    condensed_dist = squareform(dissimilarity)
-    z = linkage(condensed_dist, method='average')
-
-    fig, ax = plt.subplots(figsize=(12, 7), dpi=100)
-
-    dendro = dendrogram(z,
-                        labels = anonym_names,
-                        orientation = 'top',
-                        leaf_rotation=90,
-                        leaf_font_size=11,
-                        color_threshold=0.15,
-                        ax=ax)
-    
-    ax.spines[['top', 'right', 'bottom']].set_visible(False)
-    ax.set_title(f"Dendogramme des textes d'auteurs anonymes", loc='left', fontsize=16, pad=20, color='#333333', fontweight='bold')
-
-    if not os.path.exists(output_dir): 
-        os.makedirs(output_dir)
-        
-    output_path = os.path.join(output_dir, f"dendogramme_anonymes.png")
-    fig.subplots_adjust(left=0.08, right=0.95, top=0.85, bottom=0.25)
-    fig.savefig(output_path, dpi=300)
-    plt.close(fig) 
-    print(f"Dendogramme généré avec succès : {output_path}")
-
-    
+ 
 def export_gephi_files(compare_tsv_path, biblio_list, output_dir,
                        threshold_cos=0.3, threshold_jac=0.0):
     """
@@ -224,25 +161,23 @@ def export_gephi_files(compare_tsv_path, biblio_list, output_dir,
     afin d'éviter un graphe trop dense (25 nœuds = 300 arêtes potentielles).
     
     Entrées :
-        compare_tsv_path (str)    : chemin vers le .tsv produit par compare_files()
-                                        colonnes attendues : Texte A | Texte B | Cosinus | Jaccard
-        biblio_list (list[dict])  : liste de dicts {nom_texte: catégorie} pour les métadonnées
-                                        ex : [dico_genre, dico_author, dico_date]
-                                        chaque dict ajoute une colonne dans nodes.csv
-        output_dir (str)          : dossier de sortie pour nodes.csv et edges.csv
-        threshold_cos (float)     : seuil minimum de similarité cosinus (défaut : 0.3)
-                                        les arêtes en dessous sont ignorées
-        threshold_jac (float)     : seuil minimum pour Jaccard (défaut : 0.0, pas de filtre)
+        compare_tsv_path (str) : chemin vers le .tsv produit par compare_files()
+                                colonnes attendues : Texte A | Texte B | Cosinus | Jaccard
+        biblio_list (list[dict]) : liste de dicts {nom_texte: catégorie} pour les métadonnées ex : [dico_genre, dico_author, dico_date]
+                                    chaque dict ajoute une colonne dans nodes.csv
+        output_dir (str) : dossier de sortie pour nodes.csv et edges.csv
+        threshold_cos (float): seuil minimum de similarité cosinus (défaut : 0.3) les arêtes en dessous sont ignorées
+        threshold_jac (float) : seuil minimum pour Jaccard (défaut : 0.0, pas de filtre)
     
     Sorties :
-        nodes.csv : Id | Label | genre | auteur | date  (selon biblio_list)
-        edges.csv : Source | Target | Weight | jaccard | Type
+        fichier nodes.csv : Id | Label | genre | auteur | date  (selon biblio_list)
+        fichier edges.csv : Source | Target | Weight | jaccard | Type
     """
     if not os.path.exists(compare_tsv_path):
         print(f"export_gephi_files : fichier introuvable ({compare_tsv_path})")
         return
     
-        # ── Lecture du .tsv ──────────────────────────────────────────
+        # Lecture du .tsv
     paires = []
     noms   = set()
     
@@ -274,7 +209,7 @@ def export_gephi_files(compare_tsv_path, biblio_list, output_dir,
     
         os.makedirs(output_dir, exist_ok=True)
     
-        # ── nodes.csv ────────────────────────────────────────────────
+        # Préparation du fichier nodes.csv 
         # En-tête dynamique selon les dicts fournis dans biblio_list
         col_names = ['genre', 'auteur', 'date'][:len(biblio_list)]
         nodes_path = os.path.join(output_dir, 'nodes.csv')
@@ -290,7 +225,7 @@ def export_gephi_files(compare_tsv_path, biblio_list, output_dir,
     
         print(f"nodes.csv généré : {nodes_path} ({len(noms)} nœuds)")
     
-        # ── edges.csv ────────────────────────────────────────────────
+        # Préparation du fichier edges.csv 
         edges_path = os.path.join(output_dir, 'edges.csv')
     
         with open(edges_path, mode='w', encoding='utf-8') as f:

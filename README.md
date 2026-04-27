@@ -117,9 +117,8 @@ Les visualisations matplotlib sont encodées en base64 et intégrées directemen
 Les rapports sont donc autonomes et s'ouvrent dans n'importe quel navigateur sans dépendances externes.
 
 ## Approche algorithmique 
-## EXPLICATION SCRIPT 
 
-*Une explication plus détaillée est disponible dans le fichier* `algorithmique.pdf`
+*Une explication plus détaillée des structures de données et du pseudo-code est disponible dans le fichier* : `algorithmique.pdf`
 
 **Représentation vectorielle**
 
@@ -138,7 +137,7 @@ Trois métriques sont implémentées manuellement en s'appuyant sur NumPy
 - **Indice Jaccard** : J(A, B)   = |A ∩ B| / |A ∪ B| ─​ Mesure le taux de chevauchement du vocabulaire brut, indépendamment des fréquences de répétition.
 - **Distance de Manhattan** : d(A, B)   = Σ |Aᵢ − Bᵢ| ─ Calcule la somme des différences absolues de fréquences
 
-**Classification KNN(k=1)** (`analyse.py > knn`)
+**Classification KNN(k=1)** (`analyse.py > knn()`)
 
 Pour chaque texte, on identifie son voisin le plus proche dans le corpus (k=1) et on vérifie si ce voisin appartient à la même catégorie.
 La précision globale indique dans quelle mesure la similarité stylistique reflète les catégories (genre, auteur, époque).
@@ -146,11 +145,11 @@ La précision globale indique dans quelle mesure la similarité stylistique refl
 La fonction supporte trois métriques via le paramètre `metric` : cosinus, Jaccard et Manhattan.\
 Les expériences par défaut utilisent toutes cosinus.
 
-**Cohésion interne** (`analyse.py > groupe_cohesion`)
+**Cohésion interne** (`analyse.py > groupe_cohesion()`)
 
-Calcule la similarité cosinus moyenne entre tous les textes d'une même catégorie. 
+Calcule la similarité moyenne entre tous les textes d'une même catégorie. 
 
-**Signatures** (`analyse.py > ngram_signatures`)
+**Signatures** (`analyse.py > ngram_signatures()`)
 
 Identifie les n-grammes sur-représentés dans une catégorie par rapport au reste du corpus via un ratio ()
 
@@ -161,7 +160,8 @@ La dissimilarité est calculée manuellement avant d'être passée à scikit-lea
 
 **Séquences communes** ── LCS (`analyse.py > lcs, count_freq, analyse_auteur`)
 
-Algorithme LCS (*Longest Common Substring*) optimisé par indexation inversée des positions : les positions de chaque mot dans t2 sont pré-indexées dans un dictionnaire, ce qui évite de parcourir t2 entièrement pour chaque mot de t1.
+Algorithme LCS (*Longest Common Substring*) optimisé par indexation inversée des positions : les positions de chaque mot dans le texte 2 sont pré-indexées dans un dictionnaire, ce qui évite de parcourir le texte 2 entièrement pour chaque mot du texte 1.
+
 `count_freq` : compte les occurrences exactes de la séquences trouvée dans chaque texte.
 
 `analyse_auteur` : orchestre l'utilisation de fonction lcs et count_freq sur un auteur choisi dans le corpus
