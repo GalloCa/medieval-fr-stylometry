@@ -18,8 +18,11 @@ medieval-fr-stylometry/
 │       └── dico_date.txt     # Nom du texte : Siècle
 │
 ├── results/
-│   ├── frequencies/      # Fréquences de n-grammes par texte (.tsv)
-│   ├── matrix/           # Matrices Termes-Documents globales (.tsv)
+│   ├── frequencies/     # Fréquences de n-grammes par texte (.tsv)
+│   ├── gephi/           # Fichiers (.csv) pour import dans Gephi
+│   │   ├── morpho/
+│   │   └── lexical/
+    ├── matrix/           # Matrices Termes-Documents globales (.tsv)
 │   │   ├── morpho/
 │   │   └── lexical/
 │   ├── scatter-plots/    # Visualisations MDS (.png)
@@ -104,7 +107,7 @@ Les deux expériences configurées dans `main.py` sont exécutées en séquence,
 | `morpho`   | Caractères      | 3 | Cosinus  | Niveau morphologique et graphique |
 | `lexical`  | Mots            | 2 | Cosinus  | Niveau lexical et syntagmatique |
 
-Chaque rapport HTML `rapport-genre.html`,  `rapport-auteurs.html`, `rapport-epoques.html` présente les deux expériences dans des onglets séparés, avec pour chacune :
+Chaque rapport HTML *`rapport-genre.html`*,  *`rapport-auteurs.html`*, *`rapport-epoques.html`* présente les deux expériences dans des onglets séparés, avec pour chacune :
 
 - Classification KNN
 - Cohésion interne
@@ -116,9 +119,18 @@ Le rapport auteurs inclut en plus l'analyse LCS (*Longest Common Substring*) dan
 Les visualisations matplotlib sont encodées en base64 et intégrées directement dans le HTML.\
 Les rapports sont donc autonomes et s'ouvrent dans n'importe quel navigateur sans dépendances externes.
 
+**Visualisation de réseaux (Gephi)**
+
+A partir du fichier (.tsv) généré par compare_file(), la script produit deux fichiers (*`nodes.csv`* et *`edges.csv`*) dans `results/gephi/` pour permettre une exploration interactive. 
+
+- **Importation** : importez les fichiers, noeuds (*nodes*) puis celui des arêtes (*edges*) dans **Gephi** (version bureau ou navigateur)
+- **Spacialisation** : il est recommandé d'utiliser l'algorithme **ForceAtlas2** pour regrouper les textes partageant un "ADN" lexical ou morphologique commun
+- **Analyse** : avec la coloration des noeuds par catégorie, on visualise des clusters stylistiques
+
+
 ## Approche algorithmique 
 
-*Une explication plus détaillée des structures de données et du pseudo-code est disponible dans le fichier* : `algorithmique.pdf`
+*Une explication plus détaillée des principales structures de données et du pseudo-code est disponible dans le fichier* : `algorithmique.pdf`
 
 **Représentation vectorielle**
 
