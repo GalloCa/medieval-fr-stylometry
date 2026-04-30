@@ -18,7 +18,7 @@ import base64
 import datetime
 from analyse import knn, groupe_cohesion, ngram_signatures
 
-# Visuel de la page --> PAS LA BONNE 
+# Visuel de la page 
 CSS = """<style>
 :root {
   --bg:        #f4f6f8;
@@ -28,11 +28,11 @@ CSS = """<style>
   --ink:       #1c1e21;
   --ink2:      #4b4f56;
   --muted:     #65676b;
-  --accent:    #0064d1; /* Un bleu plus classique et lisible */
+  --accent:    #0064d1; 
   --accent-bg: #e6f0ff;
   --good:      #0e8a16;
   --bad:       #d73a49;
-  --radius:    24px; /* Beaucoup plus arrondi, moins rigide */
+  --radius:    24px; 
   --shadow:    0 4px 12px rgba(0,0,0,0.08);
 }
 
@@ -466,7 +466,7 @@ def _html_viz(img_path, suffixe):
       <div class="section-label">04 — Visualisation</div>
       <div class="section-title">Nuage de points</div>
       <div class="viz-error">⚠ Image introuvable : {img_path}</div>
-    </div>"""
+    </div>
 
 def _html_lcs(lcs_data):
     """Section LCS depuis la liste retournée par analyse_auteur()."""
@@ -532,13 +532,13 @@ def generate_combined_report_html(resultats, biblio, output_path, mode,
     Génère un rapport HTML avec onglets — une expérience par onglet.
 
     Paramètres :
-        resultats (dict)   : {suffixe: {'matrix', 'txt_names', 'lexique',
+        resultats (dict) : {suffixe: {'matrix', 'txt_names', 'lexique',
                                          'img_path', 'metric'}}
-        biblio (dict)      : métadonnées {nom_texte : catégorie}
-        output_path (str)  : chemin de sortie absolu ou relatif au CWD
-        mode (str)         : 'genre' | 'auteurs' | 'dates'
-        lcs_content (str)  : sortie de analyse_auteur() (mode='auteurs' uniquement)
-        titre (str)        : titre affiché dans le header
+        biblio (dict) : métadonnées {nom_texte : catégorie}
+        output_path (str) : chemin de sortie absolu ou relatif au CWD
+        mode (str) : 'genre' | 'auteurs' | 'dates'
+        lcs_content (str) : sortie de analyse_auteur() (mode='auteurs' uniquement)
+        titre (str) : titre affiché dans le header
 
     Sortie :
         fichier .html écrit dans output_path
