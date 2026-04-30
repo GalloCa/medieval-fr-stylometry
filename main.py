@@ -11,7 +11,7 @@ import sys
 from download_data import download_github_data
 from text_processor import TextProcessor
 from analyse import create_comparison_matrix, compare_files, load_biblio, clean_label, save_matrix_tsv, analyse_auteur
-from plots_generator import generate_similarity_plot, generate_dendogramme, export_gephi_files
+from plots_generator import generate_similarity_plot, export_gephi_files
 from generate_report_html import generate_combined_report_html
 
 
