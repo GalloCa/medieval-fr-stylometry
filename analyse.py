@@ -75,14 +75,14 @@ def save_matrix_tsv(matrix, lexique, txt_names, output_path):
     Exporte la matrice Termes-Documents au format TSV.
 
     Structure du fichier :
-        — 1ère ligne  : en-tête avec les noms de textes (colonnes)
-        — lignes N+1  : un n-gramme par ligne, suivi de ses fréquences
+        — 1ère ligne : en-tête avec les noms de textes (colonnes)
+        — lignes N+1 : un n-gramme par ligne, suivi de ses fréquences
 
     Entrées :
         matrix (np.ndarray) : matrice de fréquences (n-grammes × textes)
-        lexique (list)       : n-grammes ordonnés (index des lignes)
-        txt_names (list)     : noms des textes (index des colonnes)
-        output_path (str)    : chemin de sortie (.tsv)
+        lexique (list) : n-grammes ordonnés (index des lignes)
+        txt_names (list) : noms des textes (index des colonnes)
+        output_path (str) : chemin de sortie (.tsv)
 
     Sortie :
         fichier .tsv écrit dans output_path
@@ -191,8 +191,8 @@ def compare_files(matrix, txt_names, output_path=None):
 
     Entrées :
         matrix (np.ndarray) : matrice de fréquences (n-grammes × textes)
-        txt_names (list)     : noms des textes (colonnes de la matrice)
-        output_path (str)    : chemin de sortie du fichier .tsv
+        txt_names (list) : noms des textes (colonnes de la matrice)
+        output_path (str) : chemin de sortie du fichier .tsv
 
     Sortie :
         fichier .tsv avec colonnes : Texte A | Texte B | Cosinus | Jaccard
@@ -228,8 +228,8 @@ def create_comparison_matrix(liste_txt):
     Sorties :
         tuple :
             np_matrix (np.ndarray) : matrice de fréquences (n-grammes × textes)
-            ordered_lex (list)     : lexique complet et ordonné (index des lignes)
-            txt_name (list)        : noms des textes (index des colonnes)
+            ordered_lex (list) : lexique complet et ordonné (index des lignes)
+            txt_name (list) : noms des textes (index des colonnes)
     """
     full_lex = set()
     txt_name = []
@@ -271,16 +271,16 @@ def knn(matrix, txt_names, biblio, metric='cosinus'):
 
     Entrées :
         matrix (np.ndarray) : matrice de fréquences (n-grammes × textes)
-        txt_names (list)     : noms des textes
-        biblio (dict)        : métadonnées {nom_texte : catégorie}
-        metric (str)         : métrique à utiliser
+        txt_names (list) : noms des textes
+        biblio (dict) : métadonnées {nom_texte : catégorie}
+        metric (str) : métrique à utiliser
 
     Sortie :
         dict :
-            'accuracy' (float)  : précision en pourcentage
-            'top'      (list)   : 5 paires les plus proches,
+            'accuracy' (float) : précision en pourcentage
+            'top'      (list) : 5 paires les plus proches,
                                   chaque élément → {'t1', 'c1', 't2', 'c2', 'score'}
-            'bot'      (list)   : 5 paires les plus éloignées, même structure
+            'bot'      (list) : 5 paires les plus éloignées, même structure
     """
 
     all_pairs = []
@@ -372,9 +372,9 @@ def groupe_cohesion(matrix, txt_names, biblio, metric='cosinus'):
 
     Entrées :
         matrix (np.ndarray) : matrice de fréquences (n-grammes × textes)
-        txt_names (list)     : noms des textes
-        biblio (dict)        : métadonnées {nom_texte : catégorie}
-        metric (str)         : 'cosinus' (défaut), 'jaccard' ou 'manhattan'
+        txt_names (list) : noms des textes
+        biblio (dict) : métadonnées {nom_texte : catégorie}
+        metric (str) : 'cosinus' (défaut), 'jaccard' ou 'manhattan'
 
     Sortie :
         list : une entrée par catégorie →
@@ -422,12 +422,12 @@ def ngram_signatures(matrix, txt_names, biblio, lexique, target_cat, top=10):
     Le +1 évite la division par zéro et pénalise les n-grammes absents du reste.
 
     Entrées :
-        matrix (np.ndarray)  : matrice de fréquences (n-grammes × textes)
-        txt_names (list)      : noms des textes
-        biblio (dict)         : métadonnées {nom_texte : catégorie}
-        lexique (list)        : n-grammes ordonnés (index des lignes)
-        target_cat (str)    : catégorie cible (ex : 'Roman courtois')
-        top (int)             : nombre de n-grammes à retourner (défaut : 10)
+        matrix (np.ndarray) : matrice de fréquences (n-grammes × textes)
+        txt_names (list) : noms des textes
+        biblio (dict) : métadonnées {nom_texte : catégorie}
+        lexique (list) : n-grammes ordonnés (index des lignes)
+        target_cat (str) : catégorie cible (ex : 'Roman courtois')
+        top (int) : nombre de n-grammes à retourner (défaut : 10)
 
     Sortie :
         list : jusqu'à `top` entrées → {'ngram': str, 'ratio': float}
@@ -523,7 +523,7 @@ def count_freq(sequence, texte):
 
     Entrées :
         sequence (str) : séquence de mots à rechercher (sortie de lcs())
-        texte (str)    : texte dans lequel compter les occurrences
+        texte (str) : texte dans lequel compter les occurrences
 
     Sortie :
         int : nombre d'occurrences exactes — 0 si séquence vide
@@ -549,9 +549,9 @@ def analyse_auteur(auteur, texte_dir, dico_author):
     dans chaque texte via count_freq().
 
     Entrées :
-        auteur (str)       : nom exact de l'auteur tel qu'il apparaît dans dico_author
+        auteur (str) : nom exact de l'auteur tel qu'il apparaît dans dico_author
                              (casse sensible — ex : 'Chrétien de Troyes')
-        texte_dir (str)    : répertoire contenant les fichiers textes nettoyés (clean-*.txt)
+        texte_dir (str) : répertoire contenant les fichiers textes nettoyés (clean-*.txt)
         dico_author (dict) : métadonnées {nom_texte : auteur}
 
     Sortie :
