@@ -206,8 +206,6 @@ if __name__ == "__main__":
     lcs_content = analyse_auteur('Chrétien de Troyes', clean_txt_dir, dico_author)
     rapport_auteurs_final = r"/workspaces/medieval-fr-stylometry/results/rapports/rapport-auteurs.html"
    
-    print("Expériences dans result_auteurs :", list(result_auteurs.keys())) # trace à effacer 
-
     generate_combined_report_html(
         resultats=result_genre,
         biblio=dico_genre,
