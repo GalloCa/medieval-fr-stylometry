@@ -346,7 +346,7 @@ def knn(matrix, txt_names, biblio, metric='cosinus'):
 
     accuracy = (good_pred / evaluated_txt) * 100 if evaluated_txt > 0 else 0
 
-    # Utilitaire inter pour transformer données brutes en format lisible et structuré
+    # Utilitaire interne pour transformer les données brutes en format lisible et structuré
     # Transforme tuple en dict
     def _pair_dict(t1, t2, val):
         return {'t1': t1, 
