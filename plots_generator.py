@@ -4,11 +4,9 @@ Génération de graphique et visualisation du corpus
 Ce script prend en charge la représentation visuelle des résultats de l'analyse.
 Il transforme les matrices de distances mathématiques en graphiques.
 
-Il génère :
-    1. des nuages de points via MDS, afin d'observer la proximité des textes selon le 
+Il génère des nuages de points via MDS, afin d'observer la proximité des textes selon le 
         genres, époque ou auteurs.
-    2. Des dendogrammespour analyser les regroupements spécifiques en fonction des auteurs anomynes.
-
+    
 Dépendances :
     - matplotlib.pyplot : création, mise en forme et sauvegarde des graphes.
     - sklearn.manifold (MDS) : réduction de dimension (passage de N-dimensions à 2D)
