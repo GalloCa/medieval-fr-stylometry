@@ -3,12 +3,11 @@ Module de génération de rapports HTML stylisés
 Analyse d'un corpus de l'Ancien Français
 
 Consomme directement les structures de données retournées par analyse.py
-(dicts et listes) — aucun parsing de Markdown intermédiaire.
+(dicts et listes).
 
 Fonction exportée :
     generate_combined_report_html(resultats, biblio, output_path, mode,
                                   lcs_content=None, titre=None)
-
 Dépendances :
     analyse.py (knn, genre_cohesion, ngram_signatures)
 """
